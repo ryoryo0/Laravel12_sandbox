@@ -26,16 +26,16 @@ Route::prefix('admin')->name('admin.')->middleware('guest:admin')->group(functio
 });
 
 Route::prefix('admin')->middleware('auth:admin')->group(function () {
-    // Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-    // Route::get('/dashboard', function () {
-    //     return view('dashboard');
-    // })->name('dashboard');
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 });
 
 /**
  * Customer
  */
-Route::prefix('customer')->middleware('guest:customer')->group(function () {
+Route::prefix('customer')->name('customer.')->middleware('guest:customer')->group(function () {
     Route::get('login', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('login', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'store']);
     Route::get('register', [App\Http\Controllers\Customer\Auth\RegisteredUserController::class, 'create'])->name('register');
