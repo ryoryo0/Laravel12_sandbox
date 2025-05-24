@@ -18,7 +18,6 @@ class CustomerSeeder extends Seeder
                 'name' => '一般訪問者',
                 'password' => Hash::make('Password123+'),
                 'email' => 'customer@test.com',
-                'role' => 'customer',
             ]
         ];
        
@@ -26,7 +25,7 @@ class CustomerSeeder extends Seeder
         $fillable = array_flip($customer->getFillable());
         foreach ($customers as $customer) {
             $createUserData = array_intersect_key($customer, $fillable);
-            Customer::create($createUserData)->assignRole($customer['role']);
+            Customer::create($createUserData);
         }
     }
 }
