@@ -25,8 +25,8 @@ Route::prefix('admin')->name('admin.')->middleware('guest:admin')->group(functio
     Route::post('reset-password', [App\Http\Controllers\Admin\Auth\NewPasswordController::class, 'store'])->name('password.store');
 });
 
-Route::prefix('admin')->middleware('auth:admin')->group(function () {
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+Route::prefix('admin')->name('.admin')->middleware('auth:admin')->group(function () {
+    Route::post('logout', [App\Http\Controllers\Admin\Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout');
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
