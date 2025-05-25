@@ -24,11 +24,16 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
-        dd(0);
-        $request->session()->regenerate();
+        $credentials = $request->validated();
 
-        return redirect()->intended(route('customer.dashboard', absolute: false));
+        if (Auth::guard('customer')->attempt($credentials, $request->filled('remember'))) {
+            $request->session()->regenerate();
+            return redirect()->intended(route('customer.dashboard'));
+        }
+
+        return back()->withErrors([
+            'email' => 'ログインに失敗しました。',
+        ]);
     }
 
     /**
@@ -36,7 +41,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        Auth::guard('customer')->logout();
 
         $request->session()->invalidate();
 
