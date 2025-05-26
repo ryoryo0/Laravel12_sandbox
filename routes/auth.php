@@ -33,7 +33,6 @@ Route::prefix('admin')->name('.admin')->middleware('auth:admin')->group(function
  * Customer
  */
 Route::prefix('customer')->name('customer.')->middleware('guest.customer')->group(function () {
-    // ログイン前
     Route::get('login', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('login', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'store']);
     Route::get('register', [App\Http\Controllers\Customer\Auth\RegisteredUserController::class, 'create'])->name('register');
@@ -47,16 +46,15 @@ Route::prefix('customer')->name('customer.')->middleware('guest.customer')->grou
 Route::get('login', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('login', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'store']);
 
-Route::prefix('customer')->name('customer.')->middleware('guard.customer')->group(function () {
-    // ログイン後
+Route::prefix('customer')->name('customer.')->middleware('auth.customer')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');
     Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])->middleware('throttle:6,1')->name('verification.send');
     Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
-    Route::post('logout', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
+    Route::post('logout', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout');
     Route::get('/dashboard', function () {return view('customer.dashboard');})->name('dashboard');
 });
 
