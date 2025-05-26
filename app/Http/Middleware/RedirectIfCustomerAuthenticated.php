@@ -3,20 +3,19 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Auth;
 
-class RedirectIfCustomerAuthenticated
+class RedirectIfCustomerAuthenticated extends RedirectIfAuthenticated
 {
     /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * 認証済みの場合はdashboardにリダイレクト
      */
-    public function handle($request, Closure $next, ...$guards)
+    protected function defaultRedirectUri(): string
     {
         if (Auth::guard('customer')->check()) {
             return redirect()->route('customer.dashboard');
         }
-        return $next($request);
+        return route('top');
     }
 }
