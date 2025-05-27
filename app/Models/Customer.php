@@ -9,6 +9,8 @@ class Customer extends Authenticatable
 {
     use SoftDeletes;
 
+    protected $guard_name = 'customer';
+
     /**
      * The attributes that are mass assignable.
      *
