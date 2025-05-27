@@ -18,14 +18,14 @@ class RoleHasPermissionSeeder extends Seeder
             'read customer',
             'write customer', 
         ];
-        $role = Role::findByName('admin');
+        $role = Role::findByName('admin', 'admin');
         $role->givePermissionTo($permissions);
 
         $permissions = [
             'read customer',
             'write customer', 
         ];
-        $role = Role::findByName('staff');
+        $role = Role::findByName('staff', 'admin');
         $role->givePermissionTo($permissions);
     }
 }
