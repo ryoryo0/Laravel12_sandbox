@@ -21,7 +21,15 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::create('customer_password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
     }
+
+   
 
     /**
      * Reverse the migrations.
@@ -29,5 +37,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('customers');
+        Schema::dropIfExists('customer_password_reset_tokens');
     }
 };
