@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Notifications\AdminResetPasswordNotification;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
+use Illuminate\Notifications\Notifiable;
 
-class Admin extends Authenticatable
+class Admin extends Authenticatable  implements CanResetPassword
 {
     use SoftDeletes;
+    use CanResetPasswordTrait;
+    use Notifiable;
 
     protected $guard_name = 'admin';
 
@@ -33,5 +39,10 @@ class Admin extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new AdminResetPasswordNotification($token));
     }
 }
