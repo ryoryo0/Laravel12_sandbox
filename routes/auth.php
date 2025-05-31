@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 /**
  * Admin
  */
-Route::prefix('admin')->name('admin.')->middleware('guest:admin')->group(function () {
+Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('login', [App\Http\Controllers\Admin\Auth\AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('login', [App\Http\Controllers\Admin\Auth\AuthenticatedSessionController::class, 'store']);
     Route::get('register', [App\Http\Controllers\Admin\Auth\RegisteredUserController::class, 'create'])->name('register');
@@ -24,7 +24,7 @@ Route::prefix('admin')->name('admin.')->middleware('guest:admin')->group(functio
     Route::post('reset-password', [App\Http\Controllers\Admin\Auth\NewPasswordController::class, 'store'])->name('password.store');
 });
 
-Route::prefix('admin')->name('.admin')->middleware('auth:admin')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(function () {
     Route::get('/dashboard', function () {return view('admin.dashboard');})->name('dashboard');
     Route::post('logout', [App\Http\Controllers\Admin\Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
@@ -32,7 +32,7 @@ Route::prefix('admin')->name('.admin')->middleware('auth:admin')->group(function
 /**
  * Customer
  */
-Route::prefix('customer')->name('customer.')->middleware('guest.customer')->group(function () {
+Route::prefix('customer')->name('customer.')->middleware('guest:customer')->group(function () {
     Route::get('login', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('login', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'store']);
     Route::get('register', [App\Http\Controllers\Customer\Auth\RegisteredUserController::class, 'create'])->name('register');
@@ -46,7 +46,7 @@ Route::prefix('customer')->name('customer.')->middleware('guest.customer')->grou
 Route::get('login', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('login', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'store']);
 
-Route::prefix('customer')->name('customer.')->middleware('auth.customer')->group(function () {
+Route::prefix('customer')->name('customer.')->middleware('auth:customer')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');
     Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])->middleware('throttle:6,1')->name('verification.send');
