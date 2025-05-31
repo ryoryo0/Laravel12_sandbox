@@ -17,8 +17,19 @@ return Application::configure(basePath: dirname(__DIR__))
     )
 
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->redirectGuestsTo(function ($request) {
-            return $request->is('admin*') ? route('admin.login') : route('customer.login');
+        $middleware->redirectGuestsTo(function (Request $request) {
+            return match (true) {
+                $request->is('admin/*')    => route('admin.login'),
+                $request->is('customer/*') => route('customer.login'),
+            };
+        });
+    
+        // 認証済みユーザーのリダイレクト先（URLやルート名で判定）
+        $middleware->redirectUsersTo(function (Request $request) {
+            return match (true) {
+                $request->is('admin/*')    => route('admin.dashboard'),
+                $request->is('customer/*') => route('customer.dashboard'),
+            };
         });
     })
 
