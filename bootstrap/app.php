@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
 
     ->withMiddleware(function (Middleware $middleware) {
+        // 未認証ユーザーのリダイレクト　先を制御
         $middleware->redirectGuestsTo(function (Request $request) {
             return match (true) {
                 $request->is('admin/*')    => route('admin.login'),
@@ -24,7 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
             };
         });
     
-        // 認証済みユーザーのリダイレクト先（URLやルート名で判定）
+        // 認証ユーザーのリダイレクト先を制御
         $middleware->redirectUsersTo(function (Request $request) {
             return match (true) {
                 $request->is('admin/*')    => route('admin.dashboard'),
