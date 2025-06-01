@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Customer\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Customer\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
@@ -20,7 +20,7 @@ class NewPasswordController extends Controller
      */
     public function create(Request $request): View
     {
-        return view('admin.auth.reset-password', ['request' => $request]);
+        return view('customer.auth.reset-password', ['request' => $request]);
     }
 
     /**
