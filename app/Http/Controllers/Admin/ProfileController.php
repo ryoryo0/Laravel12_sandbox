@@ -53,8 +53,8 @@ class ProfileController extends Controller
 
         $user->delete();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $request->session(['guard' => 'admin'])->invalidate();
+        $request->session(['guard' => 'admin'])->regenerateToken();
 
         return Redirect::to('/');
     }

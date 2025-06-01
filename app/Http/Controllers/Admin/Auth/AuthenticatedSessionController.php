@@ -27,7 +27,7 @@ class AuthenticatedSessionController extends Controller
         $credentials = $request->validated();
 
         if (Auth::guard('admin')->attempt($credentials, $request->filled('remember'))) {
-            $request->session()->regenerate();
+            $request->session(['guard' => 'admin'])->regenerate();
             return redirect()->intended(route('admin.dashboard'));
         }
 
@@ -43,9 +43,9 @@ class AuthenticatedSessionController extends Controller
     {
         Auth::guard('admin')->logout();
 
-        $request->session()->invalidate();
+        $request->session(['guard' => 'admin'])->invalidate();
 
-        $request->session()->regenerateToken();
+        $request->session(['guard' => 'admin'])->regenerateToken();
 
         return redirect()->route('admin.login');
     }
