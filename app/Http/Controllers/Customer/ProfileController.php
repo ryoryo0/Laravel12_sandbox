@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Customer\Controller;
-use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\Customer\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
