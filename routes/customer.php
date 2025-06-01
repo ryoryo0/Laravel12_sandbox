@@ -1,10 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\ConfirmablePasswordController;
-use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\Auth\EmailVerificationPromptController;
-use App\Http\Controllers\Auth\PasswordController;
-use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -22,12 +17,12 @@ Route::prefix('customer')->name('customer.')->middleware('guest:customer')->grou
 });
 
 Route::prefix('customer')->name('customer.')->middleware('auth:customer')->group(function () {
-    Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
-    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])->middleware('throttle:6,1')->name('verification.send');
-    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
-    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
-    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+    Route::get('verify-email', [App\Http\Controllers\Customer\Auth\EmailVerificationPromptController::class])->name('verification.notice');
+    Route::get('verify-email/{id}/{hash}', [App\Http\Controllers\Customer\Auth\VerifyEmailController::class])->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
+    Route::post('email/verification-notification', [App\Http\Controllers\Customer\Auth\EmailVerificationNotificationController::class, 'store'])->middleware('throttle:6,1')->name('verification.send');
+    Route::get('confirm-password', [App\Http\Controllers\Customer\Auth\ConfirmablePasswordController::class, 'show'])->name('password.confirm');
+    Route::post('confirm-password', [App\Http\Controllers\Customer\Auth\ConfirmablePasswordController::class, 'store']);
+    Route::put('password', [App\Http\Controllers\Customer\Auth\PasswordController::class, 'update'])->name('password.update');
 
     Route::post('logout', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout');
     Route::get('/dashboard', function () {return view('customer.dashboard');})->name('dashboard');
