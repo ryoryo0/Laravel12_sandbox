@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('front.index');
 })->name('top');
 
 require __DIR__.'/admin.php';
