@@ -12,15 +12,27 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $permissionNames = [
-            'read staff',
-            'write staff',
-            'read customer',
-            'write customer', 
+        $permissions = [
+            [
+                'name' => 'read staff',
+                'guard_name' => 'admin',
+            ],[
+                'name' => 'write staff',
+                'guard_name' => 'admin',
+            ],[
+                'name' => 'read customer',
+                'guard_name' => 'admin',
+            ],[
+                'name' => 'write customer',
+                'guard_name' => 'admin',
+            ]
         ];
 
-        foreach ($permissionNames as $name) {
-            Permission::create(['name' => $name]);
+        foreach ($permissions as $permission) {
+            Permission::create([
+                'name' => $permission['name'],
+                'guard_name' => $permission['guard_name'],
+            ]);
         }
     }
 }

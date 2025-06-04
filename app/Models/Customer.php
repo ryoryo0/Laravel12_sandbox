@@ -2,20 +2,20 @@
 
 namespace App\Models;
 
-use App\Notifications\AdminResetPasswordNotification;
+use App\Notifications\CustomerResetPasswordNotification;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
 use Illuminate\Notifications\Notifiable;
 
-class Admin extends Authenticatable  implements CanResetPassword
+class Customer extends Authenticatable
 {
     use SoftDeletes;
     use CanResetPasswordTrait;
     use Notifiable;
 
-    protected $guard_name = 'admin';
+    protected $guard_name = 'customer';
 
     /**
      * The attributes that are mass assignable.
@@ -43,6 +43,6 @@ class Admin extends Authenticatable  implements CanResetPassword
 
     public function sendPasswordResetNotification($token)
     {
-        $this->notify(new AdminResetPasswordNotification($token));
+        $this->notify(new CustomerResetPasswordNotification($token));
     }
 }
