@@ -24,7 +24,13 @@ class AdminSeeder extends Seeder
                 'password' => Hash::make('Password123+'),
                 'email' => 'staff@test.com',
                 'role_id' => 1,
+            ],[
+                'name' => '削除テスト用',
+                'password' => Hash::make('Password123+'),
+                'email' => 'deletestaff@test.com',
+                'role_id' => 1,
             ]
+            
         ];
 
         foreach ($admins as $admin) {
