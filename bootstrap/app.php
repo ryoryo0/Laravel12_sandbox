@@ -28,7 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // 認証ユーザーのリダイレクト先を制御
         $middleware->redirectUsersTo(function (Request $request) {
             return match (true) {
-                $request->is('admin/*')    => route('admin.dashboard'),
+                $request->is('admin/*')    => route('admin.home'),
                 $request->is('customer/*') => route('customer.dashboard'),
             };
         });
