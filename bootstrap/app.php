@@ -29,7 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectUsersTo(function (Request $request) {
             return match (true) {
                 $request->is('admin/*')    => route('admin.home'),
-                $request->is('customer/*') => route('customer.dashboard'),
+                $request->is('customer/*') => route('customer.home'),
             };
         });
     })
