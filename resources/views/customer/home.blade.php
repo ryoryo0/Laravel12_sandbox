@@ -1,4 +1,4 @@
-<x-admin.app-layout>
+<x-customer.app-layout>
     <div class="p-4 sm:ml-64">
         <div >
             <div class="flex items-center h-20 mb-4 rounded-sm bg-gray-50 p-5">
@@ -25,4 +25,4 @@
             </div>
         </div>
     </div>
-</x-admin.app-layout>
+</x-customer.app-layout>
