@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 /**
  * Customer
  */
-Route::prefix('customer')->name('customer.')->middleware('guest:customer')->group(function () {
+Route::prefix('customer')->name('customer.')->middleware(['guest:customer'])->group(function () {
     Route::get('login', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('login', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'store']);
     Route::get('register', [App\Http\Controllers\Customer\Auth\RegisteredUserController::class, 'create'])->name('register');
@@ -16,7 +16,7 @@ Route::prefix('customer')->name('customer.')->middleware('guest:customer')->grou
     Route::post('reset-password', [App\Http\Controllers\Customer\Auth\NewPasswordController::class, 'store'])->name('password.store');
 });
 
-Route::prefix('customer')->name('customer.')->middleware('auth:customer')->group(function () {
+Route::prefix('customer')->name('customer.')->middleware(['auth:customer'])->group(function () {
     Route::get('verify-email', [App\Http\Controllers\Customer\Auth\EmailVerificationPromptController::class])->name('verification.notice');
     Route::get('verify-email/{id}/{hash}', [App\Http\Controllers\Customer\Auth\VerifyEmailController::class])->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
     Route::post('email/verification-notification', [App\Http\Controllers\Customer\Auth\EmailVerificationNotificationController::class, 'store'])->middleware('throttle:6,1')->name('verification.send');
