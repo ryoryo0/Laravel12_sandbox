@@ -24,7 +24,7 @@ Route::prefix('customer')->name('customer.')->middleware(['auth:customer'])->gro
     Route::post('confirm-password', [App\Http\Controllers\Customer\Auth\ConfirmablePasswordController::class, 'store']);
     Route::put('password', [App\Http\Controllers\Customer\Auth\PasswordController::class, 'update'])->name('password.update');
     Route::post('logout', [App\Http\Controllers\Customer\Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout');
-    Route::get('/dashboard', function () {return view('customer.dashboard');})->name('dashboard');
+    Route::get('/home', function () {return view('customer.home');})->name('home');
     Route::get('/profile', [App\Http\Controllers\Customer\ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [App\Http\Controllers\Customer\ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [App\Http\Controllers\Customer\ProfileController::class, 'destroy'])->name('profile.destroy');
