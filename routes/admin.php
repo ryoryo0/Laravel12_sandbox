@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 /**
  * Admin
  */
-Route::prefix('admin')->name('admin.')->middleware('guest:admin')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['guest:admin', 'set.session.table'])->group(function () {
     Route::get('login', [App\Http\Controllers\Admin\Auth\AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('login', [App\Http\Controllers\Admin\Auth\AuthenticatedSessionController::class, 'store']);
     Route::get('register', [App\Http\Controllers\Admin\Auth\RegisteredUserController::class, 'create'])->name('register');
@@ -16,8 +16,8 @@ Route::prefix('admin')->name('admin.')->middleware('guest:admin')->group(functio
     Route::post('reset-password', [App\Http\Controllers\Admin\Auth\NewPasswordController::class, 'store'])->name('password.store');
 });
 
-Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(function () {
-    Route::get('/home', function () {return view('admin.home');})->name('home');
+Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'set.session.table'])->group(function () {
+    Route::get('/dashboard', function () {return view('admin.dashboard');})->name('dashboard');
     Route::get('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'destroy'])->name('profile.destroy');
