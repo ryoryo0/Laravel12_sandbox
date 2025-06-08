@@ -45,4 +45,14 @@ class Admin extends Authenticatable  implements CanResetPassword
     {
         $this->notify(new AdminResetPasswordNotification($token));
     }
+
+
+    /**
+     * relation
+     */
+    
+    public function product()
+    {
+        return $this->hasMany(Product::class, 'create_admin_id', 'id');
+    }
 }

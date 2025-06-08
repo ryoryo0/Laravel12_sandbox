@@ -15,8 +15,8 @@ class ProductCategory extends Model
      * relation
      */
 
-     public function productCategory()
+     public function category()
     {
-        return $this->hasOne(ProductCategory::class);
+        return $this->belongsTo(ProductCategory::class);
     }
 }
