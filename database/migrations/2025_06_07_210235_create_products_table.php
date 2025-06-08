@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('sub_name');
-            $table->integer('category_id');
+            $table->foreignId('category_id')->constrained('product_categories');
+            $table->foreignId('create_admin_id')->constrained('admins');
             $table->ulid('ulid');
             $table->boolean('is_public');
             $table->boolean('is_pick_up');
