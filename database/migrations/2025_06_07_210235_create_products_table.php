@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('sub_name');
-            $table->foreignId('category_id')->constrained('product_categories');
-            $table->foreignId('create_admin_id')->constrained('admins');
-            $table->ulid('ulid');
-            $table->boolean('is_public');
-            $table->boolean('is_pick_up');
+            $table->string('name')->comment('商品名');
+            $table->string('description')->nullable()->comment('説明文');
+            $table->foreignId('category_id')->constrained('product_categories')->comment('商品のカテゴリーID');
+            $table->foreignId('create_admin_id')->constrained('admins')->comment('商品作成者');
+            $table->ulid('ulid')->comment('商品コード');
+            $table->boolean('is_public')->comment('公開・非公開');
+            $table->boolean('is_pick_up')->comment('おすすめ');
             $table->timestamps();
             $table->softDeletes();
         });

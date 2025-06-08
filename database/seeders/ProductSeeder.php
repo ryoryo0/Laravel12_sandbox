@@ -16,7 +16,7 @@ class ProductSeeder extends Seeder
         $products = [
             [
                 'name' => 'テストネーム01',
-                'sub_name' => 'テストサブネーム01',
+                'description' => 'ディスクリプション01',
                 'category_id' =>  1,
                 'create_admin_id' => 1,
                 'ulid' => Str::ulid(),
@@ -24,7 +24,7 @@ class ProductSeeder extends Seeder
                 'is_pick_up' => 0,
             ],[
                 'name' => 'テストネーム02',
-                'sub_name' => 'テストサブネーム02',
+                'description' => 'ディスクリプション02',
                 'category_id' =>  2,
                 'create_admin_id' => 1,
                 'ulid' => Str::ulid(),
@@ -32,7 +32,7 @@ class ProductSeeder extends Seeder
                 'is_pick_up' => 1,
             ],[
                 'name' => 'テストネーム03',
-                'sub_name' => 'テストサブネーム03',
+                'description' => 'ディスクリプション03',
                 'category_id' =>  3,
                 'create_admin_id' => 1,
                 'ulid' => Str::ulid(),
@@ -40,7 +40,7 @@ class ProductSeeder extends Seeder
                 'is_pick_up' => 0,
             ],[
                 'name' => 'テストネーム04',
-                'sub_name' => 'テストサブネーム04',
+                'description' => 'ディスクリプション04',
                 'category_id' =>  4,
                 'create_admin_id' => 1,
                 'ulid' => Str::ulid(),
