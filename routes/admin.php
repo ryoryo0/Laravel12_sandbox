@@ -28,4 +28,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
     Route::get('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::prefix('/product')->name('product.')->group(function () {
+        Route::get('/', App\Http\Controllers\Admin\ProductController::class)->name('index');
+    });
 });
