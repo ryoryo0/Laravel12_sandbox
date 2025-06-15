@@ -5,28 +5,34 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\Controller;
 use App\Models\Product;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    public function __invoke()
+    public function __invoke(Request $request)
     {
         $authUser = Auth::user()->id;
+        $query = Product::query()
+            ->where('create_admin_id', $authUser);
+        $params = $request;
+        $this->getQuery($query, $params);
+        $products = $query->get();
 
         $headings = $this->getHeadingLabels();
-
-        $query = Product::query()
-            ->where('is_public', true)
-            ->where('create_admin_id', $authUser);
-
-        $this->getQuery($query);
-
-        $products = $query->get();
+        $categories = [
+            '1' => 'ピアス',
+            '2' => 'リング',
+            '3' => 'ネックレス',
+            '4' => 'チェーン',
+            '5' => 'キャンドル',
+        ];
 
         return view('admin.product.index')
             ->with([
                 'products' => $products,
                 'headings'  => $headings,
+                'categories' => $categories,
             ]); 
     }
 
@@ -54,13 +60,35 @@ class ProductController extends Controller
 
 
     /**
-     * クエリビルダーに絞り込み条件を適用
+     * クエリビルダーに絞り込み
      *
      * @param Builder $query クエリビルダーインスタンス
      * @return Builder 絞り込み済みのクエリビルダー
      */
-    private function getQuery (Builder $query)
+    private function getQuery (Builder $query, $params)
     {
-        $query;
+        if ($params->input('id')) {
+            $query->where('id', $params->input('id'));
+        }
+
+        if ($params->input('name')) {
+            $query->where('name', $params->input('name'));
+        }
+
+        if ($params->input('description')) {
+            $query->where('description', $params->input('description'));
+        }
+
+        if ($params->input('category_ids')) {
+            $query->whereIn('category_id', $params->input('category_ids'));
+        }
+
+        if ($params->input('is_public')) {
+            $query->where('is_public', $params->input('is_public'));
+        }
+
+        if ($params->input('is_pick_up')) {
+            $query->where('is_pick_up', $params->input('is_pick_up'));
+        }
     }
 }
