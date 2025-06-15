@@ -30,6 +30,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
     Route::delete('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::prefix('/product')->name('product.')->group(function () {
-        Route::get('/', App\Http\Controllers\Admin\ProductController::class)->name('index');
+        Route::get('/', App\Http\Controllers\Admin\Product\IndexController::class)->name('index');
     });
 });
