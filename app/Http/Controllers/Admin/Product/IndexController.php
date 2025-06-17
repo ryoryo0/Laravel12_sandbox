@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin\Product;
 
 use App\Http\Controllers\Admin\Controller;
+use App\Http\Requests\Admin\Product\IndexRequest;
 use App\Models\Product;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(IndexRequest $request)
     {
         $authUser = Auth::user()->id;
         $query = Product::query()
