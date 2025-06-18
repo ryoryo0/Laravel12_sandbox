@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Product;
 use App\Http\Controllers\Admin\Controller;
 use App\Http\Requests\Admin\Product\IndexRequest;
 use App\Models\Product;
+use App\Models\ProductCategory;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,13 +22,7 @@ class IndexController extends Controller
 
         $bulkActions = $this->getBulkActionLabels();
         $headings = $this->getHeadingLabels();
-        $categories = [
-            '1' => 'ピアス',
-            '2' => 'リング',
-            '3' => 'ネックレス',
-            '4' => 'チェーン',
-            '5' => 'キャンドル',
-        ];
+        $categories = ProductCategory::query()->pluck('name', 'id');
 
         return view('admin.product.index')
             ->with([

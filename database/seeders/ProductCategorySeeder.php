@@ -14,13 +14,15 @@ class ProductCategorySeeder extends Seeder
     {
         $productCategories = [
             [
-                'name' => 'pierce'
+                'name' => 'ピアス'
             ],[
-                'name' => 'necklace'
+                'name' => 'リング'
             ],[
-                'name' => 'fingerRing'
+                'name' => 'ネックレス'
             ],[
-                'name' => 'bees'
+                'name' => 'チェーン'
+            ],[
+                'name' => 'キャンドル'
             ],
         ];
 
