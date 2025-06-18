@@ -19,6 +19,7 @@ class IndexController extends Controller
         $this->getQuery($query, $params);
         $products = $query->get();
 
+        $bulkActions = $this->getBulkActionLabels();
         $headings = $this->getHeadingLabels();
         $categories = [
             '1' => 'ピアス',
@@ -31,11 +32,28 @@ class IndexController extends Controller
         return view('admin.product.index')
             ->with([
                 'products' => $products,
+                'bulkActions' => $bulkActions,
                 'headings'  => $headings,
                 'categories' => $categories,
             ]); 
     }
 
+
+    /**
+     * 一括操作セレクトラベルとkeyの取得
+     *
+     * @return array
+     */
+    private function getBulkActionLabels (): array
+    {
+        $result = [
+            'bulk_delete' => 'チェック項目を一括削除',
+            'bulk_un_public' => 'チェック項目を一括非公開',
+            'bulk_pick_up' => 'チェック項目を一括おすすめ',
+        ];
+
+        return $result;
+    }
 
         
     /**
