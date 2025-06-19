@@ -9,11 +9,6 @@ class CreateController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $helloWorld = 'Hello World!!';
-
-        return view('admin.product.create')
-            ->with([
-                'helloWorld' => $helloWorld,
-            ]);
+        return view('admin.product.create');
     }
 }
