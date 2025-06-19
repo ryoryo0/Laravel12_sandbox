@@ -1,5 +1,5 @@
 <x-admin.app-layout>
-<div class="relative overflow-x-auto p-4 sm:ml-64">
+<div class="relative overflow-x-auto p-4 sm:ml-64 ">
   <!-- 検索フォーム -->
   <form class=" x-auto mb-6">
     <div class="mb-4">
@@ -39,10 +39,10 @@
     <div class="flex mt-6 mb-6">
       <div class="flex items-center me-4">
           <input id="pick_up_true" type="checkbox" value="1" name="is_pick_up" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-          <label for="pick_up_true" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-900">おすすめ</label>
+          <label for="pick_up_true" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-900">おすすめを絞り込み</label>
       </div>
     </div>
-    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
   </form>
   @if($errors->any())
     <div class="alert alert-danger">
