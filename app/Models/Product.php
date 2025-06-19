@@ -47,14 +47,14 @@ class Product extends Model
      public static function getBaseRule (): array
      {
         $rule = [
-                    'id' => 'nullable','integer',
-                    'name' => 'nullable','string', 'max:255',
-                    'description' => 'nullable','string', 'max:255',
-                    'category_id' => 'nullable','array', Rule::exists('product_categories', 'id'),
-                    'create_admin_id' => 'nullable','integer', Rule::exists('admins', 'name'),
-                    'ulid' => 'nullable','string', 'max:255', Rule::exists('products', 'ulid'),
-                    'is_public' => 'nullable','boolean',
-                    'is_pick_up' => 'nullable','boolean',
+                    'id' => ['nullable','integer'],
+                    'name' => ['nullable','string', 'max:255'],
+                    'description' => ['nullable','string', 'max:255'],
+                    'category_id' => ['nullable','array', Rule::exists('product_categories', 'id')],
+                    'create_admin_id' =>[ 'nullable','integer', Rule::exists('admins', 'name')],
+                    'ulid' => ['nullable','string', 'max:255', Rule::exists('products', 'ulid')],
+                    'is_public' =>[ 'nullable','boolean'],
+                    'is_pick_up' => ['nullable','boolean'],
                 ];
 
         return $rule;
