@@ -1,4 +1,5 @@
 import './bootstrap';
+import './quill'; 
 
 import Alpine from 'alpinejs';
 
