@@ -73,6 +73,11 @@
             <label for="inline-2-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-9  00">非公開</label>
         </div>
       </div>
+
+      <div class="mt-6 mb-6">
+        <div class="flex items-center me-4" id="editor"></div>
+       <input type="hidden" value="" id="detail"> 
+      </div>
     </form>
   </div>
 </x-admin.app-layout>
