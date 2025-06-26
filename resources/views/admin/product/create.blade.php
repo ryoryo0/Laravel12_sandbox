@@ -37,7 +37,7 @@
       </div>
       <div class="mb-4">
           <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900" for="file_input">サムネイル画像</label>
-          <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+          <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" data-js="img">
       </div>
       <div class="mb-4">
           <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900" for="file_input">その他商品画像</label>
@@ -70,4 +70,7 @@
       </div>
     </form>
   </div>
+  @push('scripts')
+    @vite(['resources/js/pages/product/create.js'])
+  @endpush
 </x-admin.app-layout>

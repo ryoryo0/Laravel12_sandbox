@@ -36,5 +36,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
     Route::prefix('/product')->name('product.')->group(function () {
         Route::get('/', App\Http\Controllers\Admin\Product\IndexController::class)->name('index');
         Route::get('/create', App\Http\Controllers\Admin\Product\CreateController::class)->name('create');
+        Route::post('/upload-temp', App\Http\Controllers\Admin\Product\TemporaryUploadController::class)->name('upload-temp');
     });
 });
