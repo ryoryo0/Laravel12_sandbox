@@ -1,5 +1,9 @@
-import './bootstrap';
-import './quill'; 
+// 外部ライブラリ
+import './libraries/bootstrap';
+import './libraries/quill'; 
+
+// modules
+
 
 import Alpine from 'alpinejs';
 
