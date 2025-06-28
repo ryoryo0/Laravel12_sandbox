@@ -6,7 +6,10 @@
  */
 export default class TemporaryUploader {
 
-  
+  url;
+  file;
+  csrfToken;
+
   /**
    * コンストラクタ
    *
