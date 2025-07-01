@@ -21,6 +21,7 @@ export default class TemporaryUploader {
     this.file = file;
     this.csrfToken = document.querySelector('meta[name="csrf-token"]').content;
   }
+  
 
 
   /**
@@ -54,5 +55,20 @@ export default class TemporaryUploader {
     const formData = new FormData();
     formData.append('image', file);
     return formData;
+  }
+
+
+  /**
+   * 特定要素の中に画像要素を追加します。
+   *
+   * @param {object} result 画像データのオブジェクト
+   * @param {Element} container 指定する要素の属性
+   * @returns {void}
+   */
+  static imgAppend(result, container) {
+    const img = document.createElement('img');
+    img.src = result.url;
+    img.classList.add("mt-6", "mb-6");
+    container.append(img);
   }
 }
