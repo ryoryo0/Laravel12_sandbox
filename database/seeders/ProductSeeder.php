@@ -20,6 +20,7 @@ class ProductSeeder extends Seeder
                 'category_id' =>  1,
                 'create_admin_id' => 1,
                 'ulid' => Str::ulid(),
+                'code' => '2025070101HR',
                 'is_public' => 0,
                 'is_pick_up' => 0,
             ],[
@@ -28,6 +29,7 @@ class ProductSeeder extends Seeder
                 'category_id' =>  2,
                 'create_admin_id' => 1,
                 'ulid' => Str::ulid(),
+                'code' => '2025070102HR',
                 'is_public' => 0,
                 'is_pick_up' => 1,
             ],[
@@ -36,6 +38,7 @@ class ProductSeeder extends Seeder
                 'category_id' =>  3,
                 'create_admin_id' => 1,
                 'ulid' => Str::ulid(),
+                'code' => '2025070103HR',
                 'is_public' => 1,
                 'is_pick_up' => 0,
             ],[
@@ -44,6 +47,7 @@ class ProductSeeder extends Seeder
                 'category_id' =>  4,
                 'create_admin_id' => 1,
                 'ulid' => Str::ulid(),
+                'code' => '2025070104HR',
                 'is_public' => 1,
                 'is_pick_up' => 1,
             ]

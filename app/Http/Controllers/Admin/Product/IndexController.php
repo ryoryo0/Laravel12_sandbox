@@ -88,6 +88,10 @@ class IndexController extends Controller
             $query->where('name', $params->input('name'));
         }
 
+        if ($params->input('code')) {
+            $query->where('code', $params->input('code'));
+        }
+
         if ($params->input('description')) {
             $query->where('description', $params->input('description'));
         }

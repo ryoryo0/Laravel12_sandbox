@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('description')->nullable()->comment('説明文');
             $table->foreignId('category_id')->constrained('product_categories')->comment('商品のカテゴリーID');
             $table->foreignId('create_admin_id')->constrained('admins')->comment('商品作成者');
-            $table->ulid('ulid')->comment('商品コード');
+            $table->string('code')->comment('商品ID');
+            $table->ulid('ulid')->comment('ulid');
             $table->boolean('is_public')->comment('公開・非公開');
             $table->boolean('is_pick_up')->comment('おすすめ');
             $table->timestamps();

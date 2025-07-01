@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Admin\Product;
 
-use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class IndexRequest extends FormRequest
 {
@@ -22,7 +22,15 @@ class IndexRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = Product::getBaseRule();
+        $rules = [
+                    'name'        => ['nullable','string', 'max:255'],
+                    'description' => ['nullable','string', 'max:255'],
+                    'category_id' => ['nullable','array', Rule::exists('product_categories', 'id')],
+                    'code'        => ['nullable','string', 'max:255', 'unique:products.code'],
+                    'is_public'   => [ 'nullable','boolean'],
+                    'is_pick_up'  => ['nullable','boolean'],
+                ];
+
         return $rules;
     }
 }
