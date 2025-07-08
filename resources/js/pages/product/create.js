@@ -5,7 +5,7 @@ import TemporaryUploader from '../../modules/temporary-uploader';
 * サムネイルの一時画像アップロードの非同期処理
 *
 */
-document.querySelector('[data-js="upload-temporary"]')?.addEventListener('change', async (e) => {
+document.querySelector('[data-js="upload-temporary-input"]')?.addEventListener('change', async (e) => {
   const file = e.target.files[0];
   if (!file) return;
   const url = '/admin/product/upload-temp';
@@ -13,8 +13,15 @@ document.querySelector('[data-js="upload-temporary"]')?.addEventListener('change
 
   try {
     const result = await uploader.upload();
-    const container = document.querySelector('#js-uploaded-temporary');
-    TemporaryUploader.imgAppend(result, container);
+    document.querySelector('.js-uploaded-temporary')?.remove();
+    const cloneContainer = document.querySelector('[data-js="upload-temporary"]').cloneNode(true);
+    cloneContainer.classList.add('js-uploaded-temporary');
+    cloneContainer.querySelector('img').src = result.url;
+    cloneContainer.querySelector('p').textContent = result.name;
+    cloneContainer.querySelector('input').value = result.ulid;
+    cloneContainer.style.display = "block";
+    const ul = document.querySelector('#js-uploaded-temporary-list');
+    ul.append(cloneContainer);
     console.log('アップロード成功:', result.url);
   } catch (err) {
     console.error('アップロード失敗:', err);
