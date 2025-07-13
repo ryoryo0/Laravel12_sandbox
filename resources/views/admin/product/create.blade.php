@@ -22,7 +22,8 @@
     </ol>
   </nav>
 
-    <form class="mx-auto">
+    <form class="mx-auto" method="POST" action="{{ route('admin.product.store') }}">
+      @csrf
       <div class="mb-4">
         <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">名前</label>
         <input type="text" name="name" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -39,7 +40,7 @@
       <div class="mb-6 mt-6">
         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900" for="file_input">サムネイル画像</label>
         <!-- Modal toggle -->
-        <button data-modal-target="default-modal" data-modal-toggle="default-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+        <button data-modal-target="default-modal" data-modal-toggle="default-modal" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
           画像を追加する
         </button>
         <!-- Main modal -->
@@ -86,7 +87,7 @@
       <div class="mb-6 mt-6">
         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900" for="file_input">その他の画像</label>
         <!-- Modal toggle -->
-        <button data-modal-target="default-modal-multiple" data-modal-toggle="default-modal-multiple" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+        <button data-modal-target="default-modal-multiple" data-modal-toggle="default-modal-multiple" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
           画像を追加する
         </button>
         <!-- Main modal -->
@@ -99,7 +100,7 @@
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                             その他の画像
                         </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal-multiple">
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                             </svg>
@@ -114,7 +115,7 @@
                             <img class="me-3 w-11 h-11 round-full" src="" alt="Jese Leos Avatar">
                             <div>
                                 <p class="text-sm text-gray-500 dark:text-gray-400"></p>
-                                <input type="hidden" name="thumbnail" value="">
+                                <input type="hidden" name="other_thumbnail[]" value="">
                             </div>
                             <!-- NOTE::削除ボタンの実装について実装方法の後日検討が必要なことから一時コメントアウト -->
                             <!-- <button data-js="delete-temporary" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center" style="margin-left: auto;">
@@ -155,8 +156,11 @@
 
       <div class="mt-6 mb-6">
         <div class="flex items-center me-4" id="editor"></div>
-       <input type="hidden" value="" id="detail"> 
+       <input type="hidden" value="" id="detail" name="detail"> 
       </div>
+      <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+        保存
+      </button>
     </form>
   </div>
   @push('scripts')
