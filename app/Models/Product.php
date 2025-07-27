@@ -12,6 +12,7 @@ class Product extends Model
         'name',
         'description',
         'category_id',
+        'detail',
         'create_admin_id',
         'code',
         'ulid',

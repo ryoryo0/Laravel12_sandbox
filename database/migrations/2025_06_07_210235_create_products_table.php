@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->comment('商品名');
             $table->string('description')->nullable()->comment('説明文');
             $table->foreignId('category_id')->constrained('product_categories')->comment('商品のカテゴリーID');
+            $table->string('detail')->nullable()->comment("詳細");
             $table->foreignId('create_admin_id')->constrained('admins')->comment('商品作成者');
             $table->string('code')->comment('商品ID');
             $table->ulid('ulid')->comment('ulid');
