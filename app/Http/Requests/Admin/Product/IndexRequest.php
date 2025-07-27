@@ -25,9 +25,9 @@ class IndexRequest extends FormRequest
         $rules = [
                     'name'        => ['nullable','string', 'max:255'],
                     'description' => ['nullable','string', 'max:255'],
-                    'category_id' => ['nullable','array', Rule::exists('product_categories', 'id')],
-                    'code'        => ['nullable','string', 'max:255', 'unique:products.code'],
-                    'is_public'   => [ 'nullable','boolean'],
+                    'category_ids' => ['nullable','array', Rule::exists('product_categories', 'id')],
+                    'code'        => ['nullable','string', 'max:255'],
+                    'is_public'   => ['nullable','boolean'],
                     'is_pick_up'  => ['nullable','boolean'],
                 ];
 
