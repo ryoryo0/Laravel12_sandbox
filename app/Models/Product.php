@@ -11,7 +11,6 @@ class Product extends Model
         'id',
         'name',
         'description',
-        'category_id',
         'detail',
         'create_admin_id',
         'code',
@@ -28,12 +27,15 @@ class Product extends Model
      */
 
      
-     public function admin()
+    public function categories()
     {
-        return $this->belongsTo(ProductCategory::class);
+        return $this->belongsTo(Category::class, 'categories_products', 'product_id', 'category_id');
     }
 
-
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
+    }
      /**
      * --------------------------------------------------------------------------------------------------------------------------------------------- 
      * Method

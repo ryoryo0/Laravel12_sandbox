@@ -51,8 +51,13 @@ class Admin extends Authenticatable  implements CanResetPassword
      * relation
      */
     
-    public function product()
+    public function products()
     {
         return $this->hasMany(Product::class, 'create_admin_id', 'id');
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class, 'create_admin_id', 'id');
     }
 }
