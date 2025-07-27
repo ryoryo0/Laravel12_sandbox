@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_categories', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name')->comment('カテゴリー名');
+            $table->foreignId('create_admin_id')->constrained('admins')->comment('カテゴリー作成者');
             $table->timestamps();
         });
     }
