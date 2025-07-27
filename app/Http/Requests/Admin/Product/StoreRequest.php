@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -10,8 +11,8 @@ class StoreRequest extends FormRequest
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
-    {
-        return false;
+    {   
+        return true;
     }
 
     /**
@@ -21,8 +22,15 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'name'        => ['nullable','string', 'max:255'],
+            'description' => ['nullable','string', 'max:255'],
+            'category_ids' => ['nullable','array', Rule::exists('categories', 'id')],
+            'code'        => ['nullable','string', 'max:255', Rule::unique('products', 'code')],
+            'detail'      => ['nullable','string', 'max:255'],
+            'is_public'   => ['nullable','boolean'],
+            'is_pick_up'  => ['nullable','boolean'],
         ];
+        return $rules;
     }
 }
