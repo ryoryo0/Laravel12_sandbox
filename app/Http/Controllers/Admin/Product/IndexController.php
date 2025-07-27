@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin\Product;
 
 use App\Http\Controllers\Admin\Controller;
 use App\Http\Requests\Admin\Product\IndexRequest;
-use App\Models\Product;
-use App\Models\ProductCategory;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,16 +11,15 @@ class IndexController extends Controller
 {
     public function __invoke(IndexRequest $request)
     {
-        $authUser = Auth::user()->id;
-        $query = Product::query()
-            ->where('create_admin_id', $authUser);
+        $adminUser = Auth::user();
+
+        $query = $adminUser->products();
         $params = $request;
         $this->getQuery($query, $params);
         $products = $query->get();
-
+        $categories = $adminUser->categories()->pluck('name', 'id');
         $bulkActions = $this->getBulkActionLabels();
         $headings = $this->getHeadingLabels();
-        $categories = ProductCategory::query()->pluck('name', 'id');
 
         return view('admin.product.index')
             ->with([
