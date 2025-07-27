@@ -154,6 +154,13 @@
         </div>
       </div>
 
+      <div class="flex mt-6 mb-6">
+        <div class="flex items-center me-4">
+            <input id="is_pick_up" type="checkbox" value="1" name="is_pick_up" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
+            <label for="is_pick_up" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-900">おすすめ</label>
+        </div>
+      </div>
+
       <div class="mt-6 mb-6">
         <div class="flex items-center me-4" id="editor"></div>
        <input type="hidden" value="" id="detail" name="detail"> 
