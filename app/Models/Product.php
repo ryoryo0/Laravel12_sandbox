@@ -54,7 +54,7 @@ class Product extends Model
                     'id'              => ['required','integer'],
                     'name'            => ['required','string', 'max:255'],
                     'description'     => ['required','string', 'max:255'],
-                    'category_id'     => ['required','array', Rule::exists('product_categories', 'id')],
+                    'category_id'     => ['required','array', Rule::exists('categories', 'id')],
                     'create_admin_id' => ['required','integer', Rule::exists('admins', 'name')],
                     'code'            => ['required','string', 'max:255', 'unique:products.code'],
                     'ulid'            => ['required','string', 'max:255', 'unique:products.ulid'],
