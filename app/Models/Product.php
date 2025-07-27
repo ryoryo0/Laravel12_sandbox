@@ -29,7 +29,7 @@ class Product extends Model
      
     public function categories()
     {
-        return $this->belongsTo(Category::class, 'categories_products', 'product_id', 'category_id');
+        return $this->belongsToMany(Category::class);
     }
 
     public function admin()
