@@ -17,7 +17,6 @@ class ProductSeeder extends Seeder
             [
                 'name' => 'テストネーム01',
                 'description' => 'ディスクリプション01',
-                'category_id' =>  1,
                 'create_admin_id' => 1,
                 'ulid' => Str::ulid(),
                 'code' => '2025070101HR',
@@ -26,7 +25,6 @@ class ProductSeeder extends Seeder
             ],[
                 'name' => 'テストネーム02',
                 'description' => 'ディスクリプション02',
-                'category_id' =>  2,
                 'create_admin_id' => 1,
                 'ulid' => Str::ulid(),
                 'code' => '2025070102HR',
@@ -35,7 +33,6 @@ class ProductSeeder extends Seeder
             ],[
                 'name' => 'テストネーム03',
                 'description' => 'ディスクリプション03',
-                'category_id' =>  3,
                 'create_admin_id' => 1,
                 'ulid' => Str::ulid(),
                 'code' => '2025070103HR',
@@ -44,7 +41,6 @@ class ProductSeeder extends Seeder
             ],[
                 'name' => 'テストネーム04',
                 'description' => 'ディスクリプション04',
-                'category_id' =>  4,
                 'create_admin_id' => 1,
                 'ulid' => Str::ulid(),
                 'code' => '2025070104HR',
