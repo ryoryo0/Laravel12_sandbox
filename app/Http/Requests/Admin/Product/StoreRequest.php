@@ -23,14 +23,20 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name'        => ['nullable','string', 'max:255'],
-            'description' => ['nullable','string', 'max:255'],
+            'name'         => ['nullable','string', 'max:255'],
+            'description'  => ['nullable','string', 'max:255'],
             'category_ids' => ['nullable','array', Rule::exists('categories', 'id')],
-            'code'        => ['nullable','string', 'max:255', Rule::unique('products', 'code')],
-            'detail'      => ['nullable','string', 'max:255'],
-            'is_public'   => ['nullable','boolean'],
-            'is_pick_up'  => ['nullable','boolean'],
+            'code'         => ['nullable','string', 'max:255', Rule::unique('products', 'code')],
+            'detail'       => ['nullable','string', 'max:255'],
+            'is_public'    => ['nullable','boolean'],
+            'is_pick_up'   => ['nullable','boolean'],
         ];
+
+        $rules += [
+            'thumbnail'       => ['nullable', 'string'],
+            'other_thumbnail' => ['nullable', 'array'],
+        ];
+
         return $rules;
     }
 }
