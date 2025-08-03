@@ -21,7 +21,11 @@
       </li>
     </ol>
   </nav>
-
+    @foreach($errors->all() as $error)
+    <div class="mb-6">
+      <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $error }}</p>
+    </div>
+    @endforeach
     <form class="mx-auto" method="POST" action="{{ route('admin.product.store') }}">
       @csrf
       <div class="mb-4">
