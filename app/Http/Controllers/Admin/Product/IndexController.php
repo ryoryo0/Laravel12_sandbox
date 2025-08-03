@@ -13,7 +13,7 @@ class IndexController extends Controller
     {
         $adminUser = Auth::user();
 
-        $query = $adminUser->products();
+        $query = $adminUser->products()->with('categories');
         $params = $request;
         $this->getQuery($query, $params);
         $products = $query->get();

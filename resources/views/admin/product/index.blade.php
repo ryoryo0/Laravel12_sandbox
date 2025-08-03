@@ -99,7 +99,11 @@
                 {{ $product->code }}
               </td>
               <td class="px-6 py-4">
-                {{ $product->category_id }}
+                @forelse($product->categories as $category)
+                {{ $category->name }},
+                @empty
+                無し
+                @endforelse
               </td>
               <td class="px-6 py-4">
                 {{ $product->is_public }}
