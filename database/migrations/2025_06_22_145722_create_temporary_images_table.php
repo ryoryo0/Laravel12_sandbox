@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('temporary_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('admin_id')->constrained('admins')->comment('管理者ID');
-            $table->ulid('ulid');
-            $table->string('path')->comment('画像パス');
-            $table->string('extension')->comment('拡張子');
+            $table->string('original_filename')->comment('ファイル名');
+            $table->string('stored_filename')->comment('ファイル実体の識別');
+            $table->ulid('ulid')->comment('ulid');
+            $table->string('file_path')->comment('画像パス');
+            $table->string('file_size')->comment('ファイルサイズ');
+            $table->string('file_extension')->comment('拡張子');
+            $table->string('mime_type')->comment('MIMEタイプ');
             $table->timestamps();
         });
     }

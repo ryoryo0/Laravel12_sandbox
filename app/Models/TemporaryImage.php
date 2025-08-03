@@ -12,9 +12,13 @@ class TemporaryImage extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'admin_id',
+        'original_filename',
+        'stored_filename',
         'ulid',
-        'path',
-        'extension',
+        'file_path',
+        'file_size',
+        'ulid',
+        'file_extension',
+        'mime_type',
     ];
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Product;
 
-use App\Models\TemporaryFile;
+use App\Models\TemporaryImage;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +16,7 @@ class TemporaryUploadController
     {
         // テーブルに保存するデータを成形
         $dataList = $this->createSaveData($request->file('image'));
-        $temporary = new TemporaryFile();
+        $temporary = new TemporaryImage();
         $temporary->fill($dataList)->save();
         // 画像をリサイズして保存
         $imageData = $this->createThumbnailImage($request->file('image')->getRealPath());
