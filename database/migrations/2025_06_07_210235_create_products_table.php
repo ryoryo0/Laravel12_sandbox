@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name')->comment('商品名');
             $table->string('description')->nullable()->comment('説明文');
-            $table->string('detail')->nullable()->comment("詳細");
+            $table->jsonb('detail')->nullable()->comment("詳細");
             $table->foreignId('create_admin_id')->constrained('admins')->comment('商品作成者');
             $table->string('code')->comment('商品ID');
             $table->ulid('ulid')->comment('ulid');
             $table->boolean('is_public')->comment('公開・非公開');
-            $table->boolean('is_pick_up')->comment('おすすめ');
+            $table->boolean('is_pick_up')->default(0)->comment('おすすめ');
             $table->timestamps();
             $table->softDeletes();
         });

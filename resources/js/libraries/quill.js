@@ -41,7 +41,7 @@ export function initQuill() {
   const hidden = document.getElementById('detail');
   if (hidden) {
       quill.on('text-change', () => {
-          hidden.value = quill.root.innerHTML;
+          hidden.value = JSON.stringify(quill.getContents());
       });
   }
 }
