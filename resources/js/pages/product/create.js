@@ -1,4 +1,5 @@
-import TemporaryUploader from '../../modules/temporary-uploader';
+import initQuill from '../../libraries/quill';
+import TemporaryImage from '../../modules/temporary-image';
 
 
 /** 
@@ -14,6 +15,7 @@ class CreateUploadManager {
    */
   constructor() {
     this.init();
+    initQuill(); // quillの初期化
   }
 
 
@@ -42,7 +44,7 @@ class CreateUploadManager {
     const file = e.target.files[0];
     if (!file) return;
     const url = '/admin/product/upload-temp';
-    const uploader = new TemporaryUploader(url, file);
+    const uploader = new TemporaryImage(url, file);
 
     try {
       const result = await uploader.upload();
@@ -77,7 +79,7 @@ class CreateUploadManager {
     const url = '/admin/product/upload-temp';
     await Promise.all(
       Array.from(files).map(async (file) => {
-        const uploader = new TemporaryUploader(url, file);
+        const uploader = new TemporaryImage(url, file);
         try {
           const result = await uploader.upload();
           const isMultiple = true;

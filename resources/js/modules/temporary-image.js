@@ -1,10 +1,10 @@
 /**
- * TemporaryUploader クラス
+ * TemporaryImage クラス
  * 
  * ファイルを Laravel に非同期でアップロードするためのクラスです。
  * CSRFトークン付きの fetch を用いて、安全に一時保存を行います。
  */
-export default class TemporaryUploader {
+export default class TemporaryImage {
 
   url;
   file;
