@@ -1,6 +1,5 @@
 // 外部ライブラリ
-import './libraries/bootstrap';
-import './libraries/quill'; 
+import './libraries/bootstrap'; 
 
 // modules
 
