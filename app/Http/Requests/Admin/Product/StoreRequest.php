@@ -27,7 +27,8 @@ class StoreRequest extends FormRequest
             'description'  => ['nullable','string', 'max:255'],
             'category_ids' => ['nullable','array', Rule::exists('categories', 'id')],
             'code'         => ['nullable','string', 'max:255', Rule::unique('products', 'code')],
-            'detail'       => ['nullable','json',],
+            'detail_html'  => ['nullable','string',],
+            'detail_json'  => ['nullable','json',],
             'is_public'    => ['nullable','boolean'],
             'is_pick_up'   => ['nullable','boolean'],
         ];
