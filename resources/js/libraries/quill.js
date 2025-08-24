@@ -41,12 +41,10 @@ export default function initQuill() {
   });
 
   // hidden input の取得
-  const hiddenHtml = document.getElementById('detail_html');
   const hiddenJson = document.getElementById('detail_json');
 
   // テキストの変更時に hidden にセット
   quill.on('text-change', () => {
-    if (hiddenHtml) hiddenHtml.value = quill.root.innerHTML;
     if (hiddenJson) hiddenJson.value = JSON.stringify(quill.getContents());
   });
 

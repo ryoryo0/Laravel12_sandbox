@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name')->comment('商品名');
             $table->string('description')->nullable()->comment('説明文');
-            $table->text('detail_html')->nullable()->comment("詳細HTML");
             $table->jsonb('detail_json')->nullable()->comment("詳細JSON");
             $table->foreignId('create_admin_id')->constrained('admins')->comment('商品作成者');
             $table->string('code')->comment('商品ID');

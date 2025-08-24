@@ -11,7 +11,6 @@ class Product extends Model
         'id',
         'name',
         'description',
-        'detail_html',
         'detail_json',
         'create_admin_id',
         'code',
