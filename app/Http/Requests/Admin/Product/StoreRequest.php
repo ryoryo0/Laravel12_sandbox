@@ -23,13 +23,13 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name'         => ['nullable','string', 'max:255'],
-            'description'  => ['nullable','string', 'max:255'],
-            'category_ids' => ['nullable','array', Rule::exists('categories', 'id')],
-            'code'         => ['nullable','string', 'max:255', Rule::unique('products', 'code')],
+            'name'         => ['required','string', 'max:255'],
+            'description'  => ['required','string', 'max:255'],
+            'category_ids' => ['required','array', Rule::exists('categories', 'id')],
+            'code'         => ['required','string', 'max:255', Rule::unique('products', 'code')],
             'detail_json'  => ['nullable','json',],
-            'is_public'    => ['nullable','boolean'],
-            'is_pick_up'   => ['nullable','boolean'],
+            'is_public'    => ['required','boolean'],
+            'is_pick_up'   => ['required','boolean'],
         ];
 
         $rules += [
