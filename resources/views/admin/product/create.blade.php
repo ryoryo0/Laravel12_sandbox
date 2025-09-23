@@ -23,7 +23,8 @@
           <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-900">Product</a>
         </div>
       </li>
-    </ol>   
+    </ol>
+</nav>   
     <form class="mx-auto" method="POST" action="{{ route('admin.product.store') }}">
       @csrf
       <div class="mb-4">
