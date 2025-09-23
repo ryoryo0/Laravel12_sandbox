@@ -23,26 +23,29 @@
           <a href="#" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-900">Product</a>
         </div>
       </li>
-    </ol>
-  </nav>
-    @foreach($errors->all() as $error)
-    <div class="mb-6">
-      <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $error }}</p>
-    </div>
-    @endforeach
+    </ol>   
     <form class="mx-auto" method="POST" action="{{ route('admin.product.store') }}">
       @csrf
       <div class="mb-4">
         <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">名前</label>
-        <input type="text" name="name" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <input type="text" name="name" value="{{ old('name', $product->name ?? '') }}" id="base-input" class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:placeholder-gray-400 dark:text-gray-900 @error('name') border-red-500 focus:border-red-500 @else border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500 @enderror">
+        @error('name')
+          <p class="mt-2 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
+        @enderror
       </div>
       <div class="mb-4">
         <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">説明文</label>
-        <input type="text" name="description" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <input type="text" name="description" value="{{ old('description', $product->description ?? '') }}" id="base-input" class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:placeholder-gray-400 dark:text-gray-900 @error('description') border-red-500 focus:border-red-500 @else border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500 @enderror">
+        @error('description')
+          <p class="mt-2 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
+        @enderror
       </div>
       <div class="mb-4">
         <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">商品コード</label>
-        <input type="text" name="code" id="base-input" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <input type="text" name="code" value="{{ old('code', $product->code ?? '') }}" id="base-input" class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:placeholder-gray-400 dark:text-gray-900 @error('code') border-red-500 focus:border-red-500 @else border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500 @enderror">
+        @error('code')
+          <p class="mt-2 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
+        @enderror
       </div>
       <!-- サムネイル画像 -->
       <div class="mb-6 mt-6">
@@ -76,7 +79,7 @@
                             <img class="me-3 rounded-full w-11 h-11" src="" alt="Jese Leos Avatar">
                             <div>
                                 <p class="text-sm text-gray-500 dark:text-gray-400"></p>
-                                <input type="hidden" name="thumbnail" value="">
+                                <input type="hidden" name="thumbnail" value="{{ old('thumbnail', $product->thumbnail ?? '') }}">
                             </div>
                           </div>
                         </li>
@@ -145,23 +148,27 @@
       <div class="flex mt-6 mb-6">
         @foreach ($categories as $key => $value)
           <div class="flex items-center me-4">
-              <input id="{{ $value }}" type="checkbox" name="category_ids[]" value="{{ $key }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
-              <label for="{{ $value }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-900">{{ $value }}</label>
+              <input id="{{ $value }}" @checked(is_array(old('category_ids')) && in_array($key, old('category_ids'))) type="checkbox" name="category_ids[]" value="{{ $key }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
+              <label for="{{ $value }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-900" >{{ $value }}</label>
           </div>
         @endforeach
       </div>
+      @error('category_ids')
+          <p class="mt-2 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
+      @enderror
 
       <div class="flex mt-6 mb-6">
         <div class="flex items-center me-4">
-            <input id="public_true" type="radio" value="1" name="is_public" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
+            <input id="public_true" type="radio" @checked(old('is_public', '0') == '1')  value="1" name="is_public" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
             <label for="public_true" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-900">公開</label>
         </div>
         <div class="flex items-center me-4">
-            <input id="public_false" type="radio" value="0" name="is_public" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
+            <input id="public_false" type="radio" @checked(old('is_public', '0') == '0')  value="0" name="is_public" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
             <label for="public_false" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-900">非公開</label>
         </div>
       </div>
       <div class="flex items-center">
+          <input id="is_pick_up" type="hidden" value="0" name="is_pick_up" checked>
           <input id="is_pick_up" type="checkbox" value="1" name="is_pick_up" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
           <label for="is_pick_up" class="ms-2 text-sm font-medium text-gray-900">おすすめ</label>
       </div>
