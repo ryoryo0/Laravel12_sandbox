@@ -30,14 +30,16 @@ class StoreController
                 ->first()
                 ->toArray();
             $thumbImage['is_thumbnail'] = true;
+            $thumbImage['file_path'] = $this->copyFileToDirectory($thumbImage['file_path'], 'product');
 
             $otherImages = TemporaryImage::query()
                 ->whereIn('ulid', $validated['other_thumbnail'])
                 ->get()
                 ->toArray();
         
-            foreach ($otherImages as $image) {
+            foreach ($otherImages as &$image) {
                 $image['is_thumbnail'] = false;
+                $image['file_path'] = $this->copyFileToDirectory($image['file_path'], 'product');
             }
 
             DB::transaction(function () use ($validated, $thumbImage, $otherImages) {
@@ -72,7 +74,6 @@ class StoreController
         foreach ($ops as $data) {
             foreach ($data as $item) {
                 if (property_exists($item->insert, 'image')) {
-                    // $originalPath = $item->insert->image;
                     $relativePath = $this->copyFileToDirectory($item->insert->image, 'quill');
                     $item->insert->image = $relativePath;
                 }
@@ -91,6 +92,7 @@ class StoreController
      */
     function copyFileToDirectory(string $sourcePath, string $targetDir): ?string
     {   
+        // パス部分のみ取得
         $tempRelativePath = str_replace('/storage/', '', parse_url($sourcePath, PHP_URL_PATH));
         if (!self::isExistsTempFile($tempRelativePath)) {
             return null; // 元ファイルが存在しない場合
@@ -98,7 +100,7 @@ class StoreController
     
         // 保存先パス（同じファイル名で保存）
         $fileName   = basename($sourcePath);
-        $saveRelativePath = $targetDir . '/' . $fileName;
+        $saveRelativePath = 'images/' . $targetDir . '/' . $fileName;
         if (Storage::disk('public')->copy($tempRelativePath, $saveRelativePath)) {
             return $saveRelativePath;
         }
