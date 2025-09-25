@@ -27,6 +27,19 @@
 </nav>   
     <form class="mx-auto" method="POST" action="{{ route('admin.product.store') }}">
       @csrf
+
+      <!-- Old値復元用のhidden input -->
+      @if(old('thumbnail'))
+        <input type="hidden" id="old-thumbnail" value="{{ old('thumbnail') }}">
+      @endif
+      @if(old('other_thumbnail'))
+        @foreach(old('other_thumbnail') as $ulid)
+          @if($ulid)
+            <input type="hidden" class="old-other-thumbnail" value="{{ $ulid }}">
+          @endif
+        @endforeach
+      @endif
+      
       <div class="mb-4">
         <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">名前</label>
         <input type="text" name="name" value="{{ old('name', $product->name ?? '') }}" id="base-input" class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:placeholder-gray-400 dark:text-gray-900 @error('name') border-red-500 focus:border-red-500 @else border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500 @enderror">
@@ -127,7 +140,7 @@
                             <img class="me-3 w-11 h-11 round-full" src="" alt="Jese Leos Avatar">
                             <div>
                                 <p class="text-sm text-gray-500 dark:text-gray-400"></p>
-                                <input type="hidden" name="other_thumbnail[]" value="">
+                                <input type="hidden" name="other_thumbnail[]" value="" disabled>
                             </div>
                             <!-- NOTE::削除ボタンの実装について実装方法の後日検討が必要なことから一時コメントアウト -->
                             <!-- <button data-js="delete-temporary" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center" style="margin-left: auto;">

@@ -27,6 +27,28 @@ class TemporaryUploadController
         return response()->json($responseData);
     }
 
+
+    /**
+     * ULIDから画像情報を取得する
+     *
+     * @param string $ulid
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show(string $ulid)
+    {
+        $temporaryImage = TemporaryImage::where('ulid', $ulid)->first();
+
+        if (!$temporaryImage) {
+            return response()->json(['error' => 'Image not found'], 404);
+        }
+
+        return response()->json([
+            'url' => asset('storage/' . $temporaryImage->file_path),
+            'name' => $temporaryImage->original_filename,
+            'ulid' => $temporaryImage->ulid,
+        ]);
+    }
+
         
     /**
      * 保存データを成形

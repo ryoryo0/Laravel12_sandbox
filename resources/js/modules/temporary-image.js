@@ -71,4 +71,26 @@ export default class TemporaryImage {
     img.classList.add("mt-6", "mb-6");
     container.append(img);
   }
+
+
+  /**
+   * ULIDから画像情報を取得します。
+   *
+   * @param {string} ulid 取得したい画像のULID
+   * @returns {Promise<Object>} 画像情報のJSONレスポンス（例: { url: string, name: string, ulid: string }）
+   * @throws {Error} 取得に失敗した場合
+   */
+  static async getImageByUlid(ulid) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    const res = await fetch(`/admin/product/temporary-image/${ulid}`, {
+      method: 'GET',
+      headers: {
+        'X-CSRF-TOKEN': csrfToken,
+        'Accept': 'application/json'
+      }
+    });
+
+    if (!res.ok) throw new Error('画像情報の取得に失敗');
+    return await res.json();
+  }
 }

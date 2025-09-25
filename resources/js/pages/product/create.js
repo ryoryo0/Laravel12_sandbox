@@ -16,6 +16,7 @@ class CreateUploadManager {
   constructor() {
     this.init();
     initQuill(); // quillの初期化
+    this.loadOldImages()
   }
 
 
@@ -123,7 +124,9 @@ class CreateUploadManager {
   setTemporaryData (cloneContainer, result) {
     cloneContainer.querySelector('img').src = result.url;
     cloneContainer.querySelector('p').textContent = result.name;
-    cloneContainer.querySelector('input').value = result.ulid;
+    const input = cloneContainer.querySelector('input');
+    input.value = result.ulid;
+    input.disabled = false; // disabled属性を削除
     return cloneContainer;
   }
 
@@ -139,6 +142,63 @@ class CreateUploadManager {
     const multiple = isMultiple ? "-multiple" : "";
     const ul = document.querySelector(`#js-uploaded${multiple}-temporary-list`);
     ul.append(cloneContainer);
+  }
+
+
+  /**
+   * old値から画像を復元して表示する
+   *
+   * @returns {Promise<void>}
+   */
+  async loadOldImages() {
+    await this.loadOldSingleImage();
+    await this.loadOldMultipleImages();
+  }
+
+
+  /**
+   * 単一画像のold値を復元する
+   *
+   * @returns {Promise<void>}
+   */
+  async loadOldSingleImage() {
+    const oldThumbnailInput = document.getElementById('old-thumbnail');
+    if (!oldThumbnailInput || !oldThumbnailInput.value) return;
+
+    try {
+      const result = await TemporaryImage.getByUlid(oldThumbnailInput.value);
+      const isMultiple = false;
+      const cloneContainer = this.createCloneList(isMultiple);
+      this.setTemporaryData(cloneContainer, result);
+      this.ulAppend(isMultiple, cloneContainer);
+    } catch (error) {
+      console.error('サムネイル画像の復元に失敗:', error);
+    }
+  }
+
+
+  /**
+   * 複数画像のold値を復元する
+   *
+   * @returns {Promise<void>}
+   */
+  async loadOldMultipleImages() {
+    const oldOtherThumbnailInputs = document.querySelectorAll('.old-other-thumbnail');
+    if (!oldOtherThumbnailInputs.length) return;
+
+    for (const input of oldOtherThumbnailInputs) {
+      if (!input.value) continue;
+
+      try {
+        const result = await TemporaryImage.getImageByUlid(input.value);
+        const isMultiple = true;
+        const cloneContainer = this.createCloneList(isMultiple);
+        this.setTemporaryData(cloneContainer, result);
+        this.ulAppend(isMultiple, cloneContainer);
+      } catch (error) {
+        console.error('複数画像の復元に失敗:', error);
+      }
+    }
   }
 }
 
