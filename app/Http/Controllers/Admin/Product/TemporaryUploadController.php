@@ -38,7 +38,7 @@ class TemporaryUploadController
     {
         $ulid =  Str::ulid();
         $filename = $ulid . '.jpg';
-        $filePath = self::DIRECTORY . '/' . $filename;
+        $filePath = 'images/' . self::DIRECTORY . '/' . $filename;
 
         $result = [
             'original_filename' => $file->getClientOriginalName(),
