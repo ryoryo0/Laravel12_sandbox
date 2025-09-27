@@ -78,7 +78,7 @@
                       <ul id="js-uploaded-temporary-list">
                         <li class="border-b border-gray-100 dark:border-gray-600" data-js="upload-temporary" style="display: none;">
                           <div class="flex  w-full px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <img class="me-3 rounded-full w-11 h-11" src="" alt="Jese Leos Avatar">
+                            <img class="me-3 w-24 h-auto round-full" src="" alt="Jese Leos Avatar">
                             <div>
                                 <p class="text-sm text-gray-500 dark:text-gray-400"></p>
                                 <input type="hidden" name="thumbnail" value="{{ old('thumbnail', $product->thumbnail()->ulid ?? '') }}">
@@ -90,7 +90,10 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                      <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" data-js="upload-temporary-input">
+                      <input class="hidden block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:border-gray-600 dark:placeholder-gray-400" id="single-file_input" type="file" data-js="upload-temporary-input">
+                      <label for="single-file_input" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        商品画像を選択
+                      </label>
                     </div>
                 </div>
             </div>
@@ -125,23 +128,30 @@
                     <div class="relative w-full overflow-y-scroll bg-white border border-gray-100 rounded-lg dark:bg-gray-700 dark:border-gray-600 h-96">
                       <ul id="js-uploaded-multiple-temporary-list">
                         <li class="border-b border-gray-100 dark:border-gray-600" data-js="upload-multiple-temporary" style="display: none;">
-                          <div class="flex  w-full px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <img class="me-3 w-11 h-11 round-full" src="" alt="Jese Leos Avatar">
-                            <div>
+                          <div class="flex w-full px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800">
+                            <img class="me-3 w-24 h-auto round-full" src="" alt="Jese Leos Avatar">
+                            <div class="flex-grow">
                                 <p class="text-sm text-gray-500 dark:text-gray-400"></p>
                                 <input type="hidden" name="other_thumbnail[]" value="">
                             </div>
-                            <!-- NOTE::削除ボタンの実装について実装方法の後日検討が必要なことから一時コメントアウト -->
-                            <!-- <button data-js="delete-temporary" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center" style="margin-left: auto;">
-                                削除
-                            </button> -->
+                            <div class="flex flex-col gap-2 ml-auto">
+                              <button type="button" data-js="delete-image-btn" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-1 text-center">
+                                  一時削除
+                              </button>
+                              <button type="button" data-js="permanent-delete-btn" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 text-center">
+                                  完全削除
+                              </button>
+                            </div>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                      <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" data-js="upload-multiple-temporary-inout" multiple>
+                      <input class="hidden block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:border-gray-600 dark:placeholder-gray-400" id="mulch-file_input" type="file" data-js="upload-multiple-temporary-inout" multiple>
+                      <label for="mulch-file_input" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        他の商品画像を追加する
+                      </label>
                     </div>
                 </div>
             </div>

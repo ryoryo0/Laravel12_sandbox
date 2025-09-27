@@ -50,6 +50,8 @@ class EditManager {
     // 複数アップロード
     document.querySelector('[data-js="upload-multiple-temporary-inout"]')
     ?.addEventListener('change', (e) => this.handleMultipleUpload(e));
+    // 削除ボタンのイベントリスナー
+    this.initDeleteButtons();
   }
 
 
@@ -171,6 +173,85 @@ class EditManager {
   async loadOldImages() {
     await TemporaryImage.loadOldSingleImage('old-thumbnail', '/admin/product/image/');
     await TemporaryImage.loadOldMultipleImages('old-other-thumbnail', '/admin/product/image/');
+  }
+
+
+  /**
+   * 削除ボタンのイベントリスナーを初期化する
+   *
+   * @returns {void}
+   */
+  initDeleteButtons() {
+    // 削除ボタンのイベントリスナー
+    document.addEventListener('click', (e) => {
+      if (e.target.matches('[data-js="delete-image-btn"]')) {
+        this.handleImageDelete(e);
+      } else if (e.target.matches('[data-js="permanent-delete-btn"]')) {
+        this.handlePermanentDelete(e);
+      }
+    });
+  }
+
+
+  /**
+   * 画像削除/取り消し処理を実行する
+   *
+   * @param {Event} e
+   * @returns {void}
+   */
+  handleImageDelete(e) {
+    const button = e.target;
+    const container = button.closest('li');
+    const input = container.querySelector('input[type="hidden"]');
+    // 操作するcss classを定義
+    const deleteClass = ['bg-red-600', 'hover:bg-red-800', 'focus:ring-red-300', 'dark:focus:ring-red-800'];
+    const cancelClass = ['bg-blue-600', 'focus:ring-blue-300', 'dark:focus:ring-blue-800'];
+
+    // 現在の状態を確認
+    const isDeleted = button.textContent.trim() === '取り消す';
+
+    if (isDeleted) {
+      // 取り消し処理：削除状態から元に戻す
+      if (input) {
+        input.disabled = false;
+      }
+
+      // UIを元の状態に戻す
+      // container.style.opacity = '1';
+      button.textContent = '一時削除';
+      button.disabled = false;
+      button.classList.remove(...cancelClass);
+      button.classList.add(...deleteClass);
+    } else {
+      // 削除処理
+      if (input) {
+        input.disabled = true;
+      }
+
+      // UIを削除状態にする
+      // container.style.opacity = '0.5';
+      button.textContent = '取り消す';
+      button.disabled = false; // ボタンを有効にして再度クリック可能にする
+      button.classList.remove(...deleteClass);
+      button.classList.add(...cancelClass);
+    }
+  }
+
+
+  /**
+   * 画像完全削除処理を実行する
+   *
+   * @param {Event} e
+   * @returns {void}
+   */
+  handlePermanentDelete(e) {
+    const button = e.target;
+    const container = button.closest('li');
+
+    if (confirm('この画像を完全に削除しますか？この操作は取り消せません。')) {
+      // 要素を完全に削除
+      container.remove();
+    }
   }
 }
 
