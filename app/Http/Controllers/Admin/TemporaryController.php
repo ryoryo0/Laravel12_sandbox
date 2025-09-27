@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Product;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\TemporaryImage;
 use Illuminate\Http\Request;
@@ -8,7 +8,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class TemporaryUploadController
+class TemporaryController
 {
     const DIRECTORY = 'temporary';
 
