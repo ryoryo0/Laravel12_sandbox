@@ -46,7 +46,7 @@ class CreateManager {
     if (!file) return;
 
     try {
-      const result = await TemporaryImage.uploadAndDisplay(file, false);
+      const result = await TemporaryImage.uploadAndDisplay(file, false, '/admin/temporary/upload');
       console.log('アップロード成功:', result.url);
     } catch (err) {
       console.error('アップロード失敗:', err);
@@ -70,7 +70,7 @@ class CreateManager {
       return;
     }
 
-    await TemporaryImage.uploadMultipleAndDisplay(files)
+    await TemporaryImage.uploadMultipleAndDisplay(files, '/admin/temporary/upload')
   }   
 
 
@@ -82,7 +82,7 @@ class CreateManager {
   initQuillEditor() {
     // 画像アップロード処理を定義(一時画像アップロードモジュールのメソッド活用)
     const imageUploadHandler = async (file) => {
-      return await TemporaryImage.uploadFile(file);
+      return await TemporaryImage.upload(file, '/admin/temporary/upload');
     };
 
     // Quillエディタを初期化
@@ -96,8 +96,8 @@ class CreateManager {
    * @returns {Promise<void>}
    */
   async loadOldImages() {
-    await TemporaryImage.loadOldSingleImage('old-thumbnail');
-    await TemporaryImage.loadOldMultipleImages('old-other-thumbnail');
+    await TemporaryImage.loadOldSingleImage('old-thumbnail', '/admin/temporary/show/');
+    await TemporaryImage.loadOldMultipleImages('old-other-thumbnail', '/admin/temporary/show/');
   }
 }
 

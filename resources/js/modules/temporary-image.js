@@ -34,14 +34,15 @@ export default class TemporaryImage {
    * 単一画像のold値を復元する
    *
    * @param {string} singleImageId 単一画像のinput要素のID
+   * @param {string} url 取得先のエンドポイントURL
    * @returns {Promise<void>}
    */
-  static async loadOldSingleImage(singleImageId) {
+  static async loadOldSingleImage(singleImageId, url) {
     const oldThumbnailInput = document.getElementById(singleImageId);
     if (!oldThumbnailInput || !oldThumbnailInput.value) return;
 
     try {
-      const result = await this.getImageByUlid(oldThumbnailInput.value);
+      const result = await this.getImageByUlid(oldThumbnailInput.value, url);
       const cloneContainer = this.createCloneList(false);
       this.setTemporaryData(cloneContainer, result);
       this.ulAppend(false, cloneContainer);
@@ -55,9 +56,10 @@ export default class TemporaryImage {
    * 複数画像のold値を復元する
    *
    * @param {string} multipleImageClass 複数画像のinput要素のクラス名
+   * @param {string} url 取得先のエンドポイントURL
    * @returns {Promise<void>}
    */
-  static async loadOldMultipleImages(multipleImageClass) {
+  static async loadOldMultipleImages(multipleImageClass, url) {
     const oldOtherThumbnailInputs = document.querySelectorAll(`.${multipleImageClass}`);
     if (!oldOtherThumbnailInputs.length) return;
 
@@ -65,7 +67,7 @@ export default class TemporaryImage {
       if (!input.value) continue;
 
       try {
-        const result = await this.getImageByUlid(input.value);
+        const result = await this.getImageByUlid(input.value, url);
         const cloneContainer = this.createCloneList(true);
         this.setTemporaryData(cloneContainer, result);
         this.ulAppend(true, cloneContainer);
@@ -80,12 +82,13 @@ export default class TemporaryImage {
    * ULIDから画像情報を取得します。
    *
    * @param {string} ulid 取得したい画像のULID
+   * @param {string} url 取得先のエンドポイントURL
    * @returns {Promise<Object>} 画像情報のJSONレスポンス（例: { url: string, name: string, ulid: string }）
    * @throws {Error} 取得に失敗した場合
    */
-  static async getImageByUlid(ulid) {
+  static async getImageByUlid(ulid, url) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-    const res = await fetch(`/admin/temporary/show/${ulid}`, {
+    const res = await fetch(`${url}${ulid}`, {
       method: 'GET',
       headers: {
         'X-CSRF-TOKEN': csrfToken,
@@ -110,11 +113,12 @@ export default class TemporaryImage {
    *
    * @param {File} file アップロードするファイル
    * @param {boolean} isMultiple 複数アップロードかどうか
+   * @param {string} url アップロード先のエンドポイントURL
    * @returns {Promise<Object>} アップロード結果
    */
-  static async uploadAndDisplay(file, isMultiple) {
+  static async uploadAndDisplay(file, isMultiple, url) {
     try {
-      const result = await this.uploadFile(file);
+      const result = await this.upload(file, url);
       this.updateUI(result, isMultiple);
       return result;
     } catch (error) {
@@ -128,10 +132,10 @@ export default class TemporaryImage {
    * ファイルをアップロードする
    *
    * @param {File} file アップロードするファイル
+   * @param {string} url アップロード先のエンドポイントURL
    * @returns {Promise<Object>} アップロード結果
    */
-  static async uploadFile(file) {
-    const url = '/admin/temporary/upload';
+  static async upload(file, url) {
     const uploader = new TemporaryImage(url, file);
     return await uploader.upload();
   }
@@ -141,10 +145,11 @@ export default class TemporaryImage {
    * 複数ファイルをアップロードして画面に表示する
    *
    * @param {FileList} files アップロードするファイルリスト
+   * @param {string} url アップロード先のエンドポイントURL
    * @returns {Promise<Array>} アップロード結果の配列
    */
-  static async uploadMultipleAndDisplay(files) {
-    const results = await this.uploadMultipleFiles(files);
+  static async uploadMultipleAndDisplay(files, url) {
+    const results = await this.uploadMultipleFiles(files, url);
 
     // 成功したアップロードのUIを更新
     results.forEach(result => {
@@ -161,13 +166,14 @@ export default class TemporaryImage {
    * 複数ファイルを並列アップロードする
    *
    * @param {FileList} files アップロードするファイルリスト
+   * @param {string} url アップロード先のエンドポイントURL
    * @returns {Promise<Array>} アップロード結果の配列
    */
-  static async uploadMultipleFiles(files) {
+  static async uploadMultipleFiles(files, url) {
     return await Promise.all(
       Array.from(files).map(async (file) => {
         try {
-          return await this.uploadFile(file);
+          return await this.upload(file, url);
         } catch (error) {
           console.error('アップロード失敗:', error);
           return null;

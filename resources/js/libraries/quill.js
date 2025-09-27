@@ -12,7 +12,7 @@ import 'quill/dist/quill.snow.css';
  * 3)temporary-imageモジュールのuploadFileメソッドを併用することで、画像データパスで登録することが実現できます。
  * sql負荷のかからない高パフォーマンスを実現したい場合は、ぜひご活用ください。
  *  const imageUploadHandler = async (file) => {
- *     return await TemporaryImage.uploadFile(file);
+ *     return await TemporaryImage.upload(file);
  *   };
  * 
  *  ※上記の定数を第３引数に　指定する必要があります
