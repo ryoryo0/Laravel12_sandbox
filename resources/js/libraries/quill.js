@@ -43,6 +43,16 @@ export default function initQuill() {
   // hidden input の取得
   const hiddenJson = document.getElementById('detail_json');
 
+  // old値がある場合はエディタに復元
+  if (hiddenJson && hiddenJson.value) {
+    try {
+      const oldContents = JSON.parse(hiddenJson.value);
+      quill.setContents(oldContents);
+    } catch (error) {
+      console.warn('Quillコンテンツの復元に失敗:', error);
+    }
+  }
+
   // テキストの変更時に hidden にセット
   quill.on('text-change', () => {
     if (hiddenJson) hiddenJson.value = JSON.stringify(quill.getContents());
@@ -58,7 +68,7 @@ export default function initQuill() {
     input.onchange = async () => {
       const file = input.files[0];
       if (!file) return;
-      const url = '/admin/product/upload-temp';
+      const url = '/admin/temporary/upload';
       const uploader = new TemporaryImage(url, file);
       try { 
         const result = await uploader.upload();
