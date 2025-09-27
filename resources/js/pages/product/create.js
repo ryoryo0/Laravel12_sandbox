@@ -1,5 +1,6 @@
 import initQuill from '../../libraries/quill';
 import TemporaryImage from '../../modules/temporary-image';
+import CommonImageHandler from '../../modules/common';
 
 
 /** 
@@ -20,9 +21,9 @@ class CreateManager {
   }
 
 
-  /** 
+  /**
    * イベントリスナーの初期化を実行する
-   * 
+   *
    * @returns {void}
    */
   init () {
@@ -32,6 +33,8 @@ class CreateManager {
     // 複数アップロード
     document.querySelector('[data-js="upload-multiple-temporary-inout"]')
     ?.addEventListener('change', (e) => this.handleMultipleUpload(e));
+    // 削除ボタンのイベントリスナー（共通モジュールを使用）
+    CommonImageHandler.initDeleteButtons();
   }
 
 
