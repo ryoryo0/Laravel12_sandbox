@@ -15,7 +15,7 @@ class CreateManager {
    */
   constructor() {
     this.init();
-    initQuill(); // quillの初期化
+    this.initQuillEditor(); // quillの初期化
     this.loadOldImages();
   }
 
@@ -72,6 +72,22 @@ class CreateManager {
 
     await TemporaryImage.uploadMultipleAndDisplay(files)
   }   
+
+
+  /**
+   * Quillエディタを初期化する
+   *
+   * @returns {Quill} Quillインスタンス
+   */
+  initQuillEditor() {
+    // 画像アップロード処理を定義(一時画像アップロードモジュールのメソッド活用)
+    const imageUploadHandler = async (file) => {
+      return await TemporaryImage.uploadFile(file);
+    };
+
+    // Quillエディタを初期化
+    return initQuill('#editor', 'detail_json', imageUploadHandler);
+  }
 
 
   /**
