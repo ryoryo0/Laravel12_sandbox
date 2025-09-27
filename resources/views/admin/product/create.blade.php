@@ -39,7 +39,7 @@
           @endif
         @endforeach
       @endif
-      
+
       <div class="mb-4">
         <label for="base-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">名前</label>
         <input type="text" name="name" value="{{ old('name', $product->name ?? '') }}" id="base-input" class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:placeholder-gray-400 dark:text-gray-900 @error('name') border-red-500 focus:border-red-500 @else border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500 @enderror">
@@ -101,7 +101,10 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                      <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" data-js="upload-temporary-input">
+                      <input class="hidden block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:border-gray-600 dark:placeholder-gray-400" id="single-file_input" type="file" data-js="upload-temporary-input">
+                      <label for="single-file_input" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        画像を追加する
+                      </label>
                     </div>
                 </div>
             </div>
@@ -152,7 +155,10 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                      <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" data-js="upload-multiple-temporary-inout" multiple>
+                      <input class="hidden block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:border-gray-600 dark:placeholder-gray-400" id="mulch-file_input" type="file" data-js="upload-multiple-temporary-inout" multiple>
+                      <label for="mulch-file_input" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        画像を追加する
+                      </label>
                     </div>
                 </div>
             </div>
