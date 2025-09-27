@@ -28,4 +28,19 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
     Route::get('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    /**
+     *
+     * Product
+     */
+    Route::prefix('/product')->name('product.')->group(function () {
+        Route::get('/', App\Http\Controllers\Admin\Product\IndexController::class)->name('index');
+        Route::get('/create', App\Http\Controllers\Admin\Product\CreateController::class)->name('create');
+        Route::post('/store', App\Http\Controllers\Admin\Product\StoreController::class)->name('store');
+    });
+
+    Route::prefix('/temporary')->name('temporary.')->group(function () {
+        Route::post('/upload', App\Http\Controllers\Admin\TemporaryController::class)->name('upload');
+        Route::get('/show/{ulid}', [App\Http\Controllers\Admin\TemporaryController::class, 'show'])->name('show');
+    });
 });

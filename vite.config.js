@@ -14,7 +14,12 @@ export default defineConfig({
     },
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js',
+                ...glob.sync('resources/js/pages/**/*.js'),
+                ...glob.sync('resources/js/libraries/**/*.js'),
+            ],
             refresh: true,
             hotFile: 'public/hot',
         }),tailwindcss(),

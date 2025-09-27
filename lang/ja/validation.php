@@ -187,6 +187,7 @@ return [
     */
 
     'attributes' => [
+        // default
         'address' => '住所',
         'age' => '歳',
         'amount' => '額',
@@ -259,6 +260,11 @@ return [
         'updated_at' => '更新日',
         'username' => 'ユーザー名',
         'year' => '年',
+
+        // add 
+        'code' => '商品コード',
+        'is_pick_up' => 'おすすめ',
+        'category_ids' => 'カテゴリー',
     ],
 
 ];
