@@ -11,8 +11,8 @@ import 'quill/dist/quill.snow.css';
  * 
  * 3)temporary-imageモジュールのuploadFileメソッドを併用することで、画像データパスで登録することが実現できます。
  * sql負荷のかからない高パフォーマンスを実現したい場合は、ぜひご活用ください。
- *  const imageUploadHandler = async (file) => {
- *     return await TemporaryImage.uploadFile(file);
+ *  const imageUploadHandler = async (image) => {
+ *     return await TemporaryImage.upload(image);
  *   };
  * 
  *  ※上記の定数を第３引数に　指定する必要があります
@@ -123,19 +123,19 @@ function createImageHandler(quill, uploadHandler) {
   input.click();
 
   input.onchange = async () => {
-    const file = input.files[0];
-    if (!file) return;
+    const image = input.files[0];
+    if (!image) return;
 
     try {
       let imageUrl;
 
       if (uploadHandler) {
         // カスタムアップロードハンドラがある場合（一時画像アップロード）
-        const result = await uploadHandler(file);
+        const result = await uploadHandler(image);
         imageUrl = result.url;
       } else {
         // アップロードハンドラがnullの場合、バイナリデータとして処理
-        imageUrl = await convertFileToDataURL(file);
+        imageUrl = await convertFileToDataURL(image);
       }
 
       const range = quill.getSelection();
@@ -148,16 +148,16 @@ function createImageHandler(quill, uploadHandler) {
 }
 
 /**
- * ファイルをData URLに変換する
+ * 画像ファイルをData URLに変換する
  *
- * @param {File} file 変換するファイル
+ * @param {File} image 変換する画像ファイル
  * @returns {Promise<string>} Data URL文字列
  */
-function convertFileToDataURL(file) {
+function convertFileToDataURL(image) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(new Error('ファイルの読み込みに失敗しました'));
-    reader.readAsDataURL(file);
+    reader.onerror = () => reject(new Error('画像ファイルの読み込みに失敗しました'));
+    reader.readAsDataURL(image);
   });
 }
