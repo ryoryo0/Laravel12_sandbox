@@ -17,8 +17,8 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
-                'resources/js/pages/product/create.js',
-                'resources/js/libraries/quill.js',
+                ...glob.sync('resources/js/pages/**/*.js'),
+                ...glob.sync('resources/js/libraries/**/*.js'),
             ],
             refresh: true,
             hotFile: 'public/hot',
