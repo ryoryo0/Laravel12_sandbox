@@ -6,9 +6,9 @@ import TemporaryImage from '../../modules/temporary-image';
  * 商品登録の一時画像アップロードを管理するクラス
  * サーバーに画像をアップロードして、成功時にはUIの追加を実行する責務をもつ
  * 
- * @class createUploadManager 
+ * @class createManager 
  */
-class CreateUploadManager {
+class CreateManager {
   /**
    * UploadManager のインスタンスを生成し、初期化処理を行う
    * イベントリスナーを登録する
@@ -16,7 +16,7 @@ class CreateUploadManager {
   constructor() {
     this.init();
     initQuill(); // quillの初期化
-    this.loadOldImages()
+    this.loadOldImages();
   }
 
 
@@ -44,16 +44,9 @@ class CreateUploadManager {
   async handleSingleUpload(e) {
     const file = e.target.files[0];
     if (!file) return;
-    const url = '/admin/product/upload-temp';
-    const uploader = new TemporaryImage(url, file);
 
     try {
-      const result = await uploader.upload();
-      document.querySelector('.js-uploaded-temporary')?.remove();
-      const isMultiple = false;
-      const cloneContainer = this.createCloneList(isMultiple);  
-      this.setTemporaryData(cloneContainer, result);
-      this.ulAppend(isMultiple, cloneContainer);
+      const result = await TemporaryImage.uploadAndDisplay(file, false);
       console.log('アップロード成功:', result.url);
     } catch (err) {
       console.error('アップロード失敗:', err);
@@ -77,72 +70,8 @@ class CreateUploadManager {
       return;
     }
 
-    const url = '/admin/product/upload-temp';
-    await Promise.all(
-      Array.from(files).map(async (file) => {
-        const uploader = new TemporaryImage(url, file);
-        try {
-          const result = await uploader.upload();
-          const isMultiple = true;
-          const cloneContainer = this.createCloneList(isMultiple);  
-          this.setTemporaryData(cloneContainer, result);
-          this.ulAppend(isMultiple, cloneContainer);
-          return result;
-
-        } catch (err) {
-          console.log('アップロード失敗:', err);
-          return null;
-        }
-      })
-    )
+    await TemporaryImage.uploadMultipleAndDisplay(files)
   }   
-
-
-  /** 
-   *  非表示設定されているリスト要素のクローンを作成
-   * 
-   * @param {boolean} isMultiple
-   * @returns {HTMLElement}
-   */
-  createCloneList (isMultiple) {
-    const multiple = isMultiple ? "-multiple" : "";
-    const cloneContainer = document.querySelector(`[data-js="upload${multiple}-temporary"]`).cloneNode(true);
-    cloneContainer.classList.add(`js-uploaded${multiple}-temporary`);
-    cloneContainer.style.display = "block"; // 表示するように設定
-
-    return cloneContainer;
-  }
-
-
-  /** 
-   * アップロードを行なった一時画像のデータをセット
-   * 
-   * @param {HTMLElement} cloneContainer
-   * @param {object} result 
-   * @returns {HTMLElement}
-   */
-  setTemporaryData (cloneContainer, result) {
-    cloneContainer.querySelector('img').src = result.url;
-    cloneContainer.querySelector('p').textContent = result.name;
-    const input = cloneContainer.querySelector('input');
-    input.value = result.ulid;
-    input.disabled = false; // disabled属性を削除
-    return cloneContainer;
-  }
-
-
-  /** 
-   * ul要素にリスト要素を追加する
-   * 
-   * @param {boolean} isMultiple
-   * @param {HTMLElement} cloneContainer
-   * @returns {void}
-   */
-  ulAppend (isMultiple, cloneContainer) {
-    const multiple = isMultiple ? "-multiple" : "";
-    const ul = document.querySelector(`#js-uploaded${multiple}-temporary-list`);
-    ul.append(cloneContainer);
-  }
 
 
   /**
@@ -151,55 +80,9 @@ class CreateUploadManager {
    * @returns {Promise<void>}
    */
   async loadOldImages() {
-    await this.loadOldSingleImage();
-    await this.loadOldMultipleImages();
-  }
-
-
-  /**
-   * 単一画像のold値を復元する
-   *
-   * @returns {Promise<void>}
-   */
-  async loadOldSingleImage() {
-    const oldThumbnailInput = document.getElementById('old-thumbnail');
-    if (!oldThumbnailInput || !oldThumbnailInput.value) return;
-
-    try {
-      const result = await TemporaryImage.getByUlid(oldThumbnailInput.value);
-      const isMultiple = false;
-      const cloneContainer = this.createCloneList(isMultiple);
-      this.setTemporaryData(cloneContainer, result);
-      this.ulAppend(isMultiple, cloneContainer);
-    } catch (error) {
-      console.error('サムネイル画像の復元に失敗:', error);
-    }
-  }
-
-
-  /**
-   * 複数画像のold値を復元する
-   *
-   * @returns {Promise<void>}
-   */
-  async loadOldMultipleImages() {
-    const oldOtherThumbnailInputs = document.querySelectorAll('.old-other-thumbnail');
-    if (!oldOtherThumbnailInputs.length) return;
-
-    for (const input of oldOtherThumbnailInputs) {
-      if (!input.value) continue;
-
-      try {
-        const result = await TemporaryImage.getImageByUlid(input.value);
-        const isMultiple = true;
-        const cloneContainer = this.createCloneList(isMultiple);
-        this.setTemporaryData(cloneContainer, result);
-        this.ulAppend(isMultiple, cloneContainer);
-      } catch (error) {
-        console.error('複数画像の復元に失敗:', error);
-      }
-    }
+    await TemporaryImage.loadOldSingleImage('old-thumbnail');
+    await TemporaryImage.loadOldMultipleImages('old-other-thumbnail');
   }
 }
 
-new CreateUploadManager();
+new CreateManager();
