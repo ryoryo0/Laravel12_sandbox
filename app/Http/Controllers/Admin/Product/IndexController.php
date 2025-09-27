@@ -63,6 +63,7 @@ class IndexController extends Controller
             'カテゴリー',
             '公開',
             '作成日',
+            'ACTION',
         ];
 
         return $result;

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Collection;
+use App\Models\ProductImage;
 
 class Product extends Model
 {
@@ -69,4 +71,36 @@ class Product extends Model
 
         return $rules;
      }
+
+
+
+    /**
+     * 商品のサムネイル画像を1枚返す
+     *
+     * 中間テーブルの `is_thumbnail` フラグが true の画像を返します。
+     * サムネイルが設定されていない場合は null を返します。
+     *
+     * @return \App\Models\Image|null
+     */
+    public function thumbnail(): ?ProductImage
+    {
+        return $this->images()
+                    ->where('is_thumbnail', true)
+                    ->first();
+    }
+
+    /**
+     * サムネイル以外の画像一覧を返す
+     *
+     * 中間テーブルの `is_thumbnail` フラグが false の画像を返します。
+     * 複数件存在する可能性があるため、コレクションで返ります。
+     *
+     * @return \Illuminate\Support\Collection<int, \App\Models\Image>
+     */
+    public function otherImages(): Collection
+    {
+        return $this->images()
+                    ->where('is_thumbnail', false)
+                    ->get();
+    }
 }

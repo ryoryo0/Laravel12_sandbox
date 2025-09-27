@@ -101,6 +101,7 @@ export default function initQuill(
     }
   }
 
+
   // テキストの変更時に hidden にセット
   quill.on('text-change', () => {
     if (hiddenJson) hiddenJson.value = JSON.stringify(quill.getContents());

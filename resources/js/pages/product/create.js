@@ -96,8 +96,8 @@ class CreateManager {
    * @returns {Promise<void>}
    */
   async loadOldImages() {
-    await TemporaryImage.loadOldSingleImage('old-thumbnail', '/admin/temporary/show/');
-    await TemporaryImage.loadOldMultipleImages('old-other-thumbnail', '/admin/temporary/show/');
+    await TemporaryImage.loadOldSingleImage('old-thumbnail', '/admin/temporary/image/');
+    await TemporaryImage.loadOldMultipleImages('old-other-thumbnail', '/admin/temporary/image/');
   }
 }
 
