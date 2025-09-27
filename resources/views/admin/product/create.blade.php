@@ -90,10 +90,11 @@
                       <ul id="js-uploaded-temporary-list">
                         <li class="border-b border-gray-100 dark:border-gray-600" data-js="upload-temporary" style="display: none;">
                           <div class="flex  w-full px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <img class="me-3 rounded-full w-11 h-11" src="" alt="Jese Leos Avatar">
+                            <img class="me-3 w-24 h-auto round-full" src="" alt="Jese Leos Avatar">
                             <div>
                                 <p class="text-sm text-gray-500 dark:text-gray-400"></p>
-                                <input type="hidden" name="thumbnail" value="{{ old('thumbnail', $product->thumbnail ?? '') }}">
+                                <input type="hidden" name="thumbnail" value="{{ old('thumbnail') }}">
+                                <input type="hidden" id="old-thumbnail" value="{{ old('thumbnail') }}">
                             </div>
                           </div>
                         </li>
@@ -139,16 +140,20 @@
                     <div class="relative w-full overflow-y-scroll bg-white border border-gray-100 rounded-lg dark:bg-gray-700 dark:border-gray-600 h-96">
                       <ul id="js-uploaded-multiple-temporary-list">
                         <li class="border-b border-gray-100 dark:border-gray-600" data-js="upload-multiple-temporary" style="display: none;">
-                          <div class="flex  w-full px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <img class="me-3 w-11 h-11 round-full" src="" alt="Jese Leos Avatar">
-                            <div>
+                          <div class="flex w-full px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800">
+                            <img class="me-3 w-24 h-auto round-full" src="" alt="Jese Leos Avatar">
+                            <div class="flex-grow">
                                 <p class="text-sm text-gray-500 dark:text-gray-400"></p>
-                                <input type="hidden" name="other_thumbnail[]" value="" disabled>
+                                <input type="hidden" name="other_thumbnail[]" value="">
                             </div>
-                            <!-- NOTE::削除ボタンの実装について実装方法の後日検討が必要なことから一時コメントアウト -->
-                            <!-- <button data-js="delete-temporary" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center" style="margin-left: auto;">
-                                削除
-                            </button> -->
+                            <div class="flex flex-col gap-2 ml-auto">
+                              <button type="button" data-js="delete-image-btn" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-1 text-center">
+                                  一時削除
+                              </button>
+                              <button type="button" data-js="permanent-delete-btn" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 text-center">
+                                  完全削除
+                              </button>
+                            </div>
                           </div>
                         </li>
                       </ul>
