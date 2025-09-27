@@ -7,18 +7,18 @@
 export default class TemporaryImage {
 
   url;
-  file;
+  image;
   csrfToken;
 
   /**
    * コンストラクタ
    *
    * @param {string} url - アップロード先のエンドポイントURL
-   * @param {File} file - アップロードするファイルオブジェクト
+   * @param {File} image - アップロードする画像ファイルオブジェクト
    */
-  constructor(url, file) {
+  constructor(url, image) {
     this.url = url; // routeのurlを取得
-    this.file = file;
+    this.image = image;
     this.csrfToken = document.querySelector('meta[name="csrf-token"]').content;
   }
   
@@ -109,16 +109,16 @@ export default class TemporaryImage {
 
 
   /**
-   * 単一ファイルをアップロードして画面に表示する
+   * 単一画像をアップロードして画面に表示する
    *
-   * @param {File} file アップロードするファイル
+   * @param {File} image アップロードする画像ファイル
    * @param {boolean} isMultiple 複数アップロードかどうか
    * @param {string} url アップロード先のエンドポイントURL
    * @returns {Promise<Object>} アップロード結果
    */
-  static async uploadAndDisplay(file, isMultiple, url) {
+  static async uploadAndDisplay(image, isMultiple, url) {
     try {
-      const result = await this.upload(file, url);
+      const result = await this.upload(image, url);
       this.updateUI(result, isMultiple);
       return result;
     } catch (error) {
@@ -129,14 +129,14 @@ export default class TemporaryImage {
 
 
   /**
-   * ファイルをアップロードする
+   * 画像ファイルをアップロードする
    *
-   * @param {File} file アップロードするファイル
+   * @param {File} image アップロードする画像ファイル
    * @param {string} url アップロード先のエンドポイントURL
    * @returns {Promise<Object>} アップロード結果
    */
-  static async upload(file, url) {
-    const uploader = new TemporaryImage(url, file);
+  static async upload(image, url) {
+    const uploader = new TemporaryImage(url, image);
     return await uploader.upload();
   }
 
@@ -171,9 +171,9 @@ export default class TemporaryImage {
    */
   static async uploadMultipleFiles(files, url) {
     return await Promise.all(
-      Array.from(files).map(async (file) => {
+      Array.from(files).map(async (image) => {
         try {
-          return await this.upload(file, url);
+          return await this.upload(image, url);
         } catch (error) {
           console.error('アップロード失敗:', error);
           return null;
@@ -257,7 +257,7 @@ export default class TemporaryImage {
    * @throws {Error} アップロードに失敗した場合
    */
   async upload() {
-    const formData = this.appendFormData(this.file);
+    const formData = this.appendFormData(this.image);
     const res = await fetch(this.url, {
       method: 'POST',
       headers: {
@@ -272,14 +272,14 @@ export default class TemporaryImage {
 
 
    /**
-   * FormDataオブジェクトにファイルを追加します。
+   * FormDataオブジェクトに画像ファイルを追加します。
    *
-   * @param {File} file - アップロード対象のファイル
+   * @param {File} image - アップロード対象の画像ファイル
    * @returns {FormData} アップロードに使用するFormDataオブジェクト
    */
-  appendFormData(file) {
+  appendFormData(image) {
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append('image', image);
     return formData;
   }  
 
