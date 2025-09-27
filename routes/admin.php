@@ -37,10 +37,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
         Route::get('/', App\Http\Controllers\Admin\Product\IndexController::class)->name('index');
         Route::get('/create', App\Http\Controllers\Admin\Product\CreateController::class)->name('create');
         Route::post('/store', App\Http\Controllers\Admin\Product\StoreController::class)->name('store');
+        Route::get('/edit/{id}', App\Http\Controllers\Admin\Product\EditController::class)->name('edit');
+        Route::put('/update/{id}', App\Http\Controllers\Admin\Product\UpdateController::class)->name('update');
+        Route::get('/image/{ulid}', App\Http\Controllers\Admin\Product\ImageController::class)->name('imageShow');
     });
 
     Route::prefix('/temporary')->name('temporary.')->group(function () {
         Route::post('/upload', App\Http\Controllers\Admin\TemporaryController::class)->name('upload');
-        Route::get('/show/{ulid}', [App\Http\Controllers\Admin\TemporaryController::class, 'show'])->name('show');
+        Route::get('/image/{ulid}', [App\Http\Controllers\Admin\TemporaryController::class, 'show'])->name('image');
     });
 });

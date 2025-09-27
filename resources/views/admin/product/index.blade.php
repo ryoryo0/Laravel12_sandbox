@@ -108,7 +108,8 @@
   </select>
 </form>
   <!-- 一覧 -->
-  <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+  <div style="overflow-x: scroll;">
+  <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width: 100%; border-collapse: collapse; white-space: nowrap;">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" class="px-6 py-3">
@@ -153,9 +154,13 @@
               <td class="px-6 py-4">
                 {{ $product->created_at }}
               </td>
+              <td class="px-6 py-4">
+                <a href="{{ route('admin.product.edit', $product->id) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">編集</a>
+              </td>
           </tr>
         @endforeach
       </tbody>
   </table>
+  </div>
 </div>
 </x-admin.app-layout>
