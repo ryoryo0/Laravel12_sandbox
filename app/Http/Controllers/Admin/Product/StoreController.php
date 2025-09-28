@@ -72,7 +72,6 @@ class StoreController
      */
     function changeQuillImagePath($quillData): ?string
     {
-        
         if (!$quillData) return null;
         $ops = json_decode($quillData);
         
