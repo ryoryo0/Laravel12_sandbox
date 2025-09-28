@@ -140,9 +140,9 @@
               </div>
             </div>
           </div>
-        <div>
-        <!-- その他の画像 -->
-        <div>
+
+          <!-- その他の画像 -->
+          <div>
           <label class="block mb-3 text-sm font-medium text-gray-900 dark:text-white">その他の画像 <span class="text-sm text-gray-500">(最大4枚)</span></label>
           <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-gray-400 dark:hover:border-gray-500 transition-colors">
             <input type="file" id="mulch-file_input" data-js="upload-multiple-temporary-input" accept="image/*" multiple class="hidden">
@@ -182,8 +182,8 @@
               </div>
             </div>
           </div>
+        </div>
       </div>
-      <div>
         <!-- カテゴリー選択 -->
         <div class="mb-8">
           <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center">
