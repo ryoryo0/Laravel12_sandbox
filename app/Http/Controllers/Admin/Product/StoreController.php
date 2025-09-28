@@ -25,31 +25,34 @@ class StoreController
             $validated['create_admin_id'] = Auth::user()->id;
             $validated['ulid'] = Str::ulid();
 
-            $thumbImage = TemporaryImage::query()
-                ->where('ulid', $validated['thumbnail'])
-                ->first()
-                ->toArray();
-            $thumbImage['is_thumbnail'] = true;
-            $thumbImage['file_path'] = $this->copyFileToDirectory($thumbImage['file_path'], 'product');
-
-            $otherImages = TemporaryImage::query()
-                ->whereIn('ulid', $validated['other_thumbnail'])
-                ->get()
-                ->toArray();
-        
-            foreach ($otherImages as &$image) {
-                $image['is_thumbnail'] = false;
-                $image['file_path'] = $this->copyFileToDirectory($image['file_path'], 'product');
-            }
-
-            DB::transaction(function () use ($validated, $thumbImage, $otherImages) {
+            DB::transaction(function () use ($validated) {
                 // 商品登録
                 $product = Product::create($validated);
                 // 商品カテゴリー登録
                 $product->categories()->sync($validated['category_ids']);
                 // 商品の画像登録
-                $product->images()->create($thumbImage);
-                $product->images()->createMany($otherImages);
+                if ($validated['thumbnail']) {
+                    $thumbImage = TemporaryImage::query()
+                        ->where('ulid', $validated['thumbnail'])
+                        ->first()
+                        ->toArray();
+                    $thumbImage['is_thumbnail'] = true;
+                    $thumbImage['file_path'] = $this->copyFileToDirectory($thumbImage['file_path'], 'product');
+                    $product->images()->create($thumbImage);
+                }
+
+                if ($validated['other_thumbnail']) {
+                    $otherImages = TemporaryImage::query()
+                        ->whereIn('ulid', $validated['other_thumbnail'])
+                        ->get()
+                        ->toArray();
+                
+                    foreach ($otherImages as &$image) {
+                        $image['is_thumbnail'] = false;
+                        $image['file_path'] = $this->copyFileToDirectory($image['file_path'], 'product');
+                    }   
+                    $product->images()->createMany($otherImages);
+                }
                 // 登録　完了のログ
                 Log::info('product create', ['product_id' => $product->id]);
             });
@@ -65,10 +68,11 @@ class StoreController
      * quillのデータ内の画像パス情報を更新する
      *
      * @param  string $quillData
-     * @return string $ops
+     * @return ?string $ops
      */
-    function changeQuillImagePath($quillData): string
+    function changeQuillImagePath($quillData): ?string
     {
+        if (!$quillData) return null;
         $ops = json_decode($quillData);
         
         foreach ($ops as $data) {

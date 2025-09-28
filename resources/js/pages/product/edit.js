@@ -136,7 +136,7 @@ class EditManager {
     if (!image) return;
 
     try {
-      const result = await TemporaryImage.uploadAndDisplay(image, false, '/admin/temporary/upload');
+      const result = await TemporaryImage.uploadAndDisplay(image, '/admin/temporary/upload', false);
       console.log('アップロード成功:', result.url);
     } catch (err) {
       console.error('アップロード失敗:', err);
@@ -159,7 +159,7 @@ class EditManager {
       alert('ファイルのアップロード上限は4つになります。');
       return;
     }
-    await TemporaryImage.uploadMultipleAndDisplay(files, '/admin/temporary/upload')
+    await TemporaryImage.uploadMultipleAndDisplay(files, '/admin/temporary/upload', true)
   }
 
 
@@ -169,8 +169,8 @@ class EditManager {
    * @returns {Promise<void>}
    */
   async loadOldImages() {
-    await TemporaryImage.loadOldSingleImage('old-thumbnail', '/admin/product/image/');
-    await TemporaryImage.loadOldMultipleImages('old-other-thumbnail', '/admin/product/image/');
+    await TemporaryImage.loadOldSingleImage('old-thumbnail', '/admin/temporary/image/');
+    await TemporaryImage.loadOldMultipleImages('old-other-thumbnail', '/admin/temporary/image/');
   }
 
 

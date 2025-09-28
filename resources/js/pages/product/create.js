@@ -49,7 +49,7 @@ class CreateManager {
     if (!image) return;
 
     try {
-      const result = await TemporaryImage.uploadAndDisplay(image, false, '/admin/temporary/upload');
+      const result = await TemporaryImage.uploadAndDisplay(image, '/admin/temporary/upload', false);
       console.log('アップロード成功:', result.url);
     } catch (err) {
       console.error('アップロード失敗:', err);
@@ -73,7 +73,7 @@ class CreateManager {
       return;
     }
 
-    await TemporaryImage.uploadMultipleAndDisplay(files, '/admin/temporary/upload')
+    await TemporaryImage.uploadMultipleAndDisplay(files, '/admin/temporary/upload', true)
   }   
 
 

@@ -112,18 +112,21 @@ export default class TemporaryImage {
    * 単一画像をアップロードして画面に表示する
    *
    * @param {File} image アップロードする画像ファイル
-   * @param {boolean} isMultiple 複数アップロードかどうか
    * @param {string} url アップロード先のエンドポイントURL
    * @returns {Promise<Object>} アップロード結果
    */
-  static async uploadAndDisplay(image, isMultiple, url) {
+  static async uploadAndDisplay(image, url, isLoading = true) {
+    const loadingElement = this.showLoading(false);
+
     try {
       const result = await this.upload(image, url);
-      this.updateUI(result, isMultiple);
+      this.updateUI(result);
       return result;
     } catch (error) {
       console.error('アップロード失敗:', error);
       throw error;
+    } finally {
+      this.hideLoading(loadingElement);
     }
   }
 
@@ -133,11 +136,23 @@ export default class TemporaryImage {
    *
    * @param {File} image アップロードする画像ファイル
    * @param {string} url アップロード先のエンドポイントURL
+   * @param {boolean} showLoading ローディング表示を行うかどうか (デフォルト: false)
    * @returns {Promise<Object>} アップロード結果
    */
-  static async upload(image, url) {
+  static async upload(image, url, isShowGlobalLoading = false) {
     const uploader = new TemporaryImage(url, image);
-    return await uploader.upload();
+
+    if (isShowGlobalLoading) {
+      const loadingElement = this.showGlobalLoading();
+      try {
+        const result = await uploader.upload();
+        return result;
+      } finally {
+        this.hideLoading(loadingElement);
+      }
+    } else {
+      return await uploader.upload();
+    }
   }
 
 
@@ -148,17 +163,26 @@ export default class TemporaryImage {
    * @param {string} url アップロード先のエンドポイントURL
    * @returns {Promise<Array>} アップロード結果の配列
    */
-  static async uploadMultipleAndDisplay(files, url) {
-    const results = await this.uploadMultipleFiles(files, url);
+  static async uploadMultipleAndDisplay(files, url, isShowLoading = true) {
+    const loadingElement = this.showLoading(true);
 
-    // 成功したアップロードのUIを更新
-    results.forEach(result => {
-      if (result) {
-        this.updateUI(result, true);
-      }
-    });
+    try {
+      const results = await this.uploadMultipleFiles(files, url);
 
-    return results;
+      // 成功したアップロードのUIを更新
+      results.forEach(result => {
+        if (result) {
+          this.updateUI(result, true);
+        }
+      });
+
+      return results;
+    } catch (error) {
+      console.error('複数ファイルアップロード失敗:', error);
+      throw error;
+    } finally {
+      this.hideLoading(loadingElement);
+    }
   }
 
 
@@ -190,7 +214,7 @@ export default class TemporaryImage {
    * @param {boolean} isMultiple 複数アップロードかどうか
    * @returns {void}
    */
-  static updateUI(result, isMultiple) {
+  static updateUI(result, isMultiple = false) {
     // 単一アップロードの場合は既存要素を削除
     if (!isMultiple) {
       document.querySelector('.js-uploaded-temporary')?.remove();
@@ -309,5 +333,88 @@ export default class TemporaryImage {
     img.src = result.url;
     img.classList.add("mt-6", "mb-6");
     container.append(img);
+  }
+
+
+  /**************************************************************************************
+   *
+   * ローディング
+   *
+   ***************************************************************************************/
+
+
+  /**
+   * ローディングアニメーションを表示する
+   *
+   * @param {boolean} isMultiple 複数アップロードかどうか
+   * @returns {HTMLElement} ローディング要素
+   */
+  static showLoading(isMultiple) {
+    const multiple = isMultiple ? "-multiple" : "";
+    const targetContainer = document.querySelector(`#js-uploaded${multiple}-temporary-list`);
+
+    if (!targetContainer) {
+      console.warn('ローディング表示対象のコンテナが見つかりません');
+      return null;
+    }
+
+    // ローディング要素を作成
+    const loadingElement = document.createElement('div');
+    loadingElement.className = 'loading-overlay flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg';
+    loadingElement.innerHTML = `
+      <div class="flex items-center space-x-3">
+        <svg class="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-sm text-gray-600 dark:text-gray-300">アップロード中...</span>
+      </div>
+    `;
+
+    targetContainer.appendChild(loadingElement);
+    return loadingElement;
+  }
+
+
+  /**
+   * グローバルローディングアニメーションを表示する（Quillエディタ用）
+   *
+   * @returns {HTMLElement} ローディング要素
+   */
+  static showGlobalLoading() {
+    // 既存のグローバルローディングがあれば削除
+    const existingLoading = document.querySelector('.global-loading-overlay');
+    if (existingLoading) {
+      existingLoading.remove();
+    }
+
+    // グローバルローディング要素を作成
+    const loadingElement = document.createElement('div');
+    loadingElement.className = 'global-loading-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    loadingElement.innerHTML = `
+      <div class="bg-white dark:bg-gray-800 rounded-lg p-6 flex items-center space-x-3">
+        <svg class="animate-spin h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-sm text-gray-800 dark:text-gray-200">画像をアップロード中...</span>
+      </div>
+    `;
+
+    document.body.appendChild(loadingElement);
+    return loadingElement;
+  }
+
+
+  /**
+   * ローディングアニメーションを非表示にする
+   *
+   * @param {HTMLElement} loadingElement ローディング要素
+   * @returns {void}
+   */
+  static hideLoading(loadingElement) {
+    if (loadingElement && loadingElement.parentNode) {
+      loadingElement.parentNode.removeChild(loadingElement);
+    }
   }
 }
