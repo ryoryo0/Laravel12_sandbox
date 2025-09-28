@@ -132,9 +132,11 @@
                       <input type="hidden" name="thumbnail" value="">
                       <input type="hidden" id="old-thumbnail" value="{{ old('thumbnail') }}">
                     </div>
-                    <button type="button" data-js="delete-image-btn" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-2">
-                      削除
-                    </button>
+                    <div class="flex flex-col gap-2">
+                      <button type="button" data-js="permanent-delete-btn" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1">
+                        削除
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -212,10 +214,10 @@
                     </div>
                     <div class="flex flex-col gap-2">
                       <button type="button" data-js="delete-image-btn" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1">
-                        一時削除
+                        保留
                       </button>
                       <button type="button" data-js="permanent-delete-btn" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1">
-                        完全削除
+                        削除
                       </button>
                     </div>
                   </div>
@@ -253,10 +255,10 @@
                             </div>
                             <div class="flex flex-col gap-2 ml-auto">
                               <button type="button" data-js="delete-image-btn" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-1 text-center">
-                                  一時削除
+                                  保留
                               </button>
                               <button type="button" data-js="permanent-delete-btn" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 text-center">
-                                  完全削除
+                                  削除
                               </button>
                             </div>
                           </div>

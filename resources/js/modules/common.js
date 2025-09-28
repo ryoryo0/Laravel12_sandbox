@@ -21,7 +21,7 @@ export default class CommonImageHandler {
   }
 
   /**
-   * 画像削除/取り消し処理を実行する
+   * 画像削除/復元処理を実行する
    *
    * @param {Event} e
    * @returns {void}
@@ -35,16 +35,16 @@ export default class CommonImageHandler {
     const cancelClass = ['bg-blue-600', 'focus:ring-blue-300', 'dark:focus:ring-blue-800'];
 
     // 現在の状態を確認
-    const isDeleted = button.textContent.trim() === '取り消す';
+    const isDeleted = button.textContent.trim() === '復元';
 
     if (isDeleted) {
-      // 取り消し処理：削除状態から元に戻す
+      // 復元処理：削除状態から元に戻す
       if (input) {
         input.disabled = false;
       }
 
       // UIを元の状態に戻す
-      button.textContent = '一時削除';
+      button.textContent = '保留';
       button.disabled = false;
       button.classList.remove(...cancelClass);
       button.classList.add(...deleteClass);
@@ -55,7 +55,7 @@ export default class CommonImageHandler {
       }
 
       // UIを削除状態にする
-      button.textContent = '取り消す';
+      button.textContent = '復元';
       button.disabled = false; // ボタンを有効にして再度クリック可能にする
       button.classList.remove(...deleteClass);
       button.classList.add(...cancelClass);
@@ -63,7 +63,7 @@ export default class CommonImageHandler {
   }
 
   /**
-   * 画像完全削除処理を実行する
+   * 画像削除処理を実行する
    *
    * @param {Event} e
    * @returns {void}

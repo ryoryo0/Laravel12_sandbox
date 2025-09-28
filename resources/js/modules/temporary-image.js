@@ -240,7 +240,7 @@ export default class TemporaryImage {
         // 最初のボタンは通常の削除
         btn.setAttribute('data-js', 'delete-image-btn');
       } else if (index === 1) {
-        // 2番目のボタンは完全削除
+        // 2番目のボタンは削除
         btn.setAttribute('data-js', 'permanent-delete-btn');
       }
     });
