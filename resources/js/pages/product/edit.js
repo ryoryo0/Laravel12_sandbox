@@ -49,7 +49,7 @@ class EditManager {
     document.querySelector('[data-js="upload-temporary-input"]')
     ?.addEventListener('change', (e) => this.handleSingleUpload(e));
     // 複数アップロード
-    document.querySelector('[data-js="upload-multiple-temporary-inout"]')
+    document.querySelector('[data-js="upload-multiple-temporary-input"]')
     ?.addEventListener('change', (e) => this.handleMultipleUpload(e));
     // 削除ボタンのイベントリスナー（共通モジュールを使用）
     CommonImageHandler.initDeleteButtons();
@@ -108,10 +108,8 @@ class EditManager {
    */
   async loadExistingOtherImages() {
     const existingImageInputs = document.querySelectorAll('input[name="existing_other_images[]"]');
-    console.log(existingImageInputs.length);
     for (const input of existingImageInputs) {
       if (!input.value) continue;
-      console.log(input.value);
 
       const ulid = input.value;
 
@@ -161,7 +159,6 @@ class EditManager {
       alert('ファイルのアップロード上限は4つになります。');
       return;
     }
-
     await TemporaryImage.uploadMultipleAndDisplay(files, '/admin/temporary/upload')
   }
 
