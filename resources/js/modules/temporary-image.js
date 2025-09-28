@@ -112,16 +112,15 @@ export default class TemporaryImage {
    * 単一画像をアップロードして画面に表示する
    *
    * @param {File} image アップロードする画像ファイル
-   * @param {boolean} isMultiple 複数アップロードかどうか
    * @param {string} url アップロード先のエンドポイントURL
    * @returns {Promise<Object>} アップロード結果
    */
-  static async uploadAndDisplay(image, isMultiple, url) {
-    const loadingElement = this.showLoading(isMultiple);
+  static async uploadAndDisplay(image, url, isLoading = true) {
+    const loadingElement = this.showLoading(isLoading);
 
     try {
       const result = await this.upload(image, url);
-      this.updateUI(result, isMultiple);
+      this.updateUI(result);
       return result;
     } catch (error) {
       console.error('アップロード失敗:', error);
@@ -140,10 +139,10 @@ export default class TemporaryImage {
    * @param {boolean} showLoading ローディング表示を行うかどうか (デフォルト: false)
    * @returns {Promise<Object>} アップロード結果
    */
-  static async upload(image, url, showLoading = false) {
+  static async upload(image, url, isShowGlobalLoading = false) {
     const uploader = new TemporaryImage(url, image);
 
-    if (showLoading) {
+    if (isShowGlobalLoading) {
       const loadingElement = this.showGlobalLoading();
       try {
         const result = await uploader.upload();
@@ -164,8 +163,8 @@ export default class TemporaryImage {
    * @param {string} url アップロード先のエンドポイントURL
    * @returns {Promise<Array>} アップロード結果の配列
    */
-  static async uploadMultipleAndDisplay(files, url) {
-    const loadingElement = this.showLoading(true);
+  static async uploadMultipleAndDisplay(files, url, isShowLoading = true) {
+    const loadingElement = this.showLoading(isShowLoading);
 
     try {
       const results = await this.uploadMultipleFiles(files, url);
@@ -215,7 +214,7 @@ export default class TemporaryImage {
    * @param {boolean} isMultiple 複数アップロードかどうか
    * @returns {void}
    */
-  static updateUI(result, isMultiple) {
+  static updateUI(result, isMultiple = false) {
     // 単一アップロードの場合は既存要素を削除
     if (!isMultiple) {
       document.querySelector('.js-uploaded-temporary')?.remove();
@@ -378,19 +377,6 @@ export default class TemporaryImage {
 
 
   /**
-   * ローディングアニメーションを非表示にする
-   *
-   * @param {HTMLElement} loadingElement ローディング要素
-   * @returns {void}
-   */
-  static hideLoading(loadingElement) {
-    if (loadingElement && loadingElement.parentNode) {
-      loadingElement.parentNode.removeChild(loadingElement);
-    }
-  }
-
-
-  /**
    * グローバルローディングアニメーションを表示する（Quillエディタ用）
    *
    * @returns {HTMLElement} ローディング要素
@@ -417,5 +403,18 @@ export default class TemporaryImage {
 
     document.body.appendChild(loadingElement);
     return loadingElement;
+  }
+
+
+  /**
+   * ローディングアニメーションを非表示にする
+   *
+   * @param {HTMLElement} loadingElement ローディング要素
+   * @returns {void}
+   */
+  static hideLoading(loadingElement) {
+    if (loadingElement && loadingElement.parentNode) {
+      loadingElement.parentNode.removeChild(loadingElement);
+    }
   }
 }
