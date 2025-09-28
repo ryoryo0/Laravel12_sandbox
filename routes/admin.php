@@ -34,14 +34,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
      * Product
      */
     Route::prefix('/product')->name('product.')->group(function () {
-        Route::get('/', App\Http\Controllers\Admin\Product\IndexController::class)->name('index');
-        Route::get('/create', App\Http\Controllers\Admin\Product\CreateController::class)->name('create');
-        Route::post('/store', App\Http\Controllers\Admin\Product\StoreController::class)->name('store');
-        Route::get('/show/{id}', App\Http\Controllers\Admin\Product\ShowController::class)->name('show');
-        Route::get('/edit/{id}', App\Http\Controllers\Admin\Product\EditController::class)->name('edit');
-        Route::put('/update/{id}', App\Http\Controllers\Admin\Product\UpdateController::class)->name('update');
-        Route::delete('/destroy/{id}', App\Http\Controllers\Admin\Product\DestroyController::class)->name('destroy');
-        Route::get('/image/{ulid}', App\Http\Controllers\Admin\Product\ImageController::class)->name('imageShow');
+        Route::get('/', [App\Http\Controllers\Admin\ProductController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\Admin\ProductController::class, 'create'])->name('create');
+        Route::post('/store', [App\Http\Controllers\Admin\ProductController::class, 'store'])->name('store');
+        Route::get('/show/{id}', [App\Http\Controllers\Admin\ProductController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [App\Http\Controllers\Admin\ProductController::class, 'update'])->name('update');
+        Route::delete('/destroy/{id}', [App\Http\Controllers\Admin\ProductController::class, 'destroy'])->name('destroy');
+        Route::get('/image/{ulid}', [App\Http\Controllers\Admin\ProductController::class, 'image'])->name('imageShow');
     });
 
     Route::prefix('/temporary')->name('temporary.')->group(function () {
