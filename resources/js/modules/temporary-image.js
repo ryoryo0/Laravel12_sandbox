@@ -116,7 +116,7 @@ export default class TemporaryImage {
    * @returns {Promise<Object>} アップロード結果
    */
   static async uploadAndDisplay(image, url, isLoading = true) {
-    const loadingElement = this.showLoading(isLoading);
+    const loadingElement = this.showLoading(false);
 
     try {
       const result = await this.upload(image, url);
@@ -164,7 +164,7 @@ export default class TemporaryImage {
    * @returns {Promise<Array>} アップロード結果の配列
    */
   static async uploadMultipleAndDisplay(files, url, isShowLoading = true) {
-    const loadingElement = this.showLoading(isShowLoading);
+    const loadingElement = this.showLoading(true);
 
     try {
       const results = await this.uploadMultipleFiles(files, url);
