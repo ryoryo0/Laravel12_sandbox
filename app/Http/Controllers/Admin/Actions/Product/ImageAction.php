@@ -1,21 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Product;
+namespace App\Http\Controllers\Admin\Actions\Product;
 
-use App\Http\Controllers\Admin\Controller;
 use App\Models\ProductImage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
-class ImageController extends Controller
+class ImageAction
 {
     /**
      * 商品に紐づく画像をULIDで取得する
-     *
-     * @param string $ulid
-     * @return JsonResponse
      */
-    public function __invoke(string $ulid): JsonResponse
+    public function execute(string $ulid): JsonResponse
     {
         try {
             // ULIDで画像を検索

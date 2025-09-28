@@ -1,38 +1,34 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Product;
+namespace App\Http\Controllers\Admin\Actions\Product;
 
-use App\Http\Controllers\Admin\Controller;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 
-class EditController extends Controller
+class ShowAction
 {
-    public function __invoke(Request $request)
+    public function execute(int $id): View
     {
         $adminUser = Auth::user();
-        $categories = $adminUser->categories()->pluck('name', 'id');
-        $product = Product::where('id', $request->id)->with('categories', 'images')->first();
+
+        // 商品が存在し、かつ現在のadminユーザーが作成した商品かをチェック
+        $product = Product::with(['categories', 'images'])
+            ->where('id', $id)
+            ->where('create_admin_id', $adminUser->id)
+            ->firstOrFail();
 
         // detail_json内の画像パスをassetパスに変換
         if ($product && $product->detail_json) {
             $product->detail_json = $this->convertImagePathsToAssets($product->detail_json);
         }
 
-        return view('admin.product.edit')
-            ->with([
-                'categories' => $categories,
-                'product' => $product,
-            ]);
+        return view('admin.product.show', compact('product'));
     }
 
     /**
      * QuillのJSONデータ内の画像パスをassetのフルパスに変換する
-     *
-     * @param string $jsonData
-     * @return string
      */
     private function convertImagePathsToAssets(string $jsonData): string
     {
@@ -47,7 +43,6 @@ class EditController extends Controller
                     // storage/で始まるパスの場合はassetパスに変換
                     if (strpos($imagePath, 'images/') === 0) {
                         $op['insert']['image'] = asset('storage/' . $imagePath);
-                        
                     }
                 }
             }

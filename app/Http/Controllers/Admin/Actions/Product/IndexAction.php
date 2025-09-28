@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Product;
+namespace App\Http\Controllers\Admin\Actions\Product;
 
-use App\Http\Controllers\Admin\Controller;
 use App\Http\Requests\Admin\Product\IndexRequest;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
-class IndexController extends Controller
+class IndexAction
 {
-
     const PAGINATE = 15;
 
-    public function __invoke(IndexRequest $request)
+    public function execute(IndexRequest $request): View
     {
         $adminUser = Auth::user();
 
@@ -31,35 +30,27 @@ class IndexController extends Controller
                 'bulkActions' => $bulkActions,
                 'headings'  => $headings,
                 'categories' => $categories,
-            ]); 
+            ]);
     }
-
 
     /**
      * 一括操作セレクトラベルとkeyの取得
-     *
-     * @return array
      */
-    private function getBulkActionLabels (): array
+    private function getBulkActionLabels(): array
     {
-        $result = [
+        return [
             'bulk_delete' => 'チェック項目を一括削除',
             'bulk_un_public' => 'チェック項目を一括非公開',
             'bulk_pick_up' => 'チェック項目を一括おすすめ',
         ];
-
-        return $result;
     }
 
-        
     /**
      * テーブルの見出しを取得
-     *
-     * @return array
      */
-    private function getHeadingLabels (): array
+    private function getHeadingLabels(): array
     {
-        $result = [
+        return [
             '商品名',
             '紹介文',
             '商品コード',
@@ -68,18 +59,12 @@ class IndexController extends Controller
             '作成日',
             '操作',
         ];
-
-        return $result;
     }
-
 
     /**
      * クエリビルダーに絞り込み
-     *
-     * @param Builder $query クエリビルダーインスタンス
-     * @return Builder 絞り込み済みのクエリビルダー
      */
-    private function getQuery (Builder $query, $params)
+    private function getQuery(Builder $query, $params): void
     {
         if ($params->input('id')) {
             $query->where('id', $params->input('id'));

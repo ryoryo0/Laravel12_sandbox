@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Product;
+namespace App\Http\Controllers\Admin\Actions\Product;
 
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
 
-class DestroyController
+class DestroyAction
 {
-    public function __invoke(int $id)
+    public function execute(int $id)
     {
         try {
             $adminUser = Auth::user();
