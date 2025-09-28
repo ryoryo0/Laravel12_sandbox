@@ -169,8 +169,8 @@ class EditManager {
    * @returns {Promise<void>}
    */
   async loadOldImages() {
-    await TemporaryImage.loadOldSingleImage('old-thumbnail', '/admin/product/image/');
-    await TemporaryImage.loadOldMultipleImages('old-other-thumbnail', '/admin/product/image/');
+    await TemporaryImage.loadOldSingleImage('old-thumbnail', '/admin/temporary/image/');
+    await TemporaryImage.loadOldMultipleImages('old-other-thumbnail', '/admin/temporary/image/');
   }
 
 
