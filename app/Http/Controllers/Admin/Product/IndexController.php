@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
+
+    const PAGINATE = 15;
+
     public function __invoke(IndexRequest $request)
     {
         $adminUser = Auth::user();
@@ -16,7 +19,8 @@ class IndexController extends Controller
         $query = $adminUser->products()->with('categories');
         $params = $request;
         $this->getQuery($query, $params);
-        $products = $query->get();
+        $products = $query->paginate(self::PAGINATE);
+        $products->appends($request->query());
         $categories = $adminUser->categories()->pluck('name', 'id');
         $bulkActions = $this->getBulkActionLabels();
         $headings = $this->getHeadingLabels();
@@ -56,14 +60,13 @@ class IndexController extends Controller
     private function getHeadingLabels (): array
     {
         $result = [
-            'id',
             '商品名',
             '紹介文',
             '商品コード',
             'カテゴリー',
             '公開',
             '作成日',
-            'ACTION',
+            '操作',
         ];
 
         return $result;
