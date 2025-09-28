@@ -2,108 +2,31 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\TemporaryImage;
+use App\Http\Controllers\Admin\Actions\Temporary\ShowAction;
+use App\Http\Controllers\Admin\Actions\Temporary\UploadAction;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
-class TemporaryController
+class TemporaryController extends Controller
 {
-    const DIRECTORY = 'temporary';
+    public function __construct(
+        private UploadAction $uploadAction,
+        private ShowAction $showAction
+    ) {}
 
-    public function __invoke(Request $request)
+    /**
+     * 一時画像アップロード処理
+     */
+    public function __invoke(Request $request): JsonResponse
     {
-        // テーブルに保存するデータを成形
-        $dataList = $this->createSaveData($request->file('image'));
-        $temporary = new TemporaryImage();
-        $temporary->fill($dataList)->save();
-        // 画像をリサイズして保存
-        $imageData = $this->createThumbnailImage($request->file('image')->getRealPath());
-        Storage::disk('public')->put($dataList['file_path'], $imageData);
-        // レスポンスデータを成形
-        $responseData =  $this->createResponseData($dataList);
-
-        return response()->json($responseData);
+        return $this->uploadAction->execute($request);
     }
-
 
     /**
      * ULIDから画像情報を取得する
-     *
-     * @param string $ulid
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(string $ulid)
+    public function show(string $ulid): JsonResponse
     {
-        $temporaryImage = TemporaryImage::where('ulid', $ulid)->first();
-
-        if (!$temporaryImage) {
-            return response()->json(['error' => 'Image not found'], 404);
-        }
-
-        return response()->json([
-            'url' => asset('storage/' . $temporaryImage->file_path),
-            'name' => $temporaryImage->original_filename,
-            'ulid' => $temporaryImage->ulid,
-        ]);
-    }
-
-        
-    /**
-     * 保存データを成形
-     *
-     * @param UploadedFile $image アップロードされた画像ファイル
-     * @return array $imageDataList
-     */
-    private function createSaveData (UploadedFile $file): array
-    {
-        $ulid =  Str::ulid();
-        $filename = $ulid . '.jpg';
-        $filePath = 'images/' . self::DIRECTORY . '/' . $filename;
-
-        $result = [
-            'original_filename' => $file->getClientOriginalName(),
-            'ulid'              => $ulid,
-            'stored_filename'   => $filename,
-            'file_path'         => $filePath,
-            'file_size'         => $file->getSize(),
-            'file_extension'    => $file->getClientOriginalExtension(),
-            'mime_type'         => $file->getMimeType(),
-        ];
-        return $result;
-    }
-
-    
-    /**
-     * サムネサイズの画像データを成形
-     * @param string $realPath
-     * @return string $result
-     */
-    private function createThumbnailImage ($realPath) :string
-    {
-        $image = new \Imagick($realPath);
-        $image->thumbnailImage(200, 150, true);
-        $result = $image->getImageBlob();
-        
-        return $result;
-    }
-
-
-    /**
-     * レスポンスデータを成形
-     *
-     * @param array $dataList
-     * @return array $result
-     */
-    private function createResponseData ($dataList): array
-    {
-        $result = [
-            'url'  => asset('storage/' . $dataList['file_path']),
-            'name' => $dataList['original_filename'],
-            'ulid' => $dataList['ulid'],
-        ];
-       
-        return $result;
+        return $this->showAction->execute($ulid);
     }
 }
