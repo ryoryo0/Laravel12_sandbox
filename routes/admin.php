@@ -39,6 +39,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
         Route::post('/store', App\Http\Controllers\Admin\Product\StoreController::class)->name('store');
         Route::get('/edit/{id}', App\Http\Controllers\Admin\Product\EditController::class)->name('edit');
         Route::put('/update/{id}', App\Http\Controllers\Admin\Product\UpdateController::class)->name('update');
+        Route::delete('/destroy/{id}', App\Http\Controllers\Admin\Product\DestroyController::class)->name('destroy');
         Route::get('/image/{ulid}', App\Http\Controllers\Admin\Product\ImageController::class)->name('imageShow');
     });
 

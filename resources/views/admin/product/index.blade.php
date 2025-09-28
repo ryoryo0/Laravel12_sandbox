@@ -155,7 +155,14 @@
                 {{ $product->created_at }}
               </td>
               <td class="px-6 py-4">
-                <a href="{{ route('admin.product.edit', $product->id) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">編集</a>
+                <div class="flex gap-2">
+                  <a href="{{ route('admin.product.edit', $product->id) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">編集</a>
+                  <form method="POST" action="{{ route('admin.product.destroy', $product->id) }}" onsubmit="return confirm('この商品を削除しますか？この操作は取り消せません。')" class="inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800">削除</button>
+                  </form>
+                </div>
               </td>
           </tr>
         @endforeach
