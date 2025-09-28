@@ -108,172 +108,83 @@
             <div>
               <label class="block mb-3 text-sm font-medium text-gray-900 dark:text-white">メイン画像（サムネイル）</label>
               <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-gray-400 dark:hover:border-gray-500 transition-colors">
-                <input type="file" id="single-file_input" data-js="upload-temporary-input" accept="image/*" class="hidden">
                 <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                   <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                <button type="button" data-modal-target="default-modal" data-modal-toggle="default-modal" class="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800 transition-colors cursor-pointer">
-                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                  </svg>
-                  画像を選択
-                </button>
+                <div class="items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                  <input class="hidden" id="single-file_input" type="file" data-js="upload-temporary-input">
+                  <label for="single-file_input" class="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800 transition-colors cursor-pointer">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    商品画像を選択
+                  </label>
+                </div>
                 <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">推奨サイズ: 800x600px以上</p>
-              </div>
-
-              <!-- アップロード済み画像表示エリア -->
-              <div id="js-uploaded-temporary-list" class="mt-4">
-                <!-- 隠しテンプレート -->
-                <div data-js="upload-temporary" style="display: none;" class="border border-gray-200 rounded-lg p-4 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-                  <div class="flex items-center space-x-4">
-                    <img class="w-16 h-16 object-cover rounded-lg" src="" alt="">
-                    <div class="flex-grow">
-                      <p class="text-sm font-medium text-gray-900 dark:text-white"></p>
-                      <input type="hidden" name="thumbnail" value="">
-                      <input type="hidden" id="old-thumbnail" value="{{ old('thumbnail') }}">
-                    </div>
-                    <div class="flex flex-col gap-2">
-                      <button type="button" data-js="permanent-delete-btn" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1">
-                        削除
-                      </button>
+                <!-- アップロード済み画像表示エリア -->
+                <div id="js-uploaded-temporary-list" class="mt-4">
+                  <!-- 隠しテンプレート -->
+                  <div data-js="upload-temporary" style="display: none;" class="border border-gray-200 rounded-lg p-4 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                    <div class="flex items-center space-x-4">
+                      <img class="w-16 h-16 object-cover rounded-lg" src="" alt="">
+                      <div class="flex-grow">
+                        <p class="text-sm font-medium text-gray-900 dark:text-white"></p>
+                        <input type="hidden" name="thumbnail" value="">
+                        <input type="hidden" id="old-thumbnail" value="{{ old('thumbnail') }}">
+                      </div>
+                      <div class="flex flex-col gap-2">
+                        <button type="button" data-js="permanent-delete-btn" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1">
+                          削除
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-        <!-- Main modal -->
-        <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-            <div class="relative p-4 w-full max-w-2xl max-h-full">
-                <!-- Modal content -->
-                <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-                    <!-- Modal header -->
-                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                             サムネイル画像
-                        </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
-                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                            </svg>
-                            <span class="sr-only">Close modal</span>
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="relative w-full overflow-y-scroll bg-white border border-gray-100 rounded-lg dark:bg-gray-700 dark:border-gray-600 h-96">
-                      <ul id="js-uploaded-temporary-list">
-                        <li class="border-b border-gray-100 dark:border-gray-600" data-js="upload-temporary" style="display: none;">
-                          <div class="flex  w-full px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <img class="me-3 w-24 h-auto round-full" src="" alt="Jese Leos Avatar">
-                            <div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400"></p>
-                                <input type="hidden" name="thumbnail" value="{{ old('thumbnail') }}">
-                                <input type="hidden" id="old-thumbnail" value="{{ old('thumbnail') }}">
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                    <!-- Modal footer -->
-                    <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                      <input class="hidden block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:border-gray-600 dark:placeholder-gray-400" id="single-file_input" type="file" data-js="upload-temporary-input">
-                      <label for="single-file_input" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
-                        画像を追加する
-                      </label>
-                    </div>
-                </div>
-            </div>
-        </div>
       <div>
 
             <!-- その他の画像 -->
             <div>
               <label class="block mb-3 text-sm font-medium text-gray-900 dark:text-white">その他の画像 <span class="text-sm text-gray-500">(最大4枚)</span></label>
               <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-gray-400 dark:hover:border-gray-500 transition-colors">
-                <input type="file" id="mulch-file_input" data-js="upload-multiple-temporary-input" accept="image/*" multiple class="hidden">
                 <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                   <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                <button type="button" data-modal-target="default-modal-multiple" data-modal-toggle="default-modal-multiple" class="mt-4 inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg focus:ring-4 focus:ring-green-300 focus:outline-none dark:focus:ring-green-800 transition-colors cursor-pointer">
+                <div class="items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                  <input class="hidden" id="mulch-file_input" type="file" data-js="upload-multiple-temporary-input" multiple>
+                  <label for="mulch-file_input" class="mt-4 inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg focus:ring-4 focus:ring-green-300 focus:outline-none dark:focus:ring-green-800 transition-colors cursor-pointer">
                   <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                   </svg>
                   追加画像を選択
-                </button>
+                  </label>
+                </div>
                 <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">複数選択可能・JPG, PNG対応</p>
-              </div>
-
-              <!-- アップロード済み複数画像表示エリア -->
-              <div id="js-uploaded-multiple-temporary-list" class="mt-4 space-y-4">
-                <!-- 隠しテンプレート -->
-                <div data-js="upload-multiple-temporary" style="display: none;" class="border border-gray-200 rounded-lg p-4 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-                  <div class="flex items-center space-x-4">
-                    <img class="w-16 h-16 object-cover rounded-lg" src="" alt="">
-                    <div class="flex-grow">
-                      <p class="text-sm font-medium text-gray-900 dark:text-white"></p>
-                      <input type="hidden" name="other_thumbnail[]" value="">
-                    </div>
-                    <div class="flex flex-col gap-2">
-                      <button type="button" data-js="delete-image-btn" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1">
-                        保留
-                      </button>
-                      <button type="button" data-js="permanent-delete-btn" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1">
-                        削除
-                      </button>
+                <!-- アップロード済み複数画像表示エリア -->
+                <div id="js-uploaded-multiple-temporary-list" class="mt-4 space-y-4">
+                  <!-- 隠しテンプレート -->
+                  <div data-js="upload-multiple-temporary" style="display: none;" class="border border-gray-200 rounded-lg p-4 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                    <div class="flex items-center space-x-4">
+                      <img class="w-16 h-16 object-cover rounded-lg" src="" alt="">
+                      <div class="flex-grow">
+                        <p class="text-sm font-medium text-gray-900 dark:text-white"></p>
+                        <input type="hidden" name="other_thumbnail[]" value="">
+                      </div>
+                      <div class="flex flex-col gap-2">
+                        <button type="button" data-js="delete-image-btn" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1">
+                          保留
+                        </button>
+                        <button type="button" data-js="permanent-delete-btn" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1">
+                          削除
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <!-- Main modal -->
-        <div id="default-modal-multiple" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-            <div class="relative p-4 w-full max-w-2xl max-h-full">
-                <!-- Modal content -->
-                <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-                    <!-- Modal header -->
-                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            その他の画像
-                        </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal-multiple">
-                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                            </svg>
-                            <span class="sr-only">Close modal</span>
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="relative w-full overflow-y-scroll bg-white border border-gray-100 rounded-lg dark:bg-gray-700 dark:border-gray-600 h-96">
-                      <ul id="js-uploaded-multiple-temporary-list">
-                        <li class="border-b border-gray-100 dark:border-gray-600" data-js="upload-multiple-temporary" style="display: none;">
-                          <div class="flex w-full px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <img class="me-3 w-24 h-auto round-full" src="" alt="Jese Leos Avatar">
-                            <div class="flex-grow">
-                                <p class="text-sm text-gray-500 dark:text-gray-400"></p>
-                                <input type="hidden" name="other_thumbnail[]" value="">
-                            </div>
-                            <div class="flex flex-col gap-2 ml-auto">
-                              <button type="button" data-js="delete-image-btn" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-1 text-center">
-                                  保留
-                              </button>
-                              <button type="button" data-js="permanent-delete-btn" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 text-center">
-                                  削除
-                              </button>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                    <!-- Modal footer -->
-                    <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                      <input class="hidden block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:border-gray-600 dark:placeholder-gray-400" id="mulch-file_input" type="file" data-js="upload-multiple-temporary-input" multiple>
-                      <label for="mulch-file_input" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
-                        画像を追加する
-                      </label>
-                    </div>
-                </div>
-            </div>
         </div>
       <div>
 
