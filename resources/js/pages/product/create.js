@@ -31,7 +31,7 @@ class CreateManager {
     document.querySelector('[data-js="upload-temporary-input"]')
     ?.addEventListener('change', (e) => this.handleSingleUpload(e));
     // 複数アップロード
-    document.querySelector('[data-js="upload-multiple-temporary-inout"]')
+    document.querySelector('[data-js="upload-multiple-temporary-input"]')
     ?.addEventListener('change', (e) => this.handleMultipleUpload(e));
     // 削除ボタンのイベントリスナー（共通モジュールを使用）
     CommonImageHandler.initDeleteButtons();
