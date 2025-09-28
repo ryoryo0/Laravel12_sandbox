@@ -3,8 +3,8 @@
     <!-- Header Section -->
     <div class="flex justify-between items-center mb-6">
       <div>
-        <h1 class="text-3xl font-bold text-gray-800 dark:text-blue-400">商品新規登録</h1>
-        <p class="text-gray-700 dark:text-gray-300 mt-1">新しい商品の情報を入力してください</p>
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-grey-800">商品新規登録</h1>
+        <p class="text-gray-700 dark:text-gray-400 mt-1">新しい商品の情報を入力してください</p>
       </div>
       <div class="flex gap-2">
         <a href="{{ route('admin.product.index') }}" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
@@ -121,6 +121,23 @@
                 <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">推奨サイズ: 800x600px以上</p>
               </div>
 
+              <!-- アップロード済み画像表示エリア -->
+              <div id="js-uploaded-temporary-list" class="mt-4">
+                <!-- 隠しテンプレート -->
+                <div data-js="upload-temporary" style="display: none;" class="border border-gray-200 rounded-lg p-4 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                  <div class="flex items-center space-x-4">
+                    <img class="w-16 h-16 object-cover rounded-lg" src="" alt="">
+                    <div class="flex-grow">
+                      <p class="text-sm font-medium text-gray-900 dark:text-white"></p>
+                      <input type="hidden" name="thumbnail" value="">
+                      <input type="hidden" id="old-thumbnail" value="{{ old('thumbnail') }}">
+                    </div>
+                    <button type="button" data-js="delete-image-btn" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-2">
+                      削除
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
         <!-- Main modal -->
         <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -183,6 +200,27 @@
                 <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">複数選択可能・JPG, PNG対応</p>
               </div>
 
+              <!-- アップロード済み複数画像表示エリア -->
+              <div id="js-uploaded-multiple-temporary-list" class="mt-4 space-y-4">
+                <!-- 隠しテンプレート -->
+                <div data-js="upload-multiple-temporary" style="display: none;" class="border border-gray-200 rounded-lg p-4 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                  <div class="flex items-center space-x-4">
+                    <img class="w-16 h-16 object-cover rounded-lg" src="" alt="">
+                    <div class="flex-grow">
+                      <p class="text-sm font-medium text-gray-900 dark:text-white"></p>
+                      <input type="hidden" name="other_thumbnail[]" value="">
+                    </div>
+                    <div class="flex flex-col gap-2">
+                      <button type="button" data-js="delete-image-btn" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1">
+                        一時削除
+                      </button>
+                      <button type="button" data-js="permanent-delete-btn" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1">
+                        完全削除
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

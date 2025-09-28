@@ -28,7 +28,7 @@ export default class CommonImageHandler {
    */
   static handleImageDelete(e) {
     const button = e.target;
-    const container = button.closest('li');
+    const container = button.closest('[data-js="upload-temporary"], [data-js="upload-multiple-temporary"]');
     const input = container.querySelector('input[type="hidden"]');
     // 操作するcss classを定義
     const deleteClass = ['bg-red-600', 'hover:bg-red-800', 'focus:ring-red-300', 'dark:focus:ring-red-800'];
@@ -70,7 +70,7 @@ export default class CommonImageHandler {
    */
   static handlePermanentDelete(e) {
     const button = e.target;
-    const container = button.closest('li');
+    const container = button.closest('[data-js="upload-temporary"], [data-js="upload-multiple-temporary"]');
 
     if (confirm('この画像を完全に削除しますか？この操作は取り消せません。')) {
       // 要素を完全に削除
