@@ -5,15 +5,19 @@ namespace App\Http\Controllers\Admin\Actions\Product;
 use App\Http\Requests\Admin\Product\StoreRequest;
 use App\Models\Product;
 use App\Models\TemporaryImage;
+use App\Services\File\FileTransferService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Throwable;
 
 class StoreAction
 {
+    public function __construct(
+        private FileTransferService $fileTransferService
+    ) {}
+
     public function execute(StoreRequest $request)
     {
         try {
@@ -37,7 +41,7 @@ class StoreAction
                         ->first()
                         ->toArray();
                     $thumbImage['is_thumbnail'] = true;
-                    $thumbImage['file_path'] = $this->copyFileToDirectory($thumbImage['file_path'], 'product');
+                    $thumbImage['file_path'] = $this->fileTransferService->copyFileToDirectory($thumbImage['file_path'], 'product');
                     $product->images()->create($thumbImage);
                 }
 
@@ -49,7 +53,7 @@ class StoreAction
 
                     foreach ($otherImages as &$image) {
                         $image['is_thumbnail'] = false;
-                        $image['file_path'] = $this->copyFileToDirectory($image['file_path'], 'product');
+                        $image['file_path'] = $this->fileTransferService->copyFileToDirectory($image['file_path'], 'product');
                     }
                     $product->images()->createMany($otherImages);
                 }
@@ -74,7 +78,7 @@ class StoreAction
         foreach ($ops as $data) {
             foreach ($data as $item) {
                 if (property_exists($item->insert, 'image')) {
-                    $relativePath = $this->copyFileToDirectory($item->insert->image, 'quill');
+                    $relativePath = $this->fileTransferService->copyFileToDirectory($item->insert->image, 'quill');
                     $item->insert->image = $relativePath;
                 }
             }
@@ -83,31 +87,4 @@ class StoreAction
         return json_encode($ops);
     }
 
-    /**
-     * 一時画像を対象ディレクトリへ本登録を実施する
-     */
-    private function copyFileToDirectory(string $sourcePath, string $targetDir): ?string
-    {
-        // パス部分のみ取得
-        $tempRelativePath = str_replace('/storage/', '', parse_url($sourcePath, PHP_URL_PATH));
-        if (!$this->isExistsTempFile($tempRelativePath)) {
-            return null; // 元ファイルが存在しない場合
-        }
-
-        // 保存先パス（同じファイル名で保存）
-        $fileName = basename($sourcePath);
-        $saveRelativePath = 'images/' . $targetDir . '/' . $fileName;
-        if (Storage::disk('public')->copy($tempRelativePath, $saveRelativePath)) {
-            return $saveRelativePath;
-        }
-        return null;
-    }
-
-    /**
-     * 一時画像ディレクトリ内部に対象のファイルが存在するか確認を行う処理
-     */
-    private function isExistsTempFile(string $tempRelativePath): bool
-    {
-        return Storage::disk('public')->exists($tempRelativePath);
-    }
 }

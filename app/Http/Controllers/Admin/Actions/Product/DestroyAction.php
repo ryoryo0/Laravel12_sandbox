@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Admin\Actions\Product;
 
 use App\Models\Product;
+use App\Services\File\FileTransferService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class DestroyAction
 {
+    public function __construct(
+        private FileTransferService $fileTransferService
+    ) {}
+
     public function execute(int $id)
     {
         try {
@@ -29,8 +33,8 @@ class DestroyAction
                 // 商品に関連する画像ファイルを削除
                 $images = $product->images;
                 foreach ($images as $image) {
-                    if ($image->file_path && Storage::disk('public')->exists($image->file_path)) {
-                        Storage::disk('public')->delete($image->file_path);
+                    if ($image->file_path) {
+                        $this->fileTransferService->deleteFile($image->file_path);
                     }
                 }
 
