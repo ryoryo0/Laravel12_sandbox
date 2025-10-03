@@ -14,15 +14,10 @@ class UpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $productId = $this->route('id');
+        $product = $this->route('product');
         $adminUser = Auth::user();
 
-        // 商品が存在し、かつ現在のadminユーザーが作成した商品かをチェック
-        $product = Product::where('id', $productId)
-            ->where('create_admin_id', $adminUser->id)
-            ->first();
-
-        return $product !== null;
+        return $product && $product->create_admin_id === $adminUser->id;
     }
 
     /**
@@ -32,12 +27,13 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $productId = $this->route('product')->id;
 
         $rules = [
             'name'         => ['required','string', 'max:255'],
             'description'  => ['required','string', 'max:255'],
             'category_ids' => ['required','array', Rule::exists('categories', 'id')],
-            'code'         => ['required','string', 'max:255', Rule::unique('products', 'code')->ignore($this->route('id'))],
+            'code'         => ['required','string', 'max:255', Rule::unique('products', 'code')->ignore($productId)],
             'detail_json'  => ['nullable','json',],
             'is_public'    => ['required','boolean'],
             'is_pick_up'   => ['required','boolean'],

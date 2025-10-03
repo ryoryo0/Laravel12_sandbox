@@ -15,17 +15,13 @@ class DestroyAction
         private FileTransferService $fileTransferService
     ) {}
 
-    public function execute(int $id)
+    public function execute(Product $product)
     {
         try {
             $adminUser = Auth::user();
 
-            // 商品が存在し、かつ現在のadminユーザーが作成した商品かをチェック
-            $product = Product::where('id', $id)
-                ->where('create_admin_id', $adminUser->id)
-                ->first();
-
-            if (!$product) {
+            // 権限チェック：現在のadminユーザーが作成した商品かをチェック
+            if ($product->create_admin_id !== $adminUser->id) {
                 return redirect()->route('admin.product.index')->with('error', '削除権限がないか、商品が存在しません。');
             }
 
@@ -52,7 +48,7 @@ class DestroyAction
 
             return redirect()->route('admin.product.index')->with('success', '商品「' . $product->name . '」を削除しました。');
         } catch (Throwable $e) {
-            Log::error('Product deletion failed', ['error' => $e->getMessage(), 'product_id' => $id]);
+            Log::error('Product deletion failed', ['error' => $e->getMessage(), 'product_id' => $product->id]);
             return redirect()->route('admin.product.index')->with('error', '商品の削除に失敗しました。');
         }
     }

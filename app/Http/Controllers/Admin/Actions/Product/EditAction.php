@@ -10,11 +10,18 @@ use Illuminate\View\View;
 
 class EditAction
 {
-    public function execute(Request $request): View
+    public function execute(Product $product): View
     {
         $adminUser = Auth::user();
+
+        // 権限チェック：現在のadminユーザーが作成した商品かをチェック
+        if ($product->create_admin_id !== $adminUser->id) {
+            abort(403, 'この商品を編集する権限がありません。');
+        }
+
+        // 関連データをロード
+        $product->load(['categories', 'images']);
         $categories = $adminUser->categories()->pluck('name', 'id');
-        $product = Product::where('id', $request->id)->with('categories', 'images')->first();
 
         // detail_json内の画像パスをassetパスに変換
         if ($product && $product->detail_json) {

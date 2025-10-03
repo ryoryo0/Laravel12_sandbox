@@ -37,10 +37,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
         Route::get('/', [App\Http\Controllers\Admin\ProductController::class, 'index'])->name('index');
         Route::get('/create', [App\Http\Controllers\Admin\ProductController::class, 'create'])->name('create');
         Route::post('/store', [App\Http\Controllers\Admin\ProductController::class, 'store'])->name('store');
-        Route::get('/show/{id}', [App\Http\Controllers\Admin\ProductController::class, 'show'])->name('show');
-        Route::get('/edit/{id}', [App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('edit');
-        Route::put('/update/{id}', [App\Http\Controllers\Admin\ProductController::class, 'update'])->name('update');
-        Route::delete('/destroy/{id}', [App\Http\Controllers\Admin\ProductController::class, 'destroy'])->name('destroy');
+        Route::get('/show/{product}', [App\Http\Controllers\Admin\ProductController::class, 'show'])->name('show');
+        Route::get('/edit/{product}', [App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('edit');
+        Route::put('/update/{product}', [App\Http\Controllers\Admin\ProductController::class, 'update'])->name('update');
+        Route::delete('/destroy/{product}', [App\Http\Controllers\Admin\ProductController::class, 'destroy'])->name('destroy');
         Route::get('/image/{ulid}', [App\Http\Controllers\Admin\ProductController::class, 'image'])->name('imageShow');
     });
 

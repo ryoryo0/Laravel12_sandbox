@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\Actions\Product\UpdateAction;
 use App\Http\Requests\Admin\Product\IndexRequest;
 use App\Http\Requests\Admin\Product\StoreRequest;
 use App\Http\Requests\Admin\Product\UpdateRequest;
+use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -57,33 +58,33 @@ class ProductController extends Controller
     /**
      * 商品詳細表示
      */
-    public function show(int $id): View
+    public function show(Product $product): View
     {
-        return $this->showAction->execute($id);
+        return $this->showAction->execute($product);
     }
 
     /**
      * 商品編集フォーム表示
      */
-    public function edit(Request $request): View
+    public function edit(Product $product): View
     {
-        return $this->editAction->execute($request);
+        return $this->editAction->execute($product);
     }
 
     /**
      * 商品更新処理
      */
-    public function update(UpdateRequest $request, int $id)
+    public function update(UpdateRequest $request, Product $product)
     {
-        return $this->updateAction->execute($request, $id);
+        return $this->updateAction->execute($request, $product);
     }
 
     /**
      * 商品削除処理
      */
-    public function destroy(int $id)
+    public function destroy(Product $product)
     {
-        return $this->destroyAction->execute($id);
+        return $this->destroyAction->execute($product);
     }
 
     /**

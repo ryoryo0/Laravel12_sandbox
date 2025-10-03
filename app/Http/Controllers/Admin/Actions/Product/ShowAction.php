@@ -9,15 +9,17 @@ use Illuminate\View\View;
 
 class ShowAction
 {
-    public function execute(int $id): View
+    public function execute(Product $product): View
     {
         $adminUser = Auth::user();
 
-        // 商品が存在し、かつ現在のadminユーザーが作成した商品かをチェック
-        $product = Product::with(['categories', 'images'])
-            ->where('id', $id)
-            ->where('create_admin_id', $adminUser->id)
-            ->firstOrFail();
+        // 権限チェック：現在のadminユーザーが作成した商品かをチェック
+        if ($product->create_admin_id !== $adminUser->id) {
+            abort(403, 'この商品にアクセスする権限がありません。');
+        }
+
+        // 関連データをロード
+        $product->load(['categories', 'images']);
 
         // detail_json内の画像パスをassetパスに変換
         if ($product && $product->detail_json) {

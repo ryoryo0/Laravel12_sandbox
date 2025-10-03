@@ -47,7 +47,7 @@
     </nav>   
     <!-- Main Content Card -->
     <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
-      <form method="POST" action="{{ route('admin.product.update', $product->id) }}" class="p-6">
+      <form method="POST" action="{{ route('admin.product.update', $product) }}" class="p-6">
         @csrf
         @method('PUT')
 

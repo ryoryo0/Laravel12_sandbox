@@ -18,22 +18,20 @@ class UpdateAction
         private FileTransferService $fileTransferService
     ) {}
 
-    public function execute(UpdateRequest $request, int $id)
+    public function execute(UpdateRequest $request, Product $product)
     {
         try {
             $validated = $request->validated();
-            $validated['id'] = $id; // ルートパラメータからidを設定
-            Log::info('Validation passed', ['validated_data' => $validated]);
-
+            $validated['id'] = $product->id;
+            
             // quillエディタのjson内部の画像の本登録を行い、画像パスを書き換える
             $validated['detail_json'] = $this->changeQuillImagePath($validated['detail_json']);
 
             $validated['update_admin_id'] = Auth::user()->id;
             $validated['ulid'] = Str::ulid();
 
-            DB::transaction(function () use ($validated) {
+            DB::transaction(function () use ($validated, $product) {
                 // 商品登録
-                $product = Product::findOrFail($validated['id']);
                 $product->update($validated);
                 // 商品カテゴリー更新
                 $product->categories()->sync($validated['category_ids']);
