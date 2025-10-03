@@ -19,7 +19,9 @@
         "vite": "^6.2.4"
     },
     "dependencies": {
+        "fast-glob": "^3.3.3",
         "flowbite": "^3.1.2",
+        "glob": "^11.0.3",
         "quill": "^2.0.3"
     }
 }
