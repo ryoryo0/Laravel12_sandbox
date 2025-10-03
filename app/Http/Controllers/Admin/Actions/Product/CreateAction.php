@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Product;
+namespace App\Http\Controllers\Admin\Actions\Product;
 
-use App\Http\Controllers\Admin\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
-class CreateController extends Controller
+class CreateAction
 {
-    public function __invoke(Request $request)
+    public function execute(Request $request): View
     {
         $adminUser = Auth::user();
         $categories = $adminUser->categories()->pluck('name', 'id');
-        
+
         return view('admin.product.create')
             ->with([
                 'categories' => $categories,

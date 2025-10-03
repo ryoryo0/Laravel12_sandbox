@@ -1,36 +1,37 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Product;
+namespace App\Http\Controllers\Admin\Actions\Product;
 
 use App\Http\Requests\Admin\Product\UpdateRequest;
 use App\Models\Product;
 use App\Models\TemporaryImage;
+use App\Services\File\FileTransferService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Throwable;
-use Illuminate\Support\Facades\Storage;
 
-class UpdateController
+class UpdateAction
 {
-    public function __invoke(UpdateRequest $request, int $id)
-    {
+    public function __construct(
+        private FileTransferService $fileTransferService
+    ) {}
 
+    public function execute(UpdateRequest $request, Product $product)
+    {
         try {
             $validated = $request->validated();
-            $validated['id'] = $id; // ルートパラメータからidを設定
-            Log::info('Validation passed', ['validated_data' => $validated]);
-
+            $validated['id'] = $product->id;
+            
             // quillエディタのjson内部の画像の本登録を行い、画像パスを書き換える
             $validated['detail_json'] = $this->changeQuillImagePath($validated['detail_json']);
 
             $validated['update_admin_id'] = Auth::user()->id;
             $validated['ulid'] = Str::ulid();
 
-            DB::transaction(function () use ($validated) {
+            DB::transaction(function () use ($validated, $product) {
                 // 商品登録
-                $product = Product::findOrFail($validated['id']);
                 $product->update($validated);
                 // 商品カテゴリー更新
                 $product->categories()->sync($validated['category_ids']);
@@ -42,7 +43,7 @@ class UpdateController
                         ->first()
                         ->toArray();
                     $thumbImage['is_thumbnail'] = true;
-                    $thumbImage['file_path'] = $this->copyFileToDirectory($thumbImage['file_path'], 'product');
+                    $thumbImage['file_path'] = $this->fileTransferService->copyFileToDirectory($thumbImage['file_path'], 'product');
                     $product->images()->create($thumbImage);
                 }
 
@@ -54,7 +55,7 @@ class UpdateController
 
                     foreach ($otherImages as &$image) {
                         $image['is_thumbnail'] = false;
-                        $image['file_path'] = $this->copyFileToDirectory($image['file_path'], 'product');
+                        $image['file_path'] = $this->fileTransferService->copyFileToDirectory($image['file_path'], 'product');
                     }
                     $product->images()->createMany($otherImages);
                 }
@@ -62,29 +63,24 @@ class UpdateController
                 Log::info('product update', ['product_id' => $product->id]);
             });
             return redirect()->route('admin.product.index')->with('success', '商品' . $validated['name'] . 'の更新が完了しました');
-        } catch (Throwable $e)  {
+        } catch (Throwable $e) {
             Log::error($e);
             return redirect()->back()->with('error', '商品の更新に失敗しました');
         }
-    }   
-
+    }
 
     /**
      * quillのデータ内の画像パス情報を更新する
-     *
-     * @param  string $quillData
-     * @return ?string $ops
      */
-    function changeQuillImagePath($quillData): ?string
+    private function changeQuillImagePath($quillData): ?string
     {
         if (!$quillData) return null;
         $ops = json_decode($quillData);
-        
+
         foreach ($ops as $data) {
             foreach ($data as $item) {
                 if (property_exists($item->insert, 'image')) {
-                    // $originalPath = $item->insert->image;
-                    $relativePath = $this->copyFileToDirectory($item->insert->image, 'quill');
+                    $relativePath = $this->fileTransferService->copyFileToDirectory($item->insert->image, 'quill');
                     $item->insert->image = $relativePath;
                 }
             }
@@ -92,42 +88,5 @@ class UpdateController
         // 更新されたJSONデータを再度エンコード
         return json_encode($ops);
     }
-    
-    /**
-     * 一時画像を対象ディレクトリへ本登録を実施する
-     *
-     * @param  string $sourcePath
-     * @param  string $targetDir
-     * @return ?string
-     */
-    function copyFileToDirectory(string $sourcePath, string $targetDir): ?string
-    {
-        // パス部分のみ取得
-        $tempRelativePath = str_replace('/storage/', '', parse_url($sourcePath, PHP_URL_PATH));
-        if (!self::isExistsTempFile($tempRelativePath)) {
-            return null; // 元ファイルが存在しない場合
-        }
 
-        // 保存先パス（同じファイル名で保存）
-        $fileName   = basename($sourcePath);
-        $saveRelativePath = 'images/' . $targetDir . '/' . $fileName;
-        if (Storage::disk('public')->copy($tempRelativePath, $saveRelativePath)) {
-            return $saveRelativePath;
-        }
-        return null;
-    }
-
-    
-    /**
-     * 一時画像ディレクトリ内部に対象のファイルが存在するか確認を行う処理
-     *
-     * @param  mixed $tempRelativePath
-     * @return bool
-     */
-    static function isExistsTempFile (string $tempRelativePath): bool
-    {
-        $result = Storage::disk('public')->exists($tempRelativePath);
-
-        return $result; 
-    } 
 }

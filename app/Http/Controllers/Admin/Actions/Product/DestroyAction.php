@@ -1,27 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Product;
+namespace App\Http\Controllers\Admin\Actions\Product;
 
 use App\Models\Product;
+use App\Services\File\FileTransferService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Throwable;
 
-class DestroyController
+class DestroyAction
 {
-    public function __invoke(int $id)
+    public function __construct(
+        private FileTransferService $fileTransferService
+    ) {}
+
+    public function execute(Product $product)
     {
         try {
             $adminUser = Auth::user();
 
-            // 商品が存在し、かつ現在のadminユーザーが作成した商品かをチェック
-            $product = Product::where('id', $id)
-                ->where('create_admin_id', $adminUser->id)
-                ->first();
-
-            if (!$product) {
+            // 権限チェック：現在のadminユーザーが作成した商品かをチェック
+            if ($product->create_admin_id !== $adminUser->id) {
                 return redirect()->route('admin.product.index')->with('error', '削除権限がないか、商品が存在しません。');
             }
 
@@ -29,8 +29,8 @@ class DestroyController
                 // 商品に関連する画像ファイルを削除
                 $images = $product->images;
                 foreach ($images as $image) {
-                    if ($image->file_path && Storage::disk('public')->exists($image->file_path)) {
-                        Storage::disk('public')->delete($image->file_path);
+                    if ($image->file_path) {
+                        $this->fileTransferService->deleteFile($image->file_path);
                     }
                 }
 
@@ -48,7 +48,7 @@ class DestroyController
 
             return redirect()->route('admin.product.index')->with('success', '商品「' . $product->name . '」を削除しました。');
         } catch (Throwable $e) {
-            Log::error('Product deletion failed', ['error' => $e->getMessage(), 'product_id' => $id]);
+            Log::error('Product deletion failed', ['error' => $e->getMessage(), 'product_id' => $product->id]);
             return redirect()->route('admin.product.index')->with('error', '商品の削除に失敗しました。');
         }
     }
