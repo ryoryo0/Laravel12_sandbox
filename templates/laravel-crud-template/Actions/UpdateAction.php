@@ -33,17 +33,22 @@ class UpdateAction
      * エンティティ更新処理を実行
      *
      * @param UpdateRequest $request バリデーション済みリクエスト
-     * @param int $id エンティティID
+     * @param Entity $entity エンティティインスタンス
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function execute(UpdateRequest $request, int $id)
+    public function execute(UpdateRequest $request, Entity $entity)
     {
         try {
             $validated = $request->validated();
-            $validated['id'] = $id;
+            $validated['id'] = $entity->id;
+
+            // 権限チェック：現在のadminユーザーが作成したエンティティかをチェック
+            if ($entity->create_admin_id !== Auth::user()->id) {
+                abort(403, 'このエンティティを更新する権限がありません。');
+            }
 
             Log::info('Entity update started', [
-                'entity_id' => $id,
+                'entity_id' => $entity->id,
                 'admin_id' => Auth::user()->id
             ]);
 
@@ -54,11 +59,7 @@ class UpdateAction
             $validated['update_admin_id'] = Auth::user()->id;
             $validated['ulid'] = Str::ulid(); // 新しいULIDを生成
 
-            DB::transaction(function () use ($validated) {
-                // エンティティ取得と権限チェック
-                $entity = Entity::where('id', $validated['id'])
-                    ->where('create_admin_id', Auth::user()->id)
-                    ->firstOrFail();
+            DB::transaction(function () use ($validated, $entity) {
 
                 // エンティティ基本情報更新
                 $entity->update($validated);

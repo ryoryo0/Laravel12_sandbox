@@ -77,46 +77,46 @@ class EntityController extends Controller
     /**
      * エンティティ詳細表示
      *
-     * @param int $id エンティティID
+     * @param Entity $entity エンティティインスタンス
      * @return View
      */
-    public function show(int $id): View
+    public function show(Entity $entity): View
     {
-        return $this->showAction->execute($id);
+        return $this->showAction->execute($entity);
     }
 
     /**
      * エンティティ編集フォーム表示
      *
-     * @param Request $request
+     * @param Entity $entity エンティティインスタンス
      * @return View
      */
-    public function edit(Request $request): View
+    public function edit(Entity $entity): View
     {
-        return $this->editAction->execute($request);
+        return $this->editAction->execute($entity);
     }
 
     /**
      * エンティティ更新処理
      *
      * @param UpdateRequest $request バリデーション済みリクエスト
-     * @param int $id エンティティID
+     * @param Entity $entity エンティティインスタンス
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, Entity $entity)
     {
-        return $this->updateAction->execute($request, $id);
+        return $this->updateAction->execute($request, $entity);
     }
 
     /**
      * エンティティ削除処理
      *
-     * @param int $id エンティティID
+     * @param Entity $entity エンティティインスタンス
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(int $id)
+    public function destroy(Entity $entity)
     {
-        return $this->destroyAction->execute($id);
+        return $this->destroyAction->execute($entity);
     }
 
     /**
