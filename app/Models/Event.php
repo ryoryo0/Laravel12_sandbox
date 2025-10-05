@@ -46,7 +46,7 @@ class Event extends Model
         return $this->belongsToMany(Product::class, 'event_product');
     }
 
-    public function images()
+    public function image()
     {
         return $this->hasMany(EventImage::class);
     }
@@ -85,7 +85,7 @@ class Event extends Model
      */
     public function thumbnail(): ?EventImage
     {
-        return $this->images()->first();
+        return $this->image()->first();
     }
 
     /**

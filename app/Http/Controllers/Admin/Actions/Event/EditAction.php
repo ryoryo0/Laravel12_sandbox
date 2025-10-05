@@ -19,9 +19,8 @@ class EditAction
         }
 
         // 関連データをロード
-        $event->load(['products', 'images']);
+        $event->load(['products', 'image']);
         $products = $adminUser->products()->pluck('name', 'id');
-
         return view('admin.event.edit')
             ->with([
                 'products' => $products,
