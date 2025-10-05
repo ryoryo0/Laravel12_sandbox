@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\Actions\Event\CreateAction;
 use App\Http\Controllers\Admin\Actions\Event\DestroyAction;
 use App\Http\Controllers\Admin\Actions\Event\EditAction;
+use App\Http\Controllers\Admin\Actions\Event\ImageAction;
 use App\Http\Controllers\Admin\Actions\Event\IndexAction;
 use App\Http\Controllers\Admin\Actions\Event\StoreAction;
 use App\Http\Controllers\Admin\Actions\Event\UpdateAction;
@@ -12,6 +13,7 @@ use App\Http\Requests\Admin\Event\IndexRequest;
 use App\Http\Requests\Admin\Event\StoreRequest;
 use App\Http\Requests\Admin\Event\UpdateRequest;
 use App\Models\Event;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -23,7 +25,8 @@ class EventController extends Controller
         private StoreAction $storeAction,
         private EditAction $editAction,
         private UpdateAction $updateAction,
-        private DestroyAction $destroyAction
+        private DestroyAction $destroyAction,
+        private ImageAction $imageAction
     ) {}
 
     /**
@@ -72,5 +75,13 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         return $this->destroyAction->execute($event);
+    }
+
+    /**
+     * イベント画像取得API
+     */
+    public function image(string $ulid): JsonResponse
+    {
+        return $this->imageAction->execute($ulid);
     }
 }
