@@ -169,10 +169,10 @@
                     <input type="hidden" name="other_thumbnail[]" value="">
                   </div>
                   <div class="flex flex-col gap-2">
-                    <button type="button" data-js="delete-image-btn" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1">
+                    <button type="button" data-js="permanent-delete-btn" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1">
                       保留
                     </button>
-                    <button type="button" data-js="permanent-delete-btn" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1">
+                    <button type="button" data-js="delete-image-btn" class="text-white bg-red-700 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1">
                       削除
                     </button>
                   </div>

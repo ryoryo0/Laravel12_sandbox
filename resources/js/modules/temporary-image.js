@@ -257,18 +257,6 @@ export default class TemporaryImage {
     input.value = result.ulid;
     input.disabled = false;
 
-    // 削除ボタンにdata属性を設定
-    const deleteButtons = cloneContainer.querySelectorAll('button');
-    deleteButtons.forEach((btn, index) => {
-      if (index === 0) {
-        // 最初のボタンは通常の削除
-        btn.setAttribute('data-js', 'delete-image-btn');
-      } else if (index === 1) {
-        // 2番目のボタンは削除
-        btn.setAttribute('data-js', 'permanent-delete-btn');
-      }
-    });
-
     return cloneContainer;
   }
 
