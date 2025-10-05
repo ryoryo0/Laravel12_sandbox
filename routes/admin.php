@@ -73,6 +73,18 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
         Route::get('/image/{ulid}', [App\Http\Controllers\Admin\EventController::class, 'image'])->name('imageShow');
     });
 
+    /**
+     *
+     * Category (カテゴリー管理)
+     */
+    Route::prefix('/category')->name('category.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('index');
+        Route::post('/store', [App\Http\Controllers\Admin\CategoryController::class, 'store'])->name('store');
+        Route::get('/show/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'show'])->name('show');
+        Route::put('/update/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('update');
+        Route::delete('/destroy/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('destroy');
+    });
+
     Route::prefix('/temporary')->name('temporary.')->group(function () {
         Route::post('/upload', App\Http\Controllers\Admin\TemporaryController::class)->name('upload');
         Route::get('/image/{ulid}', [App\Http\Controllers\Admin\TemporaryController::class, 'show'])->name('image');
