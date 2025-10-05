@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\Actions\Event\DestroyAction;
 use App\Http\Controllers\Admin\Actions\Event\EditAction;
 use App\Http\Controllers\Admin\Actions\Event\ImageAction;
 use App\Http\Controllers\Admin\Actions\Event\IndexAction;
+use App\Http\Controllers\Admin\Actions\Event\ShowAction;
 use App\Http\Controllers\Admin\Actions\Event\StoreAction;
 use App\Http\Controllers\Admin\Actions\Event\UpdateAction;
 use App\Http\Requests\Admin\Event\IndexRequest;
@@ -23,6 +24,7 @@ class EventController extends Controller
         private IndexAction $indexAction,
         private CreateAction $createAction,
         private StoreAction $storeAction,
+        private ShowAction $showAction,
         private EditAction $editAction,
         private UpdateAction $updateAction,
         private DestroyAction $destroyAction,
@@ -51,6 +53,14 @@ class EventController extends Controller
     public function store(StoreRequest $request)
     {
         return $this->storeAction->execute($request);
+    }
+
+    /**
+     * イベント詳細表示
+     */
+    public function show(Event $event): View
+    {
+        return $this->showAction->execute($event);
     }
 
     /**
