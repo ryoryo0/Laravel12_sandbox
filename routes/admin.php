@@ -57,6 +57,19 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
         Route::delete('/destroy/{productVariant}', [App\Http\Controllers\Admin\ProductVariantController::class, 'destroy'])->name('destroy');
     });
 
+    /**
+     *
+     * Event (イベント管理)
+     */
+    Route::prefix('/event')->name('event.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\EventController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\Admin\EventController::class, 'create'])->name('create');
+        Route::post('/store', [App\Http\Controllers\Admin\EventController::class, 'store'])->name('store');
+        Route::get('/edit/{event}', [App\Http\Controllers\Admin\EventController::class, 'edit'])->name('edit');
+        Route::put('/update/{event}', [App\Http\Controllers\Admin\EventController::class, 'update'])->name('update');
+        Route::delete('/destroy/{event}', [App\Http\Controllers\Admin\EventController::class, 'destroy'])->name('destroy');
+    });
+
     Route::prefix('/temporary')->name('temporary.')->group(function () {
         Route::post('/upload', App\Http\Controllers\Admin\TemporaryController::class)->name('upload');
         Route::get('/image/{ulid}', [App\Http\Controllers\Admin\TemporaryController::class, 'show'])->name('image');
