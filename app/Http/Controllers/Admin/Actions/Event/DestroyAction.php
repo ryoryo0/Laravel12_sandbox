@@ -27,15 +27,13 @@ class DestroyAction
 
             DB::transaction(function () use ($event) {
                 // イベントに関連する画像ファイルを削除
-                $images = $event->images;
-                foreach ($images as $image) {
-                    if ($image->file_path) {
-                        $this->fileTransferService->deleteFile($image->file_path);
-                    }
+                $image = $event->image;
+                if ($image && $image->file_path) {
+                    $this->fileTransferService->deleteFile($image->file_path);
                 }
 
                 // イベントの画像データを削除
-                $event->images()->delete();
+                $event->image()?->delete();
 
                 // イベントと商品の関連を削除
                 $event->products()->detach();

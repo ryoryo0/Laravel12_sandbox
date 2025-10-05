@@ -32,13 +32,13 @@ class UpdateAction
 
                 // イベント画像更新
                 if (!empty($validated['thumbnail'])) {
-                    $event->images()->delete();
+                    $event->image()?->delete();
                     $thumbImage = TemporaryImage::query()
                         ->where('ulid', $validated['thumbnail'])
                         ->first()
                         ->toArray();
                     $thumbImage['file_path'] = $this->fileTransferService->copyFileToDirectory($thumbImage['file_path'], 'event');
-                    $event->images()->create($thumbImage);
+                    $event->image()->create($thumbImage);
                 }
 
                 Log::info('event update', ['event_id' => $event->id]);

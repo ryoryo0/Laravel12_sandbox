@@ -48,7 +48,7 @@ class Event extends Model
 
     public function image()
     {
-        return $this->hasMany(EventImage::class);
+        return $this->hasOne(EventImage::class);
     }
 
     /**
@@ -85,7 +85,7 @@ class Event extends Model
      */
     public function thumbnail(): ?EventImage
     {
-        return $this->image()->first();
+        return $this->image;
     }
 
     /**

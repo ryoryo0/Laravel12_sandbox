@@ -146,7 +146,7 @@
                     <img class="w-16 h-16 object-cover rounded-lg" src="" alt="">
                     <div class="flex-grow">
                       <p class="text-sm font-medium text-gray-900 dark:text-white"></p>
-                      <input type="hidden" name="thumbnail" value="{{ old('thumbnail', $event->thumbnail()?->ulid) }}">
+                      <input type="hidden" name="thumbnail" value="{{ old('thumbnail', $event->image?->ulid) }}">
                       <input type="hidden" id="old-thumbnail" value="{{ old('thumbnail') }}">
                     </div>
                     <div class="flex flex-col gap-2">
