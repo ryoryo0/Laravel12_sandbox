@@ -31,7 +31,7 @@ class Product extends Model
      
     public function categories()
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class)->withTimestamps();
     }
 
     public function admin()
@@ -51,7 +51,7 @@ class Product extends Model
 
     public function events()
     {
-        return $this->belongsToMany(Event::class, 'event_product');
+        return $this->belongsToMany(Event::class, 'event_product')->withTimestamps();
     }
      /**
      * --------------------------------------------------------------------------------------------------------------------------------------------- 
