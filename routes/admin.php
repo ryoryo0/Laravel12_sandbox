@@ -68,6 +68,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
         Route::get('/edit/{event}', [App\Http\Controllers\Admin\EventController::class, 'edit'])->name('edit');
         Route::put('/update/{event}', [App\Http\Controllers\Admin\EventController::class, 'update'])->name('update');
         Route::delete('/destroy/{event}', [App\Http\Controllers\Admin\EventController::class, 'destroy'])->name('destroy');
+        Route::get('/image/{ulid}', [App\Http\Controllers\Admin\EventController::class, 'image'])->name('imageShow');
     });
 
     Route::prefix('/temporary')->name('temporary.')->group(function () {
