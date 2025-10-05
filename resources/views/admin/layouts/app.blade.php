@@ -13,6 +13,37 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <!-- Select2 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <style>
+            .select2-container--default .select2-selection--single {
+                background-color: rgb(249 250 251);
+                border: 1px solid rgb(209 213 219);
+                border-radius: 0.5rem;
+                height: 42px;
+                padding: 0.625rem;
+            }
+            .select2-container--default .select2-selection--single .select2-selection__rendered {
+                color: rgb(17 24 39);
+                line-height: 1.5rem;
+                padding-left: 0;
+            }
+            .select2-container--default .select2-selection--single .select2-selection__arrow {
+                height: 40px;
+            }
+            .select2-dropdown {
+                border: 1px solid rgb(209 213 219);
+                border-radius: 0.5rem;
+            }
+            .select2-container--default .select2-search--dropdown .select2-search__field {
+                border: 1px solid rgb(209 213 219);
+                border-radius: 0.5rem;
+            }
+            .select2-container--default .select2-results__option--highlighted[aria-selected] {
+                background-color: rgb(37 99 235);
+            }
+        </style>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -33,6 +64,10 @@
             </main>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+        <!-- jQuery (required for Select2) -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- Select2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         @stack('scripts')
     </body>
 </html>

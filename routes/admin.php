@@ -44,6 +44,19 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
         Route::get('/image/{ulid}', [App\Http\Controllers\Admin\ProductController::class, 'image'])->name('imageShow');
     });
 
+    /**
+     *
+     * Product Variant (在庫管理)
+     */
+    Route::prefix('/product-variant')->name('product-variant.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\ProductVariantController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\Admin\ProductVariantController::class, 'create'])->name('create');
+        Route::post('/store', [App\Http\Controllers\Admin\ProductVariantController::class, 'store'])->name('store');
+        Route::get('/edit/{productVariant}', [App\Http\Controllers\Admin\ProductVariantController::class, 'edit'])->name('edit');
+        Route::put('/update/{productVariant}', [App\Http\Controllers\Admin\ProductVariantController::class, 'update'])->name('update');
+        Route::delete('/destroy/{productVariant}', [App\Http\Controllers\Admin\ProductVariantController::class, 'destroy'])->name('destroy');
+    });
+
     Route::prefix('/temporary')->name('temporary.')->group(function () {
         Route::post('/upload', App\Http\Controllers\Admin\TemporaryController::class)->name('upload');
         Route::get('/image/{ulid}', [App\Http\Controllers\Admin\TemporaryController::class, 'show'])->name('image');
