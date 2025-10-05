@@ -52,6 +52,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
         Route::get('/', [App\Http\Controllers\Admin\ProductVariantController::class, 'index'])->name('index');
         Route::get('/create', [App\Http\Controllers\Admin\ProductVariantController::class, 'create'])->name('create');
         Route::post('/store', [App\Http\Controllers\Admin\ProductVariantController::class, 'store'])->name('store');
+        Route::get('/show/{productVariant}', [App\Http\Controllers\Admin\ProductVariantController::class, 'show'])->name('show');
         Route::get('/edit/{productVariant}', [App\Http\Controllers\Admin\ProductVariantController::class, 'edit'])->name('edit');
         Route::put('/update/{productVariant}', [App\Http\Controllers\Admin\ProductVariantController::class, 'update'])->name('update');
         Route::delete('/destroy/{productVariant}', [App\Http\Controllers\Admin\ProductVariantController::class, 'destroy'])->name('destroy');
@@ -65,6 +66,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
         Route::get('/', [App\Http\Controllers\Admin\EventController::class, 'index'])->name('index');
         Route::get('/create', [App\Http\Controllers\Admin\EventController::class, 'create'])->name('create');
         Route::post('/store', [App\Http\Controllers\Admin\EventController::class, 'store'])->name('store');
+        Route::get('/show/{event}', [App\Http\Controllers\Admin\EventController::class, 'show'])->name('show');
         Route::get('/edit/{event}', [App\Http\Controllers\Admin\EventController::class, 'edit'])->name('edit');
         Route::put('/update/{event}', [App\Http\Controllers\Admin\EventController::class, 'update'])->name('update');
         Route::delete('/destroy/{event}', [App\Http\Controllers\Admin\EventController::class, 'destroy'])->name('destroy');

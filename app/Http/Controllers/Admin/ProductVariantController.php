@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Actions\ProductVariant\CreateAction;
 use App\Http\Controllers\Admin\Actions\ProductVariant\DestroyAction;
 use App\Http\Controllers\Admin\Actions\ProductVariant\EditAction;
 use App\Http\Controllers\Admin\Actions\ProductVariant\IndexAction;
+use App\Http\Controllers\Admin\Actions\ProductVariant\ShowAction;
 use App\Http\Controllers\Admin\Actions\ProductVariant\StoreAction;
 use App\Http\Controllers\Admin\Actions\ProductVariant\UpdateAction;
 use App\Http\Requests\Admin\ProductVariant\IndexRequest;
@@ -21,6 +22,7 @@ class ProductVariantController extends Controller
         private IndexAction $indexAction,
         private CreateAction $createAction,
         private StoreAction $storeAction,
+        private ShowAction $showAction,
         private EditAction $editAction,
         private UpdateAction $updateAction,
         private DestroyAction $destroyAction
@@ -48,6 +50,14 @@ class ProductVariantController extends Controller
     public function store(StoreRequest $request)
     {
         return $this->storeAction->execute($request);
+    }
+
+    /**
+     * 在庫詳細表示
+     */
+    public function show(ProductVariant $productVariant): View
+    {
+        return $this->showAction->execute($productVariant);
     }
 
     /**
