@@ -12,33 +12,33 @@ export default class CommonImageHandler {
   static initDeleteButtons() {
     // 削除ボタンのイベントリスナー
     document.addEventListener('click', (e) => {
-      if (e.target.matches('[data-js="delete-image-btn"]')) {
-        this.handleImageDelete(e);
-      } else if (e.target.matches('[data-js="permanent-delete-btn"]')) {
-        this.handlePermanentDelete(e);
+      if (e.target.matches('[data-js="permanent-delete-btn"]')) {
+        this.handleTogglePending(e);
+      } else if (e.target.matches('[data-js="delete-image-btn"]')) {
+        this.handleDelete(e);
       }
     });
   }
 
   /**
-   * 画像削除/復元処理を実行する
+   * 画像の保留/復元処理を実行する
    *
    * @param {Event} e
    * @returns {void}
    */
-  static handleImageDelete(e) {
+  static handleTogglePending(e) {
     const button = e.target;
     const container = button.closest('[data-js="upload-temporary"], [data-js="upload-multiple-temporary"]');
     const input = container.querySelector('input[type="hidden"]');
     // 操作するcss classを定義
-    const deleteClass = ['bg-red-600', 'hover:bg-red-800', 'focus:ring-red-300', 'dark:focus:ring-red-800'];
-    const cancelClass = ['bg-blue-600', 'focus:ring-blue-300', 'dark:focus:ring-blue-800'];
+    const pendingClass = ['bg-red-600', 'hover:bg-red-800', 'focus:ring-red-300', 'dark:focus:ring-red-800'];
+    const restoreClass = ['bg-blue-600', 'focus:ring-blue-300', 'dark:focus:ring-blue-800'];
 
     // 現在の状態を確認
-    const isDeleted = button.textContent.trim() === '復元';
+    const isPending = button.textContent.trim() === '復元';
 
-    if (isDeleted) {
-      // 復元処理：削除状態から元に戻す
+    if (isPending) {
+      // 復元処理：保留状態から元に戻す
       if (input) {
         input.disabled = false;
       }
@@ -46,29 +46,29 @@ export default class CommonImageHandler {
       // UIを元の状態に戻す
       button.textContent = '保留';
       button.disabled = false;
-      button.classList.remove(...cancelClass);
-      button.classList.add(...deleteClass);
+      button.classList.remove(...restoreClass);
+      button.classList.add(...pendingClass);
     } else {
-      // 削除処理
+      // 保留処理
       if (input) {
         input.disabled = true;
       }
 
-      // UIを削除状態にする
+      // UIを保留状態にする
       button.textContent = '復元';
       button.disabled = false; // ボタンを有効にして再度クリック可能にする
-      button.classList.remove(...deleteClass);
-      button.classList.add(...cancelClass);
+      button.classList.remove(...pendingClass);
+      button.classList.add(...restoreClass);
     }
   }
 
   /**
-   * 画像削除処理を実行する
+   * 画像の完全削除処理を実行する
    *
    * @param {Event} e
    * @returns {void}
    */
-  static handlePermanentDelete(e) {
+  static handleDelete(e) {
     const button = e.target;
     const container = button.closest('[data-js="upload-temporary"], [data-js="upload-multiple-temporary"]');
 

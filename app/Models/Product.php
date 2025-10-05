@@ -48,6 +48,11 @@ class Product extends Model
     {
         return $this->hasMany(ProductVariant::class);
     }
+
+    public function events()
+    {
+        return $this->belongsToMany(Event::class, 'event_product');
+    }
      /**
      * --------------------------------------------------------------------------------------------------------------------------------------------- 
      * Method

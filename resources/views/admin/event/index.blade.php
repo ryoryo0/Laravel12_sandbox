@@ -1,0 +1,233 @@
+<x-admin.app-layout>
+  <div class="relative overflow-x-auto p-4 sm:ml-64">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-grey-800">イベント管理</h1>
+        <p class="text-gray-700 dark:text-gray-400 mt-1">イベントの検索、追加、編集、削除を行います</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="{{ route('admin.event.create') }}" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+          <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>
+          新規作成
+        </a>
+      </div>
+    </div>
+
+    <!-- Breadcrumb -->
+    <nav class="flex mb-8" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+        <li class="inline-flex items-center">
+          <a href="{{ route('admin.home') }}" class="inline-flex items-center text-sm font-medium text-gray-900 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+            <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+            </svg>
+            ホーム
+          </a>
+        </li>
+        <li>
+          <div class="flex items-center">
+            <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+            </svg>
+            <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">イベント管理</span>
+          </div>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- Session Message -->
+    @if (session('success'))
+      <div id="toast-success" class="flex items-center w-full p-4 mb-6 text-gray-500 bg-white rounded-lg shadow-sm dark:text-gray-400 dark:bg-gray-800" role="alert">
+        <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+          </svg>
+          <span class="sr-only">Check icon</span>
+        </div>
+        <div class="ms-3 text-sm font-normal">{{ session('success') }}</div>
+        <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-success" aria-label="Close">
+          <span class="sr-only">Close</span>
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+        </button>
+      </div>
+    @endif
+
+    <!-- Search Card -->
+    <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg mb-8">
+      <div class="p-6">
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center">
+          <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+          検索・絞り込み
+        </h2>
+        <form method="GET" action="{{ route('admin.event.index') }}">
+          <!-- イベント名検索 -->
+          <div class="mb-6">
+            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">イベント名</label>
+            <input type="text" id="name" name="name" value="{{ request('name') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="イベント名で検索">
+          </div>
+
+          <!-- 状態フィルター -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-900 dark:text-white mb-3">状態</label>
+            <div class="space-y-3">
+              <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+                <input type="radio" name="is_active" value="1" @checked(request('is_active') == '1') class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                <span class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">有効</span>
+                <span class="ml-auto text-xs text-green-600">アクティブ</span>
+              </label>
+              <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+                <input type="radio" name="is_active" value="0" @checked(request('is_active') == '0') class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                <span class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">無効</span>
+                <span class="ml-auto text-xs text-gray-500">停止中</span>
+              </label>
+              <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+                <input type="radio" name="is_active" value="" @checked(request('is_active') === null || request('is_active') === '') class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                <span class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">すべて</span>
+                <span class="ml-auto text-xs text-gray-500">全件表示</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Search Actions -->
+          <div class="flex justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-600">
+            <a href="{{ route('admin.event.index') }}" class="px-6 py-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 transition-colors">
+              リセット
+            </a>
+            <button type="submit" class="px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-colors">
+              <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+              検索
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Events Table -->
+    <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center">イベント一覧</h2>
+          <span class="text-sm text-gray-500 dark:text-gray-400">{{ $events->total() }}件中 {{ $events->firstItem() }}-{{ $events->lastItem() }}件を表示</span>
+        </div>
+
+        @if($events->count() > 0)
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                  </th>
+                  @foreach($headings as $heading)
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ $heading }}</th>
+                  @endforeach
+                </tr>
+              </thead>
+              <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                @foreach($events as $event)
+                  <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    <td class="px-6 py-4">
+                      <input type="checkbox" value="{{ $event->id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $event->name }}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                      @if($event->discount_type === 'rate')
+                        <span class="text-sm text-gray-900 dark:text-gray-100">{{ $event->discount_rate }}%OFF</span>
+                      @else
+                        <span class="text-sm text-gray-900 dark:text-gray-100">¥{{ number_format($event->discount_amount) }}OFF</span>
+                      @endif
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ $event->start_date->format('Y/m/d H:i') }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ $event->end_date->format('Y/m/d H:i') }}</td>
+                    <td class="px-6 py-4">
+                      @if($event->is_active)
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">有効</span>
+                      @else
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">無効</span>
+                      @endif
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ $event->created_at->format('Y/m/d H:i') }}</td>
+                    <td class="px-6 py-4 text-right text-sm font-medium">
+                      <div class="flex items-center justify-end space-x-2">
+                        <a href="{{ route('admin.event.edit', $event->id) }}" class="text-yellow-600 hover:text-yellow-900 dark:text-yellow-400 dark:hover:text-yellow-300 transition-colors">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                          </svg>
+                        </a>
+                        <button type="button" data-modal-target="delete-modal-{{ $event->id }}" data-modal-toggle="delete-modal-{{ $event->id }}" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 transition-colors">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-6">{{ $events->links() }}</div>
+        @else
+          <div class="text-center py-12">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+            </svg>
+            <h3 class="mt-4 text-lg font-medium text-gray-900">イベントが見つかりません</h3>
+            <p class="mt-2 text-sm text-gray-500">新しいイベントを作成してください。</p>
+          </div>
+        @endif
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modals -->
+    @foreach ($events as $event)
+      <div id="delete-modal-{{ $event->id }}" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+          <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                イベント削除の確認
+              </h3>
+              <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="delete-modal-{{ $event->id }}">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+              </button>
+            </div>
+            <div class="p-4 md:p-5 text-center">
+              <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+              </svg>
+              <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                イベント「{{ $event->name }}」を削除しますか？<br>
+                この操作は取り消せません。
+              </h3>
+              <form method="POST" action="{{ route('admin.event.destroy', $event->id) }}" class="inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
+                  削除する
+                </button>
+              </form>
+              <button data-modal-hide="delete-modal-{{ $event->id }}" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                キャンセル
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    @endforeach
+  </div>
+</x-admin.app-layout>
