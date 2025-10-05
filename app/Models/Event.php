@@ -43,7 +43,7 @@ class Event extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'event_product');
+        return $this->belongsToMany(Product::class, 'event_product')->withTimestamps();
     }
 
     public function image()

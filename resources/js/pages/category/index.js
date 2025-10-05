@@ -77,53 +77,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // カテゴリー作成処理
   const createForm = document.getElementById('create-form');
-  createForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    clearErrors();
+  if (createForm) {
+    createForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearErrors();
 
-    const formData = new FormData(createForm);
-    const data = Object.fromEntries(formData);
+      const formData = new FormData(createForm);
+      const data = Object.fromEntries(formData);
 
-    try {
-      const response = await fetch('/admin/category/store', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': csrfToken,
-        },
-        body: JSON.stringify(data),
-      });
+      try {
+        const response = await fetch('/admin/category/store', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+          },
+          body: JSON.stringify(data),
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (response.ok && result.success) {
-        // フォームをリセット
-        createForm.reset();
+        if (response.ok && result.success) {
+          // モーダルを閉じる
+          const closeButton = document.querySelector('[data-modal-hide="create-modal"]');
+          if (closeButton) closeButton.click();
 
-        // テーブルに行を追加
-        addTableRow(result.category);
+          // フォームをリセット
+          createForm.reset();
 
-        // 成功メッセージ表示
-        showMessage('success', result.message);
-      } else {
-        // エラー表示
-        if (result.errors) {
-          Object.keys(result.errors).forEach(key => {
-            const errorElement = document.getElementById(`create-${key}-error`);
-            if (errorElement) {
-              errorElement.textContent = result.errors[key][0];
-              errorElement.classList.remove('hidden');
-            }
-          });
+          // テーブルに行を追加
+          addTableRow(result.category);
+
+          // 成功メッセージ表示
+          showMessage('success', result.message);
         } else {
-          showMessage('error', result.message || 'カテゴリーの作成に失敗しました');
+          // エラー表示
+          if (result.errors) {
+            Object.keys(result.errors).forEach(key => {
+              const errorElement = document.getElementById(`create-${key}-error`);
+              if (errorElement) {
+                errorElement.textContent = result.errors[key][0];
+                errorElement.classList.remove('hidden');
+              }
+            });
+          } else {
+            showMessage('error', result.message || 'カテゴリーの作成に失敗しました');
+          }
         }
+      } catch (error) {
+        console.error('Error:', error);
+        showMessage('error', 'カテゴリーの作成に失敗しました');
       }
-    } catch (error) {
-      console.error('Error:', error);
-      showMessage('error', 'カテゴリーの作成に失敗しました');
-    }
-  });
+    });
+  }
 
   // 編集ボタンクリック時の処理
   document.addEventListener('click', async (e) => {
@@ -160,51 +166,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // カテゴリー更新処理
   const editForm = document.getElementById('edit-form');
-  editForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    clearErrors();
+  if (editForm) {
+    editForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearErrors();
 
-    const categoryId = document.getElementById('edit-category-id').value;
-    const formData = new FormData(editForm);
-    const data = Object.fromEntries(formData);
+      const categoryId = document.getElementById('edit-category-id').value;
+      const formData = new FormData(editForm);
+      const data = Object.fromEntries(formData);
 
-    try {
-      const response = await fetch(`/admin/category/update/${categoryId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': csrfToken,
-        },
-        body: JSON.stringify(data),
-      });
+      try {
+        const response = await fetch(`/admin/category/update/${categoryId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+          },
+          body: JSON.stringify(data),
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (response.ok && result.success) {
-        // テーブルの行を更新
-        updateTableRow(result.category);
+        if (response.ok && result.success) {
+          // モーダルを閉じる
+          const closeButton = document.querySelector('[data-modal-hide="edit-modal"]');
+          if (closeButton) closeButton.click();
 
-        // 成功メッセージ表示
-        showMessage('success', result.message);
-      } else {
-        // エラー表示
-        if (result.errors) {
-          Object.keys(result.errors).forEach(key => {
-            const errorElement = document.getElementById(`edit-${key}-error`);
-            if (errorElement) {
-              errorElement.textContent = result.errors[key][0];
-              errorElement.classList.remove('hidden');
-            }
-          });
+          // テーブルの行を更新
+          updateTableRow(result.category);
+
+          // 成功メッセージ表示
+          showMessage('success', result.message);
         } else {
-          showMessage('error', result.message || 'カテゴリーの更新に失敗しました');
+          // エラー表示
+          if (result.errors) {
+            Object.keys(result.errors).forEach(key => {
+              const errorElement = document.getElementById(`edit-${key}-error`);
+              if (errorElement) {
+                errorElement.textContent = result.errors[key][0];
+                errorElement.classList.remove('hidden');
+              }
+            });
+          } else {
+            showMessage('error', result.message || 'カテゴリーの更新に失敗しました');
+          }
         }
+      } catch (error) {
+        console.error('Error:', error);
+        showMessage('error', 'カテゴリーの更新に失敗しました');
       }
-    } catch (error) {
-      console.error('Error:', error);
-      showMessage('error', 'カテゴリーの更新に失敗しました');
-    }
-  });
+    });
+  }
 
   // 削除ボタンクリック時の処理
   document.addEventListener('click', (e) => {
@@ -225,10 +237,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // カテゴリー削除処理
   const deleteForm = document.getElementById('delete-form');
-  deleteForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  if (deleteForm) {
+    deleteForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-    const categoryId = document.getElementById('delete-category-id').value;
+      const categoryId = document.getElementById('delete-category-id').value;
 
     try {
       const response = await fetch(`/admin/category/destroy/${categoryId}`, {
@@ -240,20 +253,35 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       const result = await response.json();
+      console.log('Response:', response.status, result);
 
       if (response.ok && result.success) {
+        // モーダルを閉じる
+        const closeButton = document.querySelector('[data-modal-hide="delete-modal"]');
+        if (closeButton) closeButton.click();
+
         // テーブルから行を削除
         removeTableRow(categoryId);
 
         // 成功メッセージ表示
         showMessage('success', result.message);
       } else {
+        // モーダルを閉じる
+        const closeButton = document.querySelector('[data-modal-hide="delete-modal"]');
+        if (closeButton) closeButton.click();
+
         // エラーメッセージ表示
         showMessage('error', result.message || 'カテゴリーの削除に失敗しました');
       }
     } catch (error) {
       console.error('Error:', error);
+
+      // モーダルを閉じる
+      const closeButton = document.querySelector('[data-modal-hide="delete-modal"]');
+      if (closeButton) closeButton.click();
+
       showMessage('error', 'カテゴリーの削除に失敗しました');
     }
-  });
+    });
+  }
 });

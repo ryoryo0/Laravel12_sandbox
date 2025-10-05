@@ -23,13 +23,8 @@ class DestroyAction
                 ], 403);
             }
 
-            // 商品との紐付けをチェック
-            if ($category->products()->count() > 0) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'このカテゴリーは商品に使用されているため削除できません',
-                ], 400);
-            }
+            // 商品との紐付けを解除（中間テーブルのデータのみ削除、商品自体は削除しない）
+            $category->products()->detach();
 
             $categoryName = $category->name;
             $category->delete();
