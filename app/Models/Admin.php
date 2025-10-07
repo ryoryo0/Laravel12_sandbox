@@ -26,7 +26,10 @@ class Admin extends Authenticatable  implements CanResetPassword
         'name',
         'email',
         'password',
+        'role_id'
     ];
+
+    const ID_ADMIN = 1;
 
     /**
      * Get the attributes that should be cast.
@@ -50,7 +53,7 @@ class Admin extends Authenticatable  implements CanResetPassword
     /**
      * relation
      */
-    
+
     public function products()
     {
         return $this->hasMany(Product::class, 'create_admin_id', 'id');
@@ -64,5 +67,10 @@ class Admin extends Authenticatable  implements CanResetPassword
     public function events()
     {
         return $this->hasMany(Event::class, 'create_admin_id', 'id');
+    }
+
+    public function invitations()
+    {
+        return $this->hasMany(AdminInvitation::class);
     }
 }
