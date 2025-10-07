@@ -31,6 +31,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
 
     /**
      *
+     * User (管理者管理)
+     */
+    Route::prefix('/user')->name('user.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('index');
+    });
+
+    /**
+     *
      * Product
      */
     Route::prefix('/product')->name('product.')->group(function () {
@@ -83,6 +91,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
         Route::get('/show/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'show'])->name('show');
         Route::put('/update/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('update');
         Route::delete('/destroy/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('destroy');
+    });
+
+    /**
+     *
+     * User Invitation (ユーザー招待)
+     */
+    Route::prefix('/user-invitation')->name('user-invitation.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\UserInvitationController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\Admin\UserInvitationController::class, 'create'])->name('create');
+        Route::post('/store', [App\Http\Controllers\Admin\UserInvitationController::class, 'store'])->name('store');
     });
 
     Route::prefix('/temporary')->name('temporary.')->group(function () {
