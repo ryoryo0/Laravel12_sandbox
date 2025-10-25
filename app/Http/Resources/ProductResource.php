@@ -15,7 +15,7 @@ class ProductResource extends JsonResource
     public function toArray(Request $request): array
     {
         // サムネイル画像を取得
-        $thumbnail = $this->thumbnail();
+        $thumbnail = $this->getThumbnail();
 
         // 最初のバリアント（色・サイズ・価格情報）を取得
         $firstVariant = $this->variants->first();
@@ -37,7 +37,9 @@ class ProductResource extends JsonResource
             'color' => $firstVariant?->color ?? 'カラー情報なし',
             'price' => $firstVariant?->price ?? 0,
             'originalPrice' => $originalPrice,
-            'imageUrl' => $thumbnail?->path ?? '/images/no-image.jpg',
+            'imageUrl' => $thumbnail
+                ? config('app.url') . '/storage/' . $thumbnail->file_path
+                : config('app.url') . '/assets/images/no-image.jpg',
             'badge' => $badge,
             'discount' => $discount,
             'code' => $this->code,
