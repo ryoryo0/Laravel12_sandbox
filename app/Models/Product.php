@@ -92,7 +92,7 @@ class Product extends Model
      *
      * @return \App\Models\Image|null
      */
-    public function thumbnail(): ?ProductImage
+    public function getThumbnail(): ?ProductImage
     {
         return $this->images()
                     ->where('is_thumbnail', true)
@@ -107,7 +107,7 @@ class Product extends Model
      *
      * @return \Illuminate\Support\Collection<int, \App\Models\Image>
      */
-    public function otherImages(): Collection
+    public function getOtherImages(): Collection
     {
         return $this->images()
                     ->where('is_thumbnail', false)

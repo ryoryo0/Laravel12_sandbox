@@ -128,7 +128,7 @@
                     <img class="w-16 h-16 object-cover rounded-lg" src="" alt="">
                     <div class="flex-grow">
                       <p class="text-sm font-medium text-gray-900 dark:text-white"></p>
-                      <input type="hidden" name="thumbnail" value="{{ old('thumbnail', $product->thumbnail()->ulid ?? '') }}">
+                      <input type="hidden" name="thumbnail" value="{{ old('thumbnail', $product->getThumbnail()->ulid ?? '') }}">
                       <input type="hidden" id="old-thumbnail" value="{{ old('thumbnail') }}">
                     </div>
                     <button type="button" data-js="delete-image-btn" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-2">
@@ -259,8 +259,8 @@
           <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">商品の詳細な説明や特徴を記載してください</p>
         </div>
        <!-- その他画像のULID -->
-       @if(isset($product) && $product->otherImages()->count() > 0)
-         @foreach($product->otherImages() as $otherImage)
+       @if(isset($product) && $product->getOtherImages()->count() > 0)
+         @foreach($product->getOtherImages() as $otherImage)
            <input type="hidden" name="existing_other_images[]" value="{{ $otherImage->ulid }}">
          @endforeach
        @endif
