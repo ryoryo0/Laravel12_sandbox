@@ -26,8 +26,8 @@ class Event extends Model
         'start_date' => 'datetime',
         'end_date' => 'datetime',
         'is_active' => 'boolean',
-        'discount_rate' => 'decimal:2',
-        'discount_amount' => 'decimal:2',
+        'discount_rate' => 'integer',
+        'discount_amount' => 'integer',
     ];
 
     /**
@@ -96,23 +96,27 @@ class Event extends Model
     public function isActive(): bool
     {
         $now = now();
-        return $this->is_active
+        $result = $this->is_active
             && $this->start_date <= $now
             && $this->end_date >= $now;
+
+        return $result;
     }
 
     /**
      * 割引額を計算
      *
-     * @param float $price
-     * @return float
+     * @param integer $price
+     * 
      */
-    public function calculateDiscountedPrice(float $price): float
+    public function calcDiscountedPrice($price): int
     {
-        if ($this->discount_type === 'rate') {
-            return $price * (100 - $this->discount_rate) / 100;
-        } else {
-            return max(0, $price - $this->discount_amount);
-        }
+        $result = match ($this->discount_type) {
+            'rate' => $price * (100 - $this->discount_rate) / 100,
+            'amount' => max(100, $price - $this->discount_amount),
+        };
+
+        return $result;
     }
+    
 }

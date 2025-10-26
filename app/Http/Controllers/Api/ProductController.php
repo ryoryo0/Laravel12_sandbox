@@ -18,17 +18,15 @@ class ProductController extends Controller
      */
     public function featured(): AnonymousResourceCollection
     {
-        $products = Product::with(['variants', 'images'])
+        $products = Product::with(['variants', 'images', 'events'])
             ->where('is_public', true) // 公開されている商品のみ
             ->where(function ($query) {
                 $query->where('is_pick_up', true) // ピックアップ商品を優先
                       ->orWhereNotNull('id'); // または全ての公開商品
             })
-            ->orderBy('is_pick_up', 'desc') // ピックアップ商品を先に表示
-            ->orderBy('created_at', 'desc') // 新しい商品順
+            ->orderBy('updated_at', 'desc') // 新しい商品順
             ->limit(12) // 最大12件
             ->get();
-
         return ProductResource::collection($products);
     }
 
@@ -39,7 +37,7 @@ class ProductController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        $products = Product::with(['variants', 'images'])
+        $products = Product::with(['variants', 'images', 'events'])
             ->where('is_public', true)
             ->orderBy('created_at', 'desc')
             ->paginate(20);
@@ -55,7 +53,7 @@ class ProductController extends Controller
      */
     public function show(int $id): ProductResource
     {
-        $product = Product::with(['variants', 'images', 'categories'])
+        $product = Product::with(['variants', 'images', 'categories', 'events'])
             ->where('is_public', true)
             ->findOrFail($id);
 
