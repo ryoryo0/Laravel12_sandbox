@@ -52,4 +52,48 @@ class ProductVariant extends Model
 
         return $rules;
     }
+
+    
+    /**
+     * 料金の表示
+     *
+     * @return string
+     */
+    public function getDisplayPrice() : string
+    {
+        $result = number_format($this->price);
+        return $result;
+    }
+
+
+    /**
+     * 割引適用後の価格を取得（最安値）
+     *
+     * @return string
+     */
+    public function getDiscountedPrice(): string
+    {
+        if (!$this->price) {
+            return '0';
+        }
+
+        $originalPrice = $this->price;
+
+        // 商品（Product）経由でイベントを取得
+        $activeEvents = $this->product->events->filter(function ($event) {
+            return $event->isActive();
+        });
+
+        // アクティブなイベントがない場合は元の価格を返す
+        if ($activeEvents->isEmpty()) {
+            return number_format($originalPrice);
+        }
+
+        // 各イベントの割引適用後の価格を計算し、最安値を取得
+        $minPrice = $activeEvents->map(function ($event) use ($originalPrice) {
+            return $event->calcDiscountedPrice($originalPrice);
+        })->min();
+
+        return number_format($minPrice);
+    }
 }

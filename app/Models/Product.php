@@ -21,6 +21,11 @@ class Product extends Model
         'is_pick_up',
     ];
 
+    protected $casts = [
+        'is_public' => 'boolean',
+        'is_pick_up' => 'boolean',
+    ];
+
 
      /**
      * --------------------------------------------------------------------------------------------------------------------------------------------- 
@@ -99,6 +104,7 @@ class Product extends Model
                     ->first();
     }
 
+
     /**
      * サムネイル以外の画像一覧を返す
      *
@@ -112,5 +118,37 @@ class Product extends Model
         return $this->images()
                     ->where('is_thumbnail', false)
                     ->get();
+    }
+
+
+    /**
+     * 新商品かどうかを判定
+     *
+     * 作成日から30日以内の商品を新商品とする
+     *
+     * @return bool
+     */
+    public function isNew(): bool
+    {
+        return $this->created_at->diffInDays(now()) <= 30;
+    }
+
+
+    /**
+     * イベント適用商品か判定
+     *
+     * 作成日から30日以内の商品を新商品とする
+     *
+     * @return bool
+     */
+    public function hasEvent(): bool
+    {
+        $count =  $this->events->filter(function ($event) {
+            return $event->isActive();
+        })->count();
+
+        $result = $count > 0;
+
+        return $result;
     }
 }
