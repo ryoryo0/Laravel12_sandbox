@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('event_image', function (Blueprint $table) {
+        Schema::create('event_images', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade')->comment('イベントID');
             $table->string('original_filename')->comment('ファイル名');
