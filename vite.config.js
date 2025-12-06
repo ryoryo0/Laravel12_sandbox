@@ -2,7 +2,7 @@
     import laravel from 'laravel-vite-plugin';
     import tailwindcss from '@tailwindcss/vite'
     import fs from 'fs';
-    import glob from 'fast-glob'; 
+    import fg from 'fast-glob'; 
 
     export default defineConfig({
         server: {
@@ -18,8 +18,8 @@
                 input: [
                     'resources/css/app.css',
                     'resources/js/app.js',
-                    ...glob.sync('resources/js/pages/**/*.js'),
-                    ...glob.sync('resources/js/libraries/**/*.js'),
+                    ...fg.sync('resources/js/pages/**/*.js'),
+                    ...fg.sync('resources/js/libraries/**/*.js'),
                 ],
                 refresh: true,
                 hotFile: 'public/hot',
