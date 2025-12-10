@@ -26,8 +26,8 @@ class ProductsResource extends JsonResource
         $isNew = $this->isNew();
         $isEvent = $this->hasEvent();
         // 商品在庫
-        $price = $firstVariant?->getDiscountedPrice() ?? '0';
-        $originalPrice = number_format($firstVariant?->price) ?? 0;
+        $price = $firstVariant?->getDiscountedPrice() ?? null;
+        $originalPrice = ($firstVariant && $isEvent) ? number_format($firstVariant?->price) : null;
         // イベント
         $discountLabelList = $this->getDiscountLabelList();
 
