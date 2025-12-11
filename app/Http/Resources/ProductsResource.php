@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductResource extends JsonResource
+class ProductsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,36 +15,21 @@ class ProductResource extends JsonResource
     public function toArray(Request $request): array
     {
         // 最初のバリアント（色・サイズ・価格情報）を取得
-        $variant = $request->query('color') 
-            ? $this->variants->where('color', $request->query('color'))->first() 
-            : $this->variants->first();
-
-        
-        // APIレスポンスデータを成型 ▼
-        // 商品に関する情報
+        $firstVariant = $this->variants->first();
+        // APIレスポンスデータを成型
+        // 商品
         $id = $this->id;
         $name = $this->name;
-        $imageUrl = $this->images->map(function($image){
-            return config('app.url') . '/storage/' . $image->file_path;
-        })->toArray();
+        $imageUrl = $this->getImageUrl($this->getThumbnail()); 
         $categories = $this->categories()->pluck("name", "categories.id")->toArray() ?? [];
         $isPickUp = $this->is_pick_up;
         $isNew = $this->isNew();
         $isEvent = $this->hasEvent();
-        $price = $variant?->getDiscountedPrice() ?? '0';
-        $originalPrice = number_format($variant?->price) ?? 0;
+        // 商品在庫
+        $price = $firstVariant?->getDiscountedPrice() ?? null;
+        $originalPrice = ($firstVariant && $isEvent) ? number_format($firstVariant?->price) : null;
+        // イベント
         $discountLabelList = $this->getDiscountLabelList();
-
-        // 在庫に関する情報
-        $variants = $this->variants;
-        $colorList = array_unique($variants->pluck('color')->toArray());
-        $stockDate = $this->variants->where('color', $variant->color)
-            ->map(function ($variant) {
-                return [
-                    'size' => $variant->size,
-                    'stock' => $variant->stock,
-                ];
-            })->values();
 
         return [
             // 商品
@@ -60,11 +45,27 @@ class ProductResource extends JsonResource
             'originalPrice' => $originalPrice,
             // イベント
             'discountLabelList' => $discountLabelList,
-            // 在庫に関する情報を取得
-            'colorList' => $colorList,
-            'stockDate' => $stockDate
         ];
     }
+
+
+
+        
+    /**
+     * 画像パスを取得する
+     *
+     * @param  mixed $thumbnail
+     * @return string
+     */
+    private function getImageUrl($thumbnail): string
+    {
+        $result = $thumbnail 
+            ? config('app.url') . '/storage/' . $thumbnail->file_path
+            : config('app.url') . '/assets/images/no-image.jpg';
+
+        return $result;
+    }
+
 
         
     /**
@@ -104,5 +105,3 @@ class ProductResource extends JsonResource
         return $discountLabelList;
     }
 }
-
-

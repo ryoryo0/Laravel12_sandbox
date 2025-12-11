@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Controller;
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductsResource;
 use App\Models\Product;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -27,7 +28,7 @@ class ProductController extends Controller
             ->orderBy('updated_at', 'desc') // 新しい商品順
             ->limit(12) // 最大12件
             ->get();
-        return ProductResource::collection($products);
+        return ProductsResource::collection($products);
     }
 
     /**
@@ -49,13 +50,18 @@ class ProductController extends Controller
      * 商品詳細を取得
      *
      * @param int $id
-     * @return ProductResource
+     * @return ProductResource|\Illuminate\Http\Response
      */
-    public function show(int $id): ProductResource
+    public function show(int $id)
     {
         $product = Product::with(['variants', 'images', 'categories', 'events'])
             ->where('is_public', true)
             ->findOrFail($id);
+
+        // 在庫情報が登録されていない場合は204を返す
+        if ($product->variants->isEmpty()) {
+            return response()->noContent();
+        }
 
         return new ProductResource($product);
     }
