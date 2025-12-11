@@ -60,7 +60,7 @@ class ProductResource extends JsonResource
             'originalPrice' => $originalPrice,
             // イベント
             'discountLabelList' => $discountLabelList,
-            // 在庫にあkんする情報を取得
+            // 在庫に関する情報を取得
             'colorList' => $colorList,
             'stockDate' => $stockDate
         ];
