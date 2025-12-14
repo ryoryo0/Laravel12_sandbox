@@ -19,6 +19,7 @@ class Product extends Model
         'ulid',
         'is_public',
         'is_pick_up',
+        'price',
     ];
 
     protected $casts = [
