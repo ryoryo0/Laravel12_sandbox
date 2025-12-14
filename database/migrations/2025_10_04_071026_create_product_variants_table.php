@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('color')->comment('カラー');
             $table->string('size')->comment('サイズ');
             $table->integer('stock')->default(0)->comment('在庫数');
-            $table->decimal('price', 10, 2)->comment('価格');
             $table->timestamps();
             $table->softDeletes();
         });

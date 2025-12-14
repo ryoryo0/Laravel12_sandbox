@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('description')->nullable()->comment('説明文');
             $table->jsonb('detail_json')->nullable()->comment("詳細JSON");
             $table->foreignId('create_admin_id')->constrained('admins')->comment('商品作成者');
+            $table->decimal('price', 10, 2)->comment('価格');
             $table->string('code')->comment('商品ID');
             $table->ulid('ulid')->comment('ulid');
             $table->boolean('is_public')->comment('公開・非公開');
