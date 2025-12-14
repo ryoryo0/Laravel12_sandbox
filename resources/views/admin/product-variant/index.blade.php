@@ -177,9 +177,6 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                       {{ number_format($variant->stock) }}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                      ¥{{ number_format($variant->price) }}
-                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {{ $variant->created_at->format('Y/m/d H:i') }}
                     </td>

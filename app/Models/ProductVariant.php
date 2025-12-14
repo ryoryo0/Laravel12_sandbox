@@ -46,22 +46,9 @@ class ProductVariant extends Model
             'color'      => ['required', 'string', 'max:255'],
             'size'       => ['required', 'string', 'max:255'],
             'stock'      => ['required', 'integer', 'min:0'],
-            'price'      => ['required', 'numeric', 'min:0'],
         ];
 
         return $rules;
-    }
-
-    
-    /**
-     * 料金の表示
-     *
-     * @return string
-     */
-    public function getDisplayPrice() : string
-    {
-        $result = number_format($this->price);
-        return $result;
     }
 
 
