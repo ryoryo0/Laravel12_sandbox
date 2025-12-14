@@ -7,6 +7,15 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
 {
+
+    public string $appUrl;
+
+    public function __construct($resource)
+    {
+        parent::__construct($resource);
+        $this->appUrl = config('app.url');
+    } 
+
     /**
      * Transform the resource into an array.
      *
@@ -24,9 +33,15 @@ class ProductResource extends JsonResource
         // 商品に関する情報
         $id = $this->id;
         $name = $this->name;
-        $imageUrl = $this->images->map(function($image){
-            return config('app.url') . '/storage/' . $image->file_path;
-        })->toArray();
+        // NOTE:: 商品に紐づく画像URLを配列形式で取得、画像が　登録されていない場合はno-imageを戻り値に指定する
+        $imageUrl = [];
+        if ($this->images) {
+            $imageUrl = $this->images->map(function ($image) {
+                return $this->appUrl . '/storage/' . $image->file_path; 
+            })->toArray();
+        } else {
+            $imageUrl = [$this->appUrl . '/assets/images/no-image.jpg'];
+        }
         $categories = $this->categories()->pluck("name", "categories.id")->toArray() ?? [];
         $isPickUp = $this->is_pick_up;
         $isNew = $this->isNew();
