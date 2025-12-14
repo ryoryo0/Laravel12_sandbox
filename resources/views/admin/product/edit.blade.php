@@ -78,6 +78,17 @@
             </div>
 
             <div>
+              <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">価格 <span class="text-red-500">*</span></label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 dark:text-gray-400">¥</span>
+                <input type="number" name="price" value="{{ old('price', $product->displayPrice()) }}" min="0" step="500" class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-3 pl-8 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="0.00" required>
+              </div>
+              @error('price')
+                <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <div>
               <label for="code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">商品コード <span class="text-red-500">*</span></label>
               <input type="text" name="code" id="code" value="{{ old('code', $product->code) }}" class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white @error('code') border-red-500 focus:border-red-500 @else border-gray-300 focus:ring-blue-500 focus:border-blue-500 @enderror" placeholder="例：PROD-001" required>
               @error('code')

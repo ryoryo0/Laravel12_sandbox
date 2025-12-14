@@ -152,4 +152,11 @@ class Product extends Model
 
         return $result;
     }
+
+
+    public function displayPrice(): int
+    {
+        $result = floor($this->price);
+        return $result;
+    }
 }
