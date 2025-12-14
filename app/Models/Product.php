@@ -154,9 +154,16 @@ class Product extends Model
     }
 
 
-    public function displayPrice(): int
+    public function getPriceFloor(): int
     {
         $result = floor($this->price);
+        return $result;
+    }
+
+
+    public function displayPrice(): string
+    {
+        $result = number_format($this->getPriceFloor());
         return $result;
     }
 }
