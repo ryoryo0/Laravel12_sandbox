@@ -115,13 +115,6 @@
                   <input type="number" name="variants[0][stock]" value="{{ old('variants.0.stock', 0) }}" min="0" class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="0" required>
                 </div>
 
-                <div>
-                  <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">価格 <span class="text-red-500">*</span></label>
-                  <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 dark:text-gray-400">¥</span>
-                    <input type="number" name="variants[0][price]" value="{{ old('variants.0.price', 0) }}" min="0" step="0.01" class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-3 pl-8 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="0.00" required>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -178,13 +171,6 @@
               <div>
                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">在庫数 <span class="text-red-500">*</span></label>
                 <input type="number" name="variants[${variantIndex}][stock]" value="0" min="0" class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="0" required>
-              </div>
-              <div>
-                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">価格 <span class="text-red-500">*</span></label>
-                <div class="relative">
-                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 dark:text-gray-400">¥</span>
-                  <input type="number" name="variants[${variantIndex}][price]" value="0" min="0" step="0.01" class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-3 pl-8 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="0.00" required>
-                </div>
               </div>
             </div>
           </div>

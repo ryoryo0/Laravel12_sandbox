@@ -24,7 +24,6 @@ class StoreAction
                         'color' => $variantData['color'],
                         'size' => $variantData['size'],
                         'stock' => $variantData['stock'],
-                        'price' => $variantData['price'],
                     ]);
                 }
             });

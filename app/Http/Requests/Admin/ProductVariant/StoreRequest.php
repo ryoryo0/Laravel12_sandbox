@@ -28,7 +28,6 @@ class StoreRequest extends FormRequest
             'variants.*.color' => ['required', 'string', 'max:255'],
             'variants.*.size' => ['required', 'string', 'max:255'],
             'variants.*.stock' => ['required', 'integer', 'min:0'],
-            'variants.*.price' => ['required', 'numeric', 'min:0'],
         ];
     }
 
@@ -45,8 +44,6 @@ class StoreRequest extends FormRequest
             'variants.*.size.required' => 'サイズは必須です。',
             'variants.*.stock.required' => '在庫数は必須です。',
             'variants.*.stock.min' => '在庫数は0以上で入力してください。',
-            'variants.*.price.required' => '価格は必須です。',
-            'variants.*.price.min' => '価格は0以上で入力してください。',
         ];
     }
 }
