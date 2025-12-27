@@ -10,10 +10,10 @@ Route::prefix('admin')->name('admin.')->middleware(['guest:admin'])->group(funct
     Route::post('/login', [App\Http\Controllers\Admin\LoginController::class, 'login'])->name('login');
     Route::get('/register', [App\Http\Controllers\Admin\RegisterController::class, 'show'])->name('show');
     Route::post('/register', [App\Http\Controllers\Admin\RegisterController::class, 'register'])->name('register');
-    Route::get('/forgot-password', [App\Http\Controllers\Admin\ForgotPasswordController::class, 'show'])->name('show');
-    Route::post('/forgot-password', [App\Http\Controllers\Admin\ForgotPasswordController::class, 'forgot-password'])->name('forgot-password');
-    Route::get('/reset-password/{token}', [App\Http\Controllers\Admin\ResetPasswordController::class, 'show'])->name('show');
-    Route::post('/reset-password', [App\Http\Controllers\Admin\ResetPasswordController::class, 'reset-password'])->name('reset-password');
+    Route::get('/forgot-password', [App\Http\Controllers\Admin\PasswordResetLinkController::class, 'show'])->name('show');
+    Route::post('/forgot-password', [App\Http\Controllers\Admin\PasswordResetLinkController::class, 'forgot-password'])->name('forgot-password');
+    Route::get('/reset-password/{token}', [App\Http\Controllers\Admin\NewPasswordController::class, 'show'])->name('show');
+    Route::post('/reset-password', [App\Http\Controllers\Admin\NewPasswordController::class, 'reset-password'])->name('reset-password');
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(function () {
