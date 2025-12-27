@@ -231,6 +231,9 @@
                     <td class="px-6 py-4">
                       <div class="text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">{{ $product->description }}</div>
                     </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                      ¥{{ $product->displayPrice()}}
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       <code class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-xs">{{ $product->code }}</code>
                     </td>

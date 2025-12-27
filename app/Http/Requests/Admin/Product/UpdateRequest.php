@@ -37,6 +37,7 @@ class UpdateRequest extends FormRequest
             'detail_json'  => ['nullable','json',],
             'is_public'    => ['required','boolean'],
             'is_pick_up'   => ['required','boolean'],
+            'price'        => ['required', 'numeric', 'min:1'],
         ];
 
         $rules += [

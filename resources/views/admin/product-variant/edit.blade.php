@@ -87,22 +87,10 @@
                 <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
               @enderror
             </div>
-
             <div>
               <label for="stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">在庫数 <span class="text-red-500">*</span></label>
               <input type="number" name="stock" id="stock" value="{{ old('stock', $variant->stock) }}" min="0" class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white @error('stock') border-red-500 focus:border-red-500 @else border-gray-300 focus:ring-blue-500 focus:border-blue-500 @enderror" placeholder="0" required>
               @error('stock')
-                <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-              @enderror
-            </div>
-
-            <div>
-              <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">価格 <span class="text-red-500">*</span></label>
-              <div class="relative">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 dark:text-gray-400">¥</span>
-                <input type="number" name="price" id="price" value="{{ old('price', $variant->price) }}" min="0" step="0.01" class="bg-gray-50 border text-gray-900 text-sm rounded-lg block w-full p-3 pl-8 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white @error('price') border-red-500 focus:border-red-500 @else border-gray-300 focus:ring-blue-500 focus:border-blue-500 @enderror" placeholder="0.00" required>
-              </div>
-              @error('price')
                 <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
               @enderror
             </div>

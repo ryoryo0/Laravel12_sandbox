@@ -46,8 +46,8 @@ class ProductResource extends JsonResource
         $isPickUp = $this->is_pick_up;
         $isNew = $this->isNew();
         $isEvent = $this->hasEvent();
-        $price = $variant?->getDiscountedPrice() ?? '0';
-        $originalPrice = number_format($variant?->price) ?? 0;
+        $price = $this->getDiscountedPrice() ?? null;
+        $originalPrice = $this->displayPrice() ?? null;
         $discountLabelList = $this->getDiscountLabelList();
 
         // 在庫に関する情報
