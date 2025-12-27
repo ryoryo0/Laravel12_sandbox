@@ -153,17 +153,59 @@ class Product extends Model
         return $result;
     }
 
-
+  
+    /**
+     * 端数を切り捨てた価格を返す
+     *
+     * @return int
+     */
     public function getPriceFloor(): int
     {
         $result = floor($this->price);
         return $result;
     }
 
-
+    
+    /**
+     * 表示用の文字列の価格を返す
+     *
+     * @return string
+     */
     public function displayPrice(): string
     {
         $result = number_format($this->getPriceFloor());
         return $result;
+    }
+
+
+    /**
+     * 割引適用後の価格を取得（最安値）
+     *
+     * @return string|null
+     */
+    public function getDiscountedPrice(): string|null
+    {
+        if (!$this->price) {
+            return null;
+        }
+
+        $originalPrice = $this->price;
+
+        // 商品（Product）経由でイベントを取得
+        $activeEvents = $this->events->filter(function ($event) {
+            return $event->isActive();
+        });
+
+        // アクティブなイベントがない場合は元の価格を返す
+        if ($activeEvents->isEmpty()) {
+            return number_format($originalPrice);
+        }
+
+        // 各イベントの割引適用後の価格を計算し、最安値を取得
+        $minPrice = $activeEvents->map(function ($event) use ($originalPrice) {
+            return $event->calcDiscountedPrice($originalPrice);
+        })->min();
+
+        return number_format($minPrice);
     }
 }

@@ -14,8 +14,6 @@ class ProductsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // 最初のバリアント（色・サイズ・価格情報）を取得
-        $firstVariant = $this->variants->first();
         // APIレスポンスデータを成型
         // 商品
         $id = $this->id;
@@ -26,8 +24,8 @@ class ProductsResource extends JsonResource
         $isNew = $this->isNew();
         $isEvent = $this->hasEvent();
         // 商品在庫
-        $price = $firstVariant?->getDiscountedPrice() ?? null;
-        $originalPrice = ($firstVariant && $isEvent) ? number_format($firstVariant?->price) : null;
+        $price = $this->getDiscountedPrice() ?? null;
+        $originalPrice = $this->displayPrice();
         // イベント
         $discountLabelList = $this->getDiscountLabelList();
 
