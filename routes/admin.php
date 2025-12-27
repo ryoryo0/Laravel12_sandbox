@@ -11,9 +11,9 @@ Route::prefix('admin')->name('admin.')->middleware(['guest:admin'])->group(funct
     Route::get('/register', [App\Http\Controllers\Admin\RegisterController::class, 'show'])->name('show');
     Route::post('/register', [App\Http\Controllers\Admin\RegisterController::class, 'register'])->name('register');
     Route::get('/forgot-password', [App\Http\Controllers\Admin\PasswordResetLinkController::class, 'show'])->name('show');
-    Route::post('/forgot-password', [App\Http\Controllers\Admin\PasswordResetLinkController::class, 'forgot-password'])->name('forgot-password');
+    Route::post('/forgot-password', [App\Http\Controllers\Admin\PasswordResetLinkController::class, 'passwordResetLink'])->name('forgot-password');
     Route::get('/reset-password/{token}', [App\Http\Controllers\Admin\NewPasswordController::class, 'show'])->name('show');
-    Route::post('/reset-password', [App\Http\Controllers\Admin\NewPasswordController::class, 'reset-password'])->name('reset-password');
+    Route::post('/reset-password', [App\Http\Controllers\Admin\NewPasswordController::class, 'newPassword'])->name('reset-password');
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(function () {
