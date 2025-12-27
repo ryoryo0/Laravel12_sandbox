@@ -6,14 +6,14 @@ use Illuminate\Support\Facades\Route;
  * Admin
  */
 Route::prefix('admin')->name('admin.')->middleware(['guest:admin'])->group(function () {
-    Route::get('/login', [App\Http\Controllers\Admin\Auth\LoginController::class, 'show'])->name('show');
-    Route::post('/login', [App\Http\Controllers\Admin\Auth\LoginController::class, 'login'])->name('login');
-    Route::get('/register', [App\Http\Controllers\Admin\Auth\RegisterController::class, 'show'])->name('show');
-    Route::post('/register', [App\Http\Controllers\Admin\Auth\RegisterController::class, 'register'])->name('register');
-    Route::get('/forgot-password', [App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'show'])->name('show');
-    Route::post('/forgot-password', [App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'forgot-password'])->name('forgot-password');
-    Route::get('/reset-password/{token}', [App\Http\Controllers\Admin\Auth\ResetPasswordController::class, 'show'])->name('show');
-    Route::post('/reset-password', [App\Http\Controllers\Admin\Auth\ResetPasswordController::class, 'reset-password'])->name('reset-password');
+    Route::get('/login', [App\Http\Controllers\Admin\LoginController::class, 'show'])->name('show');
+    Route::post('/login', [App\Http\Controllers\Admin\LoginController::class, 'login'])->name('login');
+    Route::get('/register', [App\Http\Controllers\Admin\RegisterController::class, 'show'])->name('show');
+    Route::post('/register', [App\Http\Controllers\Admin\RegisterController::class, 'register'])->name('register');
+    Route::get('/forgot-password', [App\Http\Controllers\Admin\ForgotPasswordController::class, 'show'])->name('show');
+    Route::post('/forgot-password', [App\Http\Controllers\Admin\ForgotPasswordController::class, 'forgot-password'])->name('forgot-password');
+    Route::get('/reset-password/{token}', [App\Http\Controllers\Admin\ResetPasswordController::class, 'show'])->name('show');
+    Route::post('/reset-password', [App\Http\Controllers\Admin\ResetPasswordController::class, 'reset-password'])->name('reset-password');
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(function () {
