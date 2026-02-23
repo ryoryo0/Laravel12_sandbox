@@ -30,7 +30,7 @@ class AdminSeeder extends Seeder
                 'email' => 'deletestaff@test.com',
                 'role_id' => 1,
             ]
-            
+
         ];
 
         foreach ($admins as $admin) {
