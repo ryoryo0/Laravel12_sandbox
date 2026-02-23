@@ -6,17 +6,20 @@ use Illuminate\Support\Facades\Route;
  * Admin
  */
 Route::prefix('admin')->name('admin.')->middleware(['guest:admin'])->group(function () {
-    Route::get('/login', [App\Http\Controllers\Admin\LoginController::class, 'show'])->name('show');
-    Route::post('/login', [App\Http\Controllers\Admin\LoginController::class, 'login'])->name('login');
-    Route::get('/register', [App\Http\Controllers\Admin\RegisterController::class, 'show'])->name('show');
-    Route::post('/register', [App\Http\Controllers\Admin\RegisterController::class, 'register'])->name('register');
-    Route::get('/forgot-password', [App\Http\Controllers\Admin\PasswordResetLinkController::class, 'show'])->name('show');
-    Route::post('/forgot-password', [App\Http\Controllers\Admin\PasswordResetLinkController::class, 'passwordResetLink'])->name('forgot-password');
-    Route::get('/reset-password/{token}', [App\Http\Controllers\Admin\NewPasswordController::class, 'show'])->name('show');
-    Route::post('/reset-password', [App\Http\Controllers\Admin\NewPasswordController::class, 'newPassword'])->name('reset-password');
+    Route::get('/login', [App\Http\Controllers\Admin\LoginController::class, 'show'])->name('login');
+    Route::post('/login', [App\Http\Controllers\Admin\LoginController::class, 'login']);
+    Route::get('/register', [App\Http\Controllers\Admin\RegisterController::class, 'show'])->name('register');
+    Route::post('/register', [App\Http\Controllers\Admin\RegisterController::class, 'register']);
+    Route::get('/forgot-password', [App\Http\Controllers\Admin\PasswordResetLinkController::class, 'show'])->name('password.request');
+    Route::post('/forgot-password', [App\Http\Controllers\Admin\PasswordResetLinkController::class, 'passwordResetLink'])->name('password.email');
+    Route::get('/reset-password/{token}', [App\Http\Controllers\Admin\NewPasswordController::class, 'show'])->name('password.reset');
+    Route::post('/reset-password', [App\Http\Controllers\Admin\NewPasswordController::class, 'newPassword'])->name('password.update');
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(function () {
+    Route::get('/home', function () { return view('admin.home'); })->name('home');
+    Route::post('/logout', [App\Http\Controllers\Admin\LoginController::class, 'logout'])->name('logout');
+
     /**
      *
      * User (管理者管理)
